@@ -5,13 +5,21 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2",
-    "mongoose": "^7.5.2"
+    "express": "4.18.2",
+    "mongoose": "7.5.2"
+  },
+  "devDependencies": {
+    "nodemon": "3.0.1",
+    "standard": "17.1.0"
+  },
+  "eslintConfig": {
+    "extends": "standard"
   }
 }
