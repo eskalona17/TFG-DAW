@@ -1,4 +1,5 @@
 import { validateAddress, validateEmail, validatePassword, validateText } from '../utils/validator.js'
+import bcrypt from 'bcryptjs'
 import User from '../models/User.js'
 
 export async function registerUser (req, res) {
@@ -39,8 +40,10 @@ export async function registerUser (req, res) {
       throw new Error('Address is required for professional profiles')
     }
 
+    const hashedPwd = await bcrypt.hash(password, 10)
+
     const user = new User({
-      name, username, email, password, profile, address
+      name, username, email, password: hashedPwd, profile, address
     })
 
     await user.save()
