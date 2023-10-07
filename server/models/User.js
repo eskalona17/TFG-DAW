@@ -35,23 +35,25 @@ const UserSchema = new mongoose.Schema({
   },
   // Campos opcionales
   address: {
-    type: String,
-    minLength: 3,
-    maxLength: 255
-  },
-  postalCode: {
-    type: Number,
-    min: 1000,
-    max: 52999
-  },
-  city: {
-    type: String,
-    minLength: 3,
-    maxLength: 50
-  },
-  country: {
-    type: String,
-    enum: ['España']
+    street: {
+      type: String,
+      minLength: 3,
+      maxLength: 255
+    },
+    zipCode: {
+      type: Number,
+      min: 1000,
+      max: 52999
+    },
+    city: {
+      type: String,
+      minLength: 3,
+      maxLength: 50
+    },
+    country: {
+      type: String,
+      enum: ['spain']
+    }
   }
 },
 {

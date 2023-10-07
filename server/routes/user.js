@@ -1,8 +1,8 @@
-import addUser from '../controllers/user.js'
+import { registerUser } from '../controllers/user.js'
 import express from 'express'
 
 const router = express.Router()
 
-router.post('/new_user', addUser)
+router.post('/register', registerUser)
 
 export default router

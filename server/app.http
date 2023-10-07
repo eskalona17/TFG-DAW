@@ -1,14 +1,33 @@
-
 ###
-POST http://localhost:1234/user/new_user
+POST http://localhost:1234/user/register
 content-type: application/json
 
 {
   "name": "Nacho",
-  "username": "nacho_mndz3",
+  "username": "nacho",
   "email": "nacho@email.es",
-  "confirm_email": "nacho@email.es",
-  "password": "1234",
-  "confirm_password": "1234",
+  "confirmEmail": "nacho@email.es",
+  "password": "123456",
+  "confirmPassword": "123456",
   "profile": "personal"
+}
+
+###
+POST http://localhost:1234/user/register
+content-type: application/json
+
+{
+  "name": "Test",
+  "username": "test",
+  "email": "test@email.es",
+  "confirmEmail": "test@email.es",
+  "password": "123456",
+  "confirmPassword": "123456",
+  "profile": "profesional",
+  "address": {
+    "street": "calle",
+    "city": "Ciudad",
+    "zipCode": 10000,
+    "country": "spain"
+  }
 }
