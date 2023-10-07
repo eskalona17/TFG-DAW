@@ -1,0 +1,14 @@
+
+###
+POST http://localhost:1234/user/new_user
+content-type: application/json
+
+{
+  "name": "Nacho",
+  "username": "nacho_mndz3",
+  "email": "nacho@email.es",
+  "confirm_email": "nacho@email.es",
+  "password": "1234",
+  "confirm_password": "1234",
+  "profile": "personal"
+}
