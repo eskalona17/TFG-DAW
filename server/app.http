@@ -49,3 +49,30 @@ content-type: application/json
   "input": "test",
   "password": "123456"
 }
+
+
+### Crear un nuevo post ###
+POST http://localhost:1234/posts
+Content-Type: application/json
+
+{
+    "title": "Nuevo post",
+    "content": "Contenido del nuevo post"
+}
+
+### Obtener todos los posts ###
+GET http://localhost:1234/posts
+### Obtener un post por su ID ###
+GET http://localhost:1234/posts/:id
+
+### Actualizar un post por su ID ###
+PUT http://localhost:1234/posts/:id
+Content-Type: application/json
+
+{
+    "title": "Título actualizado",
+    "content": "Contenido actualizado"
+}
+
+### Eliminar un post por su ID ###
+DELETE http://localhost:1234/posts/:id

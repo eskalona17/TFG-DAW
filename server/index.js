@@ -3,6 +3,7 @@ import { connectDB } from './config/connectDB.js'
 import corsOptions from './config/corsOptions.js'
 import rootRouter from './routes/root.js'
 import userRouter from './routes/user.js'
+import postRouter from './routes/post.js'
 import { fileURLToPath } from 'url'
 import { config } from 'dotenv'
 import express from 'express'
@@ -26,6 +27,7 @@ app.use(cors(corsOptions))
 app.use('/', express.static(path.join(__dirname, 'public')))
 app.use('/', rootRouter)
 app.use('/user', userRouter)
+app.use('/posts', postRouter)
 
 app.all('*', errorHandler)
 
