@@ -21,7 +21,6 @@ app.disable('x-powered-by')
 app.use(express.json())
 
 app.use('/', express.static(path.join(__dirname, 'public')))
-
 app.use('/', rootRouter)
 app.use('/user', userRouter)
 

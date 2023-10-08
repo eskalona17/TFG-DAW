@@ -1,8 +1,9 @@
 import { validateAddress, validateEmail, validatePassword, validateText } from '../utils/validator.js'
 import bcrypt from 'bcryptjs'
 import User from '../models/User.js'
+import jwt from 'jsonwebtoken'
 
-export async function registerUser (req, res) {
+export async function register (req, res) {
   try {
     const data = req.body
     const { name, username, email, confirmEmail, password, confirmPassword, profile, address } = data
@@ -49,6 +50,40 @@ export async function registerUser (req, res) {
     await user.save()
 
     res.status(201).json({ success: true })
+  } catch (error) {
+    console.error('Error:', error.message)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+}
+
+export async function login (req, res) {
+  try {
+    const { username, password } = req.body
+    const user = await User.findOne({ username }).exec()
+
+    if (!user) {
+      return res.status(400).json({ error: 'username or password incorrect' })
+    }
+
+    const isPasswordCorrect =
+      user !== null && bcrypt.compareSync(password, user.password)
+
+    if (!isPasswordCorrect) {
+      return res.status(400).json({ error: 'username or password incorrect' })
+    }
+
+    const accessToken = jwt.sign(
+      { id: user.id, username: user.username },
+      process.env.JWT_ACCESS
+    )
+
+    res.status(200).json({
+      id: user.id,
+      username: user.username,
+      name: user.name,
+      profile: user.profile,
+      accessToken
+    })
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })
