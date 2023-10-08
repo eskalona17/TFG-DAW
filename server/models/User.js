@@ -24,7 +24,8 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    min: 6
   },
   // Campo obligatorio y con enum
   profile: {
@@ -34,6 +35,14 @@ const UserSchema = new mongoose.Schema({
     default: 'personal'
   },
   // Campos opcionales
+  picturePath: {
+    type: String,
+    default: ''
+  },
+  friends: {
+    type: Array,
+    default: []
+  },
   address: {
     street: {
       type: String,
