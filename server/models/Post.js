@@ -16,7 +16,7 @@ const PostSchema = new mongoose.Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: false // en false de momento para hacer pruebas, más adelante será true
   }
 }, {
   timestamps: true

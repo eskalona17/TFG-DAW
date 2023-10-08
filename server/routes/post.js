@@ -1,9 +1,10 @@
-const express = require('express')
+import express from 'express'
+import Post from '../models/Post.js'
+
 const router = express.Router()
-const Post = require('../models/Post')
 
 // Ruta para obtener todos los posts
-router.get('/posts', async (req, res) => {
+router.get('', async (req, res) => {
   try {
     const posts = await Post.find()
     res.json(posts)
@@ -13,7 +14,7 @@ router.get('/posts', async (req, res) => {
 })
 
 // Ruta para crear un nuevo post
-router.post('/posts', async (req, res) => {
+router.post('', async (req, res) => {
   const post = new Post(req.body)
   try {
     const savedPost = await post.save()
@@ -24,7 +25,7 @@ router.post('/posts', async (req, res) => {
 })
 
 // Ruta para actualizar un post
-router.put('/posts/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, { new: true })
     res.json(updatedPost)
@@ -34,7 +35,7 @@ router.put('/posts/:id', async (req, res) => {
 })
 
 // Ruta para eliminar un post
-router.delete('/posts/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     await Post.findByIdAndRemove(req.params.id)
     res.json({ message: 'Post deleted' })
@@ -43,4 +44,4 @@ router.delete('/posts/:id', async (req, res) => {
   }
 })
 
-module.exports = router
+export default router
