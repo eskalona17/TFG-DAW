@@ -58,8 +58,19 @@ export async function register (req, res) {
 
 export async function login (req, res) {
   try {
-    const { username, password } = req.body
-    const user = await User.findOne({ username }).exec()
+    const { input, password } = req.body
+
+    if (!input) {
+      return res.status(400).json({ error: 'Email or username is required' })
+    }
+
+    let user = null
+
+    user = await User.findOne({ username: input }).exec()
+
+    if (!user) {
+      user = await User.findOne({ email: input }).exec()
+    }
 
     if (!user) {
       return res.status(400).json({ error: 'username or password incorrect' })
