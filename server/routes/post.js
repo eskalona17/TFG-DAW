@@ -24,6 +24,20 @@ router.post('', async (req, res) => {
   }
 })
 
+// Ruta para obtener un post por su ID
+router.get('/:id', async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id)
+    if (!post) {
+      // Si no se encuentra un post con el ID proporcionado, devolver un error 404
+      return res.status(404).json({ error: 'Post not found' })
+    }
+    res.json(post)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
 // Ruta para actualizar un post
 router.put('/:id', async (req, res) => {
   try {
