@@ -1,0 +1,112 @@
+###
+POST http://localhost:1234/user/register
+content-type: application/json
+
+{
+  "name": "Nacho",
+  "username": "nacho",
+  "email": "nacho@email.es",
+  "confirmEmail": "nacho@email.es",
+  "password": "123456",
+  "confirmPassword": "123456",
+  "profile": "personal"
+}
+
+###
+POST http://localhost:1234/user/register
+content-type: application/json
+
+{
+  "name": "Test",
+  "username": "test",
+  "email": "test@email.es",
+  "confirmEmail": "test@email.es",
+  "password": "123456",
+  "confirmPassword": "123456",
+  "profile": "profesional",
+  "address": {
+    "street": "calle",
+    "city": "Ciudad",
+    "zipCode": 10000,
+    "country": "spain"
+  }
+}
+
+###
+POST http://localhost:1234/user/login
+content-type: application/json
+
+{
+  "input": "nacho@email.es",
+  "password": "123456"
+}
+
+###
+POST http://localhost:1234/user/login
+content-type: application/json
+
+{
+  "input": "test",
+  "password": "123456"
+}
+
+###
+PATCH http://localhost:1234/user/update_name/652462f2a89c00bb03470b3e
+content-type: application/json
+
+{
+  "name": "Nacho"
+}
+
+###
+PATCH http://localhost:1234/user/update_username/652462f2a89c00bb03470b3e
+content-type: application/json
+
+{
+  "username": "nacho"
+}
+
+###
+PATCH http://localhost:1234/user/update_email/652462f2a89c00bb03470b3e
+content-type: application/json
+
+{
+  "email": "nacho@email.com",
+  "confirmEmail": "nacho@email.com"
+}
+
+###
+PATCH http://localhost:1234/user/update_password/652462f2a89c00bb03470b3e
+content-type: application/json
+
+{
+  "password": "123456",
+  "newPassword": "12345678",
+  "confirmNewPassword": "12345678"
+}
+
+###
+PATCH http://localhost:1234/user/update_profile/652462f2a89c00bb03470b3e
+content-type: application/json
+
+{
+  "profile": "personal"
+}
+
+###
+PATCH http://localhost:1234/user/update_profile/652462f2a89c00bb03470b3e
+content-type: application/json
+
+{
+  "profile": "profesional",
+  "address": {
+    "street": "calle",
+    "city": "Ciudad",
+    "zipCode": 10000,
+    "country": "spain"
+  }
+}
+
+###
+DELETE http://localhost:1234/user/delete/6525a067d65a26856c80c863
+content-type: application/json
