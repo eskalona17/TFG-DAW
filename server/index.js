@@ -1,16 +1,17 @@
 import { errorHandler } from './middleware/errorHandler.js'
-import { connectDB } from './config/connectDB.js'
+import connectDB from './config/connectDB.js'
 import corsOptions from './config/corsOptions.js'
 import rootRouter from './routes/root.js'
 import userRouter from './routes/user.js'
 import postRouter from './routes/post.js'
 import { fileURLToPath } from 'url'
-import { config } from 'dotenv'
+import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
 import path from 'path'
 
-config()
+dotenv.config()
+
 connectDB()
 
 const app = express()
@@ -24,6 +25,7 @@ app.disable('x-powered-by')
 app.use(express.json())
 app.use(cors(corsOptions))
 
+// Routes
 app.use('/', express.static(path.join(__dirname, 'public')))
 app.use('/', rootRouter)
 app.use('/user', userRouter)
