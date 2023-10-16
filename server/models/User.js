@@ -19,14 +19,12 @@ const UserSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      minLength: 3,
-      maxLength: 255,
       unique: true
     },
     password: {
       type: String,
       required: true,
-      min: 6
+      minLength: 6
     },
     // Campo obligatorio y con enum
     profile: {
@@ -36,12 +34,18 @@ const UserSchema = new mongoose.Schema(
       default: 'personal'
     },
     // Campos opcionales
-    picturePath: {
+    profilePic: {
       type: String,
       default: ''
     },
-    friends: {
-      type: Array,
+    followers: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: 'User',
+      default: []
+    },
+    following: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: 'User',
       default: []
     },
     address: {

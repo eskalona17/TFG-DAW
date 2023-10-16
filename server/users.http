@@ -6,7 +6,6 @@ content-type: application/json
   "name": "Nacho",
   "username": "nacho",
   "email": "nacho@email.es",
-  "confirmEmail": "nacho@email.es",
   "password": "123456",
   "confirmPassword": "123456",
   "profile": "personal"
@@ -20,7 +19,6 @@ content-type: application/json
   "name": "Test",
   "username": "test",
   "email": "test@email.es",
-  "confirmEmail": "test@email.es",
   "password": "123456",
   "confirmPassword": "123456",
   "profile": "profesional",
@@ -51,62 +49,25 @@ content-type: application/json
 }
 
 ###
-PATCH http://localhost:1234/user/update_name/652462f2a89c00bb03470b3e
-content-type: application/json
-
-{
-  "name": "Nacho"
-}
+POST http://localhost:1234/user/logout
 
 ###
-PATCH http://localhost:1234/user/update_username/652462f2a89c00bb03470b3e
-content-type: application/json
-
-{
-  "username": "nacho"
-}
+POST http://localhost:1234/user/follow/652db54a61d352777ee1f54c
 
 ###
-PATCH http://localhost:1234/user/update_email/652462f2a89c00bb03470b3e
+PATCH http://localhost:1234/user/update/652db234b3d826d8fab82138
 content-type: application/json
 
 {
-  "email": "nacho@email.com",
-  "confirmEmail": "nacho@email.com"
-}
-
-###
-PATCH http://localhost:1234/user/update_password/652462f2a89c00bb03470b3e
-content-type: application/json
-
-{
+  "name": "Nacho",
+  "username": "nacho",
   "password": "123456",
-  "newPassword": "12345678",
-  "confirmNewPassword": "12345678"
-}
-
-###
-PATCH http://localhost:1234/user/update_profile/652462f2a89c00bb03470b3e
-content-type: application/json
-
-{
+  "newPassword": "123456",
+  "confirmNewPassword": "123456",
+  "email": "nacho@email.es",
   "profile": "personal"
 }
 
 ###
-PATCH http://localhost:1234/user/update_profile/652462f2a89c00bb03470b3e
-content-type: application/json
-
-{
-  "profile": "profesional",
-  "address": {
-    "street": "calle",
-    "city": "Ciudad",
-    "zipCode": 10000,
-    "country": "spain"
-  }
-}
-
-###
-DELETE http://localhost:1234/user/delete/6525a067d65a26856c80c863
+DELETE http://localhost:1234/user/delete/652dacfb250c0b4742e32b31
 content-type: application/json
