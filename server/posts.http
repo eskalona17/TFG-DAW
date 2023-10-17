@@ -1,22 +1,23 @@
-### Crear un nuevo post ###
-POST http://localhost:1234/api/posts
+### Obtener un post por su ID 
+GET http://localhost:1234/api/posts/652e5ee159f46d0599871f18
+
+### Obtener feed
+GET http://localhost:1234/api/posts/feed
+
+### Obtener post de un usuario
+GET http://localhost:1234/api/posts/user/test
+
+### Crear un nuevo post
+POST http://localhost:1234/api/posts/create
 Content-Type: application/json
 
 {
-    "title": "Nuevo post",
-    "content": "Contenido del nuevo post"
+    "author": "652e6fc8939b0e5a6c80b8d6",
+    "content": "Post de prueba 3"
 }
 
-### Obtener todos los posts ###
-GET http://localhost:1234/api/posts
-### Obtener un post por su ID ###
-# GET http://localhost:1234/posts/:id
-GET http://localhost:1234/api/posts/6522ef6112905e1a42c1e2ec
-
-### Actualizar un post por su ID ###
-# PUT http://localhost:1234/posts/:id
-PUT http://localhost:1234/api/posts/6522ef6112905e1a42c1e2ec
-
+### Actualizar un post por su ID
+PATCH http://localhost:1234/api/posts/6522ef6112905e1a42c1e2ec
 Content-Type: application/json
 
 {
@@ -25,6 +26,15 @@ Content-Type: application/json
 }
 
 ### Eliminar un post por su ID ###
-# DELETE http://localhost:1234/posts/:id
-DELETE http://localhost:1234/api/posts/6522ef6112905e1a42c1e2ec
+DELETE http://localhost:1234/api/posts/delete/652e5ee159f46d0599871f18
 
+### Fav / Unfav un post
+POST http://localhost:1234/api/posts/fav/652e709fd52474e070de92b3
+
+### Responder un post
+POST http://localhost:1234/api/posts/reply/652e709cd52474e070de92af
+Content-Type: application/json
+
+{
+    "text": "Esta es una respuesta"
+}
