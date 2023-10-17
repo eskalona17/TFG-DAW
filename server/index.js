@@ -23,6 +23,7 @@ const __dirname = path.dirname(__filename)
 // This disables the X-Powered-By header (contains the name and version of the web framework) from HTTP responses.
 app.disable('x-powered-by')
 
+// Middlewares
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors(corsOptions))

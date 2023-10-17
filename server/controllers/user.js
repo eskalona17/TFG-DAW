@@ -53,7 +53,7 @@ export async function register (req, res) {
       generateTokenAndSetCookie(newUser._id, res)
       res
         .status(201)
-        .json({ success: true, message: 'User registered successfully' })
+        .json({ success: true, message: 'User registered successfully', newUser })
     }
   } catch (error) {
     console.error('Error:', error.message)
@@ -202,10 +202,30 @@ export async function updateProfile (req, res) {
   }
 }
 
+export async function getUserProfile (req, res) {
+  const { username } = req.params
+  try {
+    const user = await User.findOne({ username }).select('-password').select('-updatedAt')
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+
+    res.status(200).json(user)
+  } catch (error) {
+    console.error('Error:', error.message)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+}
+
 export async function remove (req, res) {
   const { id } = req.params
+  const userId = req.user._id
 
   try {
+    if (id !== userId.toString()) {
+      return res.status(401).json({ message: 'Unauthorized' })
+    }
+
     const removedUser = await User.findByIdAndRemove(id)
 
     if (!removedUser) {
