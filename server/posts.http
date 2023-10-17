@@ -21,11 +21,10 @@ PATCH http://localhost:1234/api/posts/6522ef6112905e1a42c1e2ec
 Content-Type: application/json
 
 {
-    "title": "Título actualizado",
     "content": "Contenido actualizado"
 }
 
-### Eliminar un post por su ID ###
+### Eliminar un post por su ID
 DELETE http://localhost:1234/api/posts/delete/652e5ee159f46d0599871f18
 
 ### Fav / Unfav un post

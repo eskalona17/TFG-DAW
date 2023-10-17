@@ -1,3 +1,4 @@
+import protectRoute from '../middlewares/protectRoute.js'
 import {
   deletePost,
   favUnfavPost,
@@ -7,7 +8,6 @@ import {
   replyToPost,
   updatePost
 } from '../controllers/post.js'
-import protectRoute from '../middlewares/protectRoute.js'
 import express from 'express'
 
 const router = express.Router()
