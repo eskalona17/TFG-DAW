@@ -1,17 +1,22 @@
-import { validateAddress, validateEmail, validatePassword, validateText } from '../utils/validator.js'
-import bcrypt from 'bcryptjs'
+import {
+  validateAddress,
+  validateEmail,
+  validatePassword,
+  validateText
+} from '../utils/validator.js'
+import generateTokenAndSetCookie from '../utils/generateTokenAndSetCookie.js'
 import User from '../models/User.js'
-import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
 
 export async function register (req, res) {
   const data = req.body
-  const { name, username, email, confirmEmail, password, confirmPassword, profile, address } = data
+  const { name, username, email, password, confirmPassword, profile, address } =
+    data
 
   try {
     await validateText(name)
     await validateText(username)
     await validateEmail(email)
-    await validateEmail(confirmEmail)
     await validatePassword(password)
     await validatePassword(confirmPassword)
 
@@ -23,18 +28,9 @@ export async function register (req, res) {
       throw new Error('Passwords do not match')
     }
 
-    if (email !== confirmEmail) {
-      throw new Error('Emails do not match')
-    }
-
-    const existingUsernameUser = await User.findOne({ username }).lean().exec()
-    if (existingUsernameUser) {
+    const userExists = await User.findOne({ $or: [{ username }, { email }] })
+    if (userExists) {
       return res.status(409).json({ error: 'User already exists' })
-    }
-
-    const existingEmailUser = await User.findOne({ email }).lean().exec()
-    if (existingEmailUser) {
-      return res.status(409).json({ error: 'Email already exists' })
     }
 
     if (profile === 'profesional' && !address) {
@@ -42,13 +38,23 @@ export async function register (req, res) {
     }
     const hashedPwd = await bcrypt.hash(password, 10)
 
-    const user = new User({
-      name, username, email, password: hashedPwd, profile, address
+    const newUser = new User({
+      name,
+      username,
+      email,
+      password: hashedPwd,
+      profile,
+      address
     })
 
-    await user.save()
+    await newUser.save()
 
-    res.status(201).json({ success: true, message: 'User registered successfully' })
+    if (newUser) {
+      generateTokenAndSetCookie(newUser._id, res)
+      res
+        .status(201)
+        .json({ success: true, message: 'User registered successfully', newUser })
+    }
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })
@@ -63,36 +69,24 @@ export async function login (req, res) {
       return res.status(400).json({ error: 'Email or username is required' })
     }
 
-    let user = null
+    const user = await User.findOne({
+      $or: [{ username: input }, { email: input }]
+    })
 
-    user = await User.findOne({ username: input }).exec()
+    const isPasswordCorrect = user !== null && bcrypt.compareSync(password, user.password)
 
-    if (!user) {
-      user = await User.findOne({ email: input }).exec()
+    if (!user || !isPasswordCorrect) {
+      return res.status(400).json({ error: 'invalid username or password' })
     }
 
-    if (!user) {
-      return res.status(400).json({ error: 'username or password incorrect' })
-    }
-
-    const isPasswordCorrect =
-      user !== null && bcrypt.compareSync(password, user.password)
-
-    if (!isPasswordCorrect) {
-      return res.status(400).json({ error: 'username or password incorrect' })
-    }
-
-    const accessToken = jwt.sign(
-      { id: user.id, username: user.username },
-      process.env.JWT_ACCESS
-    )
+    generateTokenAndSetCookie(user._id, res)
 
     res.status(200).json({
       id: user.id,
-      username: user.username,
       name: user.name,
-      profile: user.profile,
-      accessToken
+      username: user.username,
+      email: user.email,
+      profile: user.profile
     })
   } catch (error) {
     console.error('Error:', error.message)
@@ -100,153 +94,123 @@ export async function login (req, res) {
   }
 }
 
-export async function updateName (req, res) {
-  const { id } = req.params
-  const { name } = req.body
-
-  if (!name) {
-    return res.status(400).json({ message: 'Name is required' })
-  }
-
+export async function logout (req, res) {
   try {
-    await validateText(name)
-    const user = await User.findById(id).exec()
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' })
-    }
-
-    user.name = name
-    await user.save()
-
-    res.status(200).json({ success: true, message: 'Name updated successfully' })
+    res.cookie('jwt', '', { maxAge: 1 })
+    res.status(200).json({ success: true, message: 'Logged out successfully' })
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })
   }
 }
-export async function updateUsername (req, res) {
-  const { id } = req.params
-  const { username } = req.body
 
-  if (!username) {
-    return res.status(400).json({ message: 'Name is required' })
-  }
-
+export async function followUnfollow (req, res) {
   try {
-    await validateText(username)
-    const user = await User.findById(id).exec()
+    const { id } = req.params
+    const userToModify = await User.findById(id)
+    const currentUser = await User.findById(req.user._id)
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' })
+    if (id === req.user._id.toString()) {
+      return res.status(400).json({ error: 'You cannot follow yourself' })
     }
 
-    user.username = username
-    await user.save()
+    if (!userToModify || !currentUser) {
+      return res.status(404).json({ error: 'User not found' })
+    }
 
-    res.status(200).json({ success: true, message: 'Username updated successfully' })
+    const isFollowing = currentUser.following.includes(id)
+
+    if (isFollowing) {
+      // Unfollow User
+      await User.findByIdAndUpdate(req.user._id, { $pull: { following: id } })
+      await User.findByIdAndUpdate(id, { $pull: { followers: req.user._id } })
+      res.status(200).json({ success: true, message: 'User unfollowed succesfully' })
+    } else {
+      // Follow user
+      await User.findByIdAndUpdate(req.user._id, { $push: { following: id } })
+      await User.findByIdAndUpdate(id, { $push: { followers: req.user._id } })
+      res.status(200).json({ success: true, message: 'User followed succesfully' })
+    }
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })
   }
 }
-export async function updateEmail (req, res) {
-  const { id } = req.params
-  const { email, confirmEmail } = req.body
 
-  if (!email || !confirmEmail) {
-    return res.status(400).json({ message: 'Email is required' })
-  }
-
-  try {
-    await validateEmail(email)
-    await validateEmail(confirmEmail)
-
-    if (email !== confirmEmail) {
-      throw new Error('Emails do not match')
-    }
-
-    const user = await User.findById(id).exec()
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' })
-    }
-
-    user.email = email
-    await user.save()
-
-    res.status(200).json({ success: true, message: 'Email updated successfully' })
-  } catch (error) {
-    console.error('Error:', error.message)
-    res.status(500).json({ error: 'Internal server error' })
-  }
-}
-export async function updatePassword (req, res) {
-  const { id } = req.params
-  const { password, newPassword, confirmNewPassword } = req.body
-
-  if (!password || !newPassword || !confirmNewPassword) {
-    return res.status(400).json({ message: 'Password is required' })
-  }
-
-  try {
-    await validatePassword(password)
-    await validatePassword(newPassword)
-    await validatePassword(confirmNewPassword)
-
-    if (newPassword !== confirmNewPassword) {
-      throw new Error('New passwords do not match')
-    }
-
-    const user = await User.findById(id).exec()
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' })
-    }
-
-    const isCurrentPasswordCorrect = bcrypt.compareSync(password, user.password)
-
-    if (!isCurrentPasswordCorrect) {
-      throw new Error('Current password is incorrect')
-    }
-
-    const hashedPwd = await bcrypt.hash(newPassword, 10)
-
-    user.password = hashedPwd
-    await user.save()
-
-    res.status(200).json({ success: true, message: 'Password updated successfully' })
-  } catch (error) {
-    console.error('Error:', error.message)
-    res.status(500).json({ error: 'Internal server error' })
-  }
-}
 export async function updateProfile (req, res) {
   const { id } = req.params
-  const { profile, address } = req.body
+  const userId = req.user._id
+  const { name, username, email, password, newPassword, confirmNewPassword, profilePic, profile, address } = req.body
 
   try {
-    await validateText(profile)
+    if (name) await validateText(name)
+    if (username) await validateText(username)
+    if (email) await validateEmail(email)
+    if (password) await validatePassword(password)
+    if (newPassword) await validatePassword(newPassword)
+    if (confirmNewPassword) await validatePassword(confirmNewPassword)
+    if (address) await validateAddress(address)
 
-    if (profile === 'profesional' && !address) {
-      throw new Error('Address is required for professional profiles')
-    }
-
-    if (address) {
-      await validateAddress(address)
-    }
-
-    const user = await User.findById(id).exec()
+    let user = await User.findById(userId)
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
 
-    user.profile = profile
-    user.address = address
-    await user.save()
+    if (id !== userId.toString()) {
+      return res.status(401).json({ message: 'Unauthorized' })
+    }
 
-    res.status(200).json({ success: true, message: 'User profile updated successfully' })
+    if (password && (!newPassword || !confirmNewPassword)) {
+      return res.status(400).json({ message: 'Password is required' })
+    }
+
+    if (password && newPassword !== confirmNewPassword) {
+      return res.status(400).json({ message: 'New passwords do not match' })
+    }
+
+    if (password && (newPassword === confirmNewPassword)) {
+      const isCurrentPasswordCorrect = bcrypt.compareSync(password, user.password)
+
+      if (!isCurrentPasswordCorrect) {
+        return res.status(400).json({ message: 'Current password is incorrect' })
+      }
+
+      const hashedPwd = await bcrypt.hash(newPassword, 10)
+      user.password = hashedPwd
+    }
+
+    if (profile === 'profesional' && !address) {
+      return res.status(400).json({ message: 'Address is required for professional profiles' })
+    }
+
+    user.name = name ?? user.name
+    user.username = username ?? user.username
+    user.email = email ?? user.email
+    user.profile = profile ?? user.profile
+    user.profilePic = profilePic ?? user.profilePic
+    user.address = address ?? user.address
+
+    user = await user.save()
+
+    res
+      .status(200)
+      .json({ success: true, message: 'User profile updated successfully', user })
+  } catch (error) {
+    console.error('Error:', error.message)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+}
+
+export async function getUserProfile (req, res) {
+  const { username } = req.params
+  try {
+    const user = await User.findOne({ username }).select('-password').select('-updatedAt')
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+
+    res.status(200).json(user)
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })
@@ -255,15 +219,22 @@ export async function updateProfile (req, res) {
 
 export async function remove (req, res) {
   const { id } = req.params
+  const userId = req.user._id
 
   try {
-    const removedUser = await User.findByIdAndRemove(id).exec()
+    if (id !== userId.toString()) {
+      return res.status(401).json({ message: 'Unauthorized' })
+    }
+
+    const removedUser = await User.findByIdAndRemove(id)
 
     if (!removedUser) {
       return res.status(404).json({ error: 'User not found' })
     }
 
-    res.status(200).json({ success: true, message: 'User removed successfully' })
+    res
+      .status(200)
+      .json({ success: true, message: 'User removed successfully' })
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })

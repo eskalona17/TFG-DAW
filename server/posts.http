@@ -1,5 +1,5 @@
 ### Crear un nuevo post ###
-POST http://localhost:1234/posts
+POST http://localhost:1234/api/posts
 Content-Type: application/json
 
 {
@@ -8,14 +8,14 @@ Content-Type: application/json
 }
 
 ### Obtener todos los posts ###
-GET http://localhost:1234/posts
+GET http://localhost:1234/api/posts
 ### Obtener un post por su ID ###
 # GET http://localhost:1234/posts/:id
-GET http://localhost:1234/posts/6522ef6112905e1a42c1e2ec
+GET http://localhost:1234/api/posts/6522ef6112905e1a42c1e2ec
 
 ### Actualizar un post por su ID ###
 # PUT http://localhost:1234/posts/:id
-PUT http://localhost:1234/posts/6522ef6112905e1a42c1e2ec
+PUT http://localhost:1234/api/posts/6522ef6112905e1a42c1e2ec
 
 Content-Type: application/json
 
@@ -26,5 +26,5 @@ Content-Type: application/json
 
 ### Eliminar un post por su ID ###
 # DELETE http://localhost:1234/posts/:id
-DELETE http://localhost:1234/posts/6522ef6112905e1a42c1e2ec
+DELETE http://localhost:1234/api/posts/6522ef6112905e1a42c1e2ec
 
