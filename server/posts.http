@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ### Actualizar un post por su ID
-PATCH http://localhost:1234/api/posts/6522ef6112905e1a42c1e2ec
+PATCH http://localhost:1234/api/posts/652edb68a299150a6dbf2008
 Content-Type: application/json
 
 {

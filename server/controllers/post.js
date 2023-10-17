@@ -56,7 +56,7 @@ export async function getUserPosts (req, res) {
 }
 
 export async function newPost (req, res) {
-  const { author, content, img } = req.body
+  const { author, content, media } = req.body
   const userId = req.user._id
 
   try {
@@ -78,7 +78,7 @@ export async function newPost (req, res) {
       return res.status(400).json({ error: `Text must be less than ${maxLength} characters` })
     }
 
-    const newPost = new Post({ author, content, img })
+    const newPost = new Post({ author, content, media })
     await newPost.save()
     res.status(201).json({ message: 'Post created successfully', newPost })
   } catch (error) {
@@ -88,13 +88,35 @@ export async function newPost (req, res) {
 }
 
 export async function updatePost (req, res) {
+  const { content, media } = req.body
+  const userId = req.user._id
+  const { id } = req.params
+
+  console.log(content)
+
   try {
-    const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
-      new: true
-    })
-    res.json(updatedPost)
-  } catch (err) {
-    res.status(400).json({ error: err.message })
+    const post = await Post.findById(id)
+
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' })
+    }
+
+    if (post.author.toString() !== userId.toString()) {
+      return res.status(401).json({ error: 'Unauthorized to update post' })
+    }
+
+    const maxLength = 500
+    if (content.length > maxLength) {
+      return res.status(400).json({ error: `Text must be less than ${maxLength} characters` })
+    }
+
+    await Post.findByIdAndUpdate(id, { content, media })
+    const updatedPost = await Post.findById(id)
+
+    res.status(201).json({ message: 'Post updated successfully', updatedPost })
+  } catch (error) {
+    console.error('Error:', error.message)
+    res.status(500).json({ error: 'Internal server error' })
   }
 }
 

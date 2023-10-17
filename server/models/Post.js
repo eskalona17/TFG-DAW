@@ -13,7 +13,7 @@ const PostSchema = new mongoose.Schema(
       minLength: 1,
       maxLength: 500
     },
-    img: {
+    media: {
       type: String
     },
     favorites: {
