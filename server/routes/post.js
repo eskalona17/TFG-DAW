@@ -1,12 +1,25 @@
-import { deletePost, getAllPosts, getPost, newPost, updatePost } from '../controllers/post.js'
+import protectRoute from '../middlewares/protectRoute.js'
+import {
+  deletePost,
+  favUnfavPost,
+  getFeedPosts,
+  getPost,
+  getUserPosts,
+  newPost,
+  replyToPost,
+  updatePost
+} from '../controllers/post.js'
 import express from 'express'
 
 const router = express.Router()
 
-router.get('', getAllPosts)
-router.post('', newPost)
+router.get('/feed', protectRoute, getFeedPosts)
 router.get('/:id', getPost)
-router.put('/:id', updatePost)
-router.delete('/:id', deletePost)
+router.get('/user/:username', getUserPosts)
+router.post('/create', protectRoute, newPost)
+router.patch('/:id', protectRoute, updatePost)
+router.delete('/delete/:id', protectRoute, deletePost)
+router.post('/fav/:id', protectRoute, favUnfavPost)
+router.post('/reply/:id', protectRoute, replyToPost)
 
 export default router

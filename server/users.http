@@ -52,10 +52,10 @@ content-type: application/json
 POST http://localhost:1234/api/users/logout
 
 ###
-POST http://localhost:1234/api/users/follow/652db54a61d352777ee1f54c
+POST http://localhost:1234/api/users/follow/652eda0aa299150a6dbf1fef
 
 ###
-PATCH http://localhost:1234/api/users/update/652db234b3d826d8fab82138
+PATCH http://localhost:1234/api/users/update/652eda0aa299150a6dbf1fef
 content-type: application/json
 
 {
