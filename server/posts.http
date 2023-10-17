@@ -12,8 +12,8 @@ POST http://localhost:1234/api/posts/create
 Content-Type: application/json
 
 {
-    "author": "652eda0aa299150a6dbf1fef",
-    "content": "Post de prueba 1"
+    "author": "652f166dc7d9bf9f38391085",
+    "content": "Post de prueba 2"
 }
 
 ### Actualizar un post por su ID
