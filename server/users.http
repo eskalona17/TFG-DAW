@@ -1,5 +1,5 @@
 ###
-POST http://localhost:1234/user/register
+POST http://localhost:1234/api/users/register
 content-type: application/json
 
 {
@@ -12,7 +12,7 @@ content-type: application/json
 }
 
 ###
-POST http://localhost:1234/user/register
+POST http://localhost:1234/api/users/register
 content-type: application/json
 
 {
@@ -31,7 +31,7 @@ content-type: application/json
 }
 
 ###
-POST http://localhost:1234/user/login
+POST http://localhost:1234/api/users/login
 content-type: application/json
 
 {
@@ -40,7 +40,7 @@ content-type: application/json
 }
 
 ###
-POST http://localhost:1234/user/login
+POST http://localhost:1234/api/users/login
 content-type: application/json
 
 {
@@ -49,13 +49,13 @@ content-type: application/json
 }
 
 ###
-POST http://localhost:1234/user/logout
+POST http://localhost:1234/api/users/logout
 
 ###
-POST http://localhost:1234/user/follow/652db54a61d352777ee1f54c
+POST http://localhost:1234/api/users/follow/652db54a61d352777ee1f54c
 
 ###
-PATCH http://localhost:1234/user/update/652db234b3d826d8fab82138
+PATCH http://localhost:1234/api/users/update/652db234b3d826d8fab82138
 content-type: application/json
 
 {
@@ -69,8 +69,8 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:1234/user/profile/nacho
+GET http://localhost:1234/api/users/profile/nacho
 
 ###
-DELETE http://localhost:1234/user/delete/652db54a61d352777ee1f54c
+DELETE http://localhost:1234/api/users/delete/652db54a61d352777ee1f54c
 content-type: application/json
