@@ -1,5 +1,5 @@
 ### Obtener un post por su ID 
-GET http://localhost:1234/api/posts/652e5ee159f46d0599871f18
+GET http://localhost:1234/api/posts/652edb68a299150a6dbf2008
 
 ### Obtener feed
 GET http://localhost:1234/api/posts/feed
@@ -12,8 +12,8 @@ POST http://localhost:1234/api/posts/create
 Content-Type: application/json
 
 {
-    "author": "652e6fc8939b0e5a6c80b8d6",
-    "content": "Post de prueba 3"
+    "author": "652eda0aa299150a6dbf1fef",
+    "content": "Post de prueba 1"
 }
 
 ### Actualizar un post por su ID
@@ -28,10 +28,10 @@ Content-Type: application/json
 DELETE http://localhost:1234/api/posts/delete/652e5ee159f46d0599871f18
 
 ### Fav / Unfav un post
-POST http://localhost:1234/api/posts/fav/652e709fd52474e070de92b3
+POST http://localhost:1234/api/posts/fav/652edb68a299150a6dbf2008
 
 ### Responder un post
-POST http://localhost:1234/api/posts/reply/652e709cd52474e070de92af
+POST http://localhost:1234/api/posts/reply/652edb68a299150a6dbf2008
 Content-Type: application/json
 
 {
