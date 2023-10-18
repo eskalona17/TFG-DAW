@@ -1,4 +1,4 @@
-###
+### Register user with 'personal' profile
 POST http://localhost:1234/api/users/register
 content-type: application/json
 
@@ -11,7 +11,7 @@ content-type: application/json
   "profile": "personal"
 }
 
-###
+### Register user with 'profesional' profile
 POST http://localhost:1234/api/users/register
 content-type: application/json
 
@@ -30,7 +30,7 @@ content-type: application/json
   }
 }
 
-###
+### Login user with 'personal' profile
 POST http://localhost:1234/api/users/login
 content-type: application/json
 
@@ -39,7 +39,7 @@ content-type: application/json
   "password": "123456"
 }
 
-###
+### Login user with 'profesional' profile
 POST http://localhost:1234/api/users/login
 content-type: application/json
 
@@ -48,13 +48,13 @@ content-type: application/json
   "password": "123456"
 }
 
-###
+### Logout
 POST http://localhost:1234/api/users/logout
 
-###
+### Follow user
 POST http://localhost:1234/api/users/follow/652f166dc7d9bf9f38391085
 
-###
+### Update user
 PATCH http://localhost:1234/api/users/update/652eda0aa299150a6dbf1fef
 content-type: application/json
 
@@ -68,9 +68,9 @@ content-type: application/json
   "profile": "personal"
 }
 
-###
+### Get user information
 GET http://localhost:1234/api/users/profile/nacho
 
-###
+### Delete user
 DELETE http://localhost:1234/api/users/delete/652db54a61d352777ee1f54c
 content-type: application/json
