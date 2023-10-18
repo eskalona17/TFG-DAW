@@ -17,8 +17,7 @@ connectDB()
 
 const app = express()
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // This disables the X-Powered-By header (contains the name and version of the web framework) from HTTP responses.
 app.disable('x-powered-by')
@@ -34,8 +33,7 @@ app.use('/', express.static(path.join(__dirname, 'public')))
 app.use('/', rootRouter)
 app.use('/api/users', userRouter)
 app.use('/api/posts', postRouter)
-
-app.all('*', errorHandler)
+app.use('*', errorHandler)
 
 const PORT = process.env.PORT ?? 1234
 

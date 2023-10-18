@@ -1,22 +1,38 @@
-### Obtener un post por su ID 
+### Get post by the ID 
 GET http://localhost:1234/api/posts/652edb68a299150a6dbf2008
 
-### Obtener feed
+### Get user feed
 GET http://localhost:1234/api/posts/feed
 
-### Obtener post de un usuario
+### Get user 'personal' feed
+GET http://localhost:1234/api/posts/feed
+Content-Type: application/json
+
+{
+    "profileType": "personal"
+}
+
+### Get user 'profesional' feed
+GET http://localhost:1234/api/posts/feed
+Content-Type: application/json
+
+{
+    "profileType": "profesional"
+}
+
+### Get all posts by username
 GET http://localhost:1234/api/posts/user/test
 
-### Crear un nuevo post
+### Create new post
 POST http://localhost:1234/api/posts/create
 Content-Type: application/json
 
 {
-    "author": "652eda0aa299150a6dbf1fef",
-    "content": "Post de prueba 1"
+    "author": "652faca5a63a1e87d8ed0a55",
+    "content": "Post de prueba f1"
 }
 
-### Actualizar un post por su ID
+### Update a post
 PATCH http://localhost:1234/api/posts/652edb68a299150a6dbf2008
 Content-Type: application/json
 
@@ -24,13 +40,13 @@ Content-Type: application/json
     "content": "Contenido actualizado"
 }
 
-### Eliminar un post por su ID
+### Delete a post
 DELETE http://localhost:1234/api/posts/delete/652e5ee159f46d0599871f18
 
-### Fav / Unfav un post
+### Fav / Unfav post
 POST http://localhost:1234/api/posts/fav/652edb68a299150a6dbf2008
 
-### Responder un post
+### Reply post
 POST http://localhost:1234/api/posts/reply/652edb68a299150a6dbf2008
 Content-Type: application/json
 

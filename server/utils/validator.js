@@ -1,6 +1,6 @@
 import z from 'zod'
 
-// Función para validar campos de texto
+// Function to validate text fields
 export async function validateText (text) {
   const textSchema = z.string({
     required_error: 'Field required',
@@ -11,7 +11,7 @@ export async function validateText (text) {
   return await textSchema.parseAsync(text)
 }
 
-// Función para validar direcciones de correo electrónico
+// Function to validate email
 export async function validateEmail (email) {
   const emailSchema = z.string().email({
     required_error: 'Email is required',
@@ -20,7 +20,7 @@ export async function validateEmail (email) {
   return await emailSchema.parseAsync(email)
 }
 
-// Función para validar contraseñas
+// Function to validate passwords
 export async function validatePassword (password) {
   const passwordSchema = z.string({
     required_error: 'Password is required'
@@ -30,7 +30,7 @@ export async function validatePassword (password) {
   return await passwordSchema.parseAsync(password)
 }
 
-// Función para validar direcciones
+// Function to validate addresses
 export async function validateAddress (address) {
   const addressSchema = z.object({
     street: z.string(),
