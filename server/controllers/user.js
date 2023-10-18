@@ -5,7 +5,6 @@ import {
   validateText
 } from '../utils/validator.js'
 import generateTokenAndSetCookie from '../utils/generateTokenAndSetCookie.js'
-import { baseUrl, PORT } from './utils/env.js'
 import User from '../models/User.js'
 import nodemailer from 'nodemailer'
 import jwt from 'jsonwebtoken'
@@ -101,6 +100,8 @@ export async function login (req, res) {
 }
 
 export async function forgetPassword (req, res) {
+  const BASEURL = process.env.BASEURL
+  const PORT = process.env.PORT
   const { email } = req.body
 
   try {
@@ -129,13 +130,13 @@ export async function forgetPassword (req, res) {
       from: process.env.MAIL_USERNAME,
       to: user.email,
       subject: '¿Has olvidado tu contraseña?',
-      text: `${baseUrl}:${PORT}/reset-password/${token}`,
+      text: `${BASEURL}:${PORT}/reset-password/${token}`,
       html:
       `
         <h1>¿Has olvidado tu contraseña?</h1>
         <p>Por favor, haz click en el siguiente enlace para restablecer tu contraseña:</p>
 
-        <a href="${baseUrl}:${PORT}/reset-password/${token}">Restablecer contraseña</a>
+        <a href="${BASEURL}:${PORT}/reset-password/${token}">Restablecer contraseña</a>
 
         <p>El enlace es válido durante los próximos 10 minutos.</p>
 
@@ -144,11 +145,11 @@ export async function forgetPassword (req, res) {
     }
 
     await transporter.sendMail(info)
-    console.log(`${baseUrl}:${PORT}/reset-password/${token}`)
+    console.log(`${BASEURL}:${PORT}/reset-password/${token}`)
 
     res
       .status(201)
-      .json({ message: 'A reset password link has been sent to your email' })
+      .json({ message: 'A reset password link has been sent to your email', link: `${BASEURL}:${PORT}/reset-password/${token}` })
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })
