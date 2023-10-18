@@ -6,7 +6,9 @@ import {
 } from '../utils/validator.js'
 import generateTokenAndSetCookie from '../utils/generateTokenAndSetCookie.js'
 import User from '../models/User.js'
+import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
+import nodemailer from 'nodemailer'
 
 export async function register (req, res) {
   const data = req.body
@@ -51,9 +53,11 @@ export async function register (req, res) {
 
     if (newUser) {
       generateTokenAndSetCookie(newUser._id, res)
-      res
-        .status(201)
-        .json({ success: true, message: 'User registered successfully', newUser })
+      res.status(201).json({
+        success: true,
+        message: 'User registered successfully',
+        newUser
+      })
     }
   } catch (error) {
     console.error('Error:', error.message)
@@ -73,7 +77,8 @@ export async function login (req, res) {
       $or: [{ username: input }, { email: input }]
     })
 
-    const isPasswordCorrect = user !== null && bcrypt.compareSync(password, user.password)
+    const isPasswordCorrect =
+      user !== null && bcrypt.compareSync(password, user.password)
 
     if (!user || !isPasswordCorrect) {
       return res.status(400).json({ error: 'invalid username or password' })
@@ -88,6 +93,94 @@ export async function login (req, res) {
       email: user.email,
       profile: user.profile
     })
+  } catch (error) {
+    console.error('Error:', error.message)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+}
+
+export async function forgetPassword (req, res) {
+  const PORT = process.env.PORT ?? 1234
+  const { email } = req.body
+
+  try {
+    const user = await User.findOne({ email })
+
+    if (!user) {
+      return res.status(400).json({ message: 'User not found' })
+    }
+
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_ACCESS, {
+      expiresIn: '10m'
+    })
+
+    user.resetToken = token
+    await user.save()
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.MAIL_USERNAME,
+        pass: process.env.MAIL_PASSWORD
+      }
+    })
+
+    const info = {
+      from: process.env.MAIL_USERNAME,
+      to: user.email,
+      subject: '¿Has olvidado tu contraseña?',
+      text: `http://localhost:${PORT}/reset-password/${token}`,
+      html:
+      `
+        <h1>¿Has olvidado tu contraseña?</h1>
+        <p>Por favor, haz click en el siguiente enlace para restablecer tu contraseña:</p>
+
+        <a href="http://localhost:${PORT}/reset-password/${token}">Restablecer contraseña</a>
+
+        <p>El enlace es válido durante los próximos 10 minutos.</p>
+
+        <p>Si no has solicitado una nueva contraseña, puedes ignorar este mensaje.</p>
+      `
+    }
+
+    await transporter.sendMail(info)
+    console.log(`http://localhost:${PORT}/reset-password/${token}`)
+
+    res
+      .status(201)
+      .json({ message: 'A reset password link has been sent to your email' })
+  } catch (error) {
+    console.error('Error:', error.message)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+}
+
+export async function resetPassword (req, res) {
+  const { password, confirmPassword } = req.body
+  const { token } = req.params
+
+  try {
+    await validatePassword(password)
+    await validatePassword(confirmPassword)
+
+    if (password !== confirmPassword) {
+      throw new Error('Passwords do not match')
+    }
+
+    if (!token) {
+      return res.status(401).json({ error: 'Unauthorized' })
+    }
+
+    const user = await User.findOne({ resetToken: token })
+
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' })
+    }
+
+    user.password = bcrypt.hashSync(password, 10)
+    await user.save()
+
+    res.send({ message: 'Password set successfully' })
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })
@@ -124,12 +217,16 @@ export async function followUnfollow (req, res) {
       // Unfollow User
       await User.findByIdAndUpdate(id, { $pull: { following: id } })
       await User.findByIdAndUpdate(id, { $pull: { followers: req.user._id } })
-      res.status(200).json({ success: true, message: 'User unfollowed successfully' })
+      res
+        .status(200)
+        .json({ success: true, message: 'User unfollowed successfully' })
     } else {
       // Follow user
       await User.findByIdAndUpdate(req.user._id, { $push: { following: id } })
       await User.findByIdAndUpdate(id, { $push: { followers: req.user._id } })
-      res.status(200).json({ success: true, message: 'User followed successfully' })
+      res
+        .status(200)
+        .json({ success: true, message: 'User followed successfully' })
     }
   } catch (error) {
     console.error('Error:', error.message)
@@ -140,7 +237,17 @@ export async function followUnfollow (req, res) {
 export async function updateProfile (req, res) {
   const { id } = req.params
   const userId = req.user._id
-  const { name, username, email, password, newPassword, confirmNewPassword, profilePic, profile, address } = req.body
+  const {
+    name,
+    username,
+    email,
+    password,
+    newPassword,
+    confirmNewPassword,
+    profilePic,
+    profile,
+    address
+  } = req.body
 
   try {
     if (name) await validateText(name)
@@ -169,11 +276,16 @@ export async function updateProfile (req, res) {
       return res.status(400).json({ message: 'New passwords do not match' })
     }
 
-    if (password && (newPassword === confirmNewPassword)) {
-      const isCurrentPasswordCorrect = bcrypt.compareSync(password, user.password)
+    if (password && newPassword === confirmNewPassword) {
+      const isCurrentPasswordCorrect = bcrypt.compareSync(
+        password,
+        user.password
+      )
 
       if (!isCurrentPasswordCorrect) {
-        return res.status(400).json({ message: 'Current password is incorrect' })
+        return res
+          .status(400)
+          .json({ message: 'Current password is incorrect' })
       }
 
       const hashedPwd = await bcrypt.hash(newPassword, 10)
@@ -181,7 +293,9 @@ export async function updateProfile (req, res) {
     }
 
     if (profile === 'profesional' && !address) {
-      return res.status(400).json({ message: 'Address is required for professional profiles' })
+      return res
+        .status(400)
+        .json({ message: 'Address is required for professional profiles' })
     }
 
     user.name = name ?? user.name
@@ -193,9 +307,11 @@ export async function updateProfile (req, res) {
 
     user = await user.save()
 
-    res
-      .status(200)
-      .json({ success: true, message: 'User profile updated successfully', user })
+    res.status(200).json({
+      success: true,
+      message: 'User profile updated successfully',
+      user
+    })
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })
@@ -205,7 +321,9 @@ export async function updateProfile (req, res) {
 export async function getUserProfile (req, res) {
   const { username } = req.params
   try {
-    const user = await User.findOne({ username }).select('-password').select('-updatedAt')
+    const user = await User.findOne({ username })
+      .select('-password')
+      .select('-updatedAt')
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
