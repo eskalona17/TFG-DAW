@@ -20,6 +20,7 @@ export async function getPost (req, res) {
 
 export async function getFeedPosts (req, res) {
   const userId = req.user._id
+  const profileType = req.body.profileType
 
   try {
     const user = await User.findById(userId)
@@ -27,7 +28,11 @@ export async function getFeedPosts (req, res) {
       return res.status(404).json({ error: 'User not found' })
     }
 
-    const following = user.following
+    let following = user.following
+
+    if (profileType) {
+      following = await User.find({ _id: { $in: following }, profile: profileType }).select('_id')
+    }
 
     const feedPosts = await Post.find({ author: { $in: following } }).sort({ createdAt: -1 })
 
