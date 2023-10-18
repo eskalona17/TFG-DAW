@@ -1,6 +1,5 @@
 import { errorHandler } from './middlewares/errorHandler.js'
 import corsOptions from './config/corsOptions.js'
-import { baseUrl, PORT } from './utils/env.js'
 import connectDB from './config/connectDB.js'
 import rootRouter from './routes/root.js'
 import userRouter from './routes/user.js'
@@ -17,6 +16,9 @@ dotenv.config()
 connectDB()
 
 const app = express()
+
+const PORT = process.env.PORT
+const BASEURL = process.env.BASEURL
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -37,5 +39,5 @@ app.use('/api/posts', postRouter)
 app.use('*', errorHandler)
 
 app.listen(PORT, () => {
-  console.log(`Server started at ${baseUrl}:${PORT}`)
+  console.log(`Server started at ${BASEURL}:${PORT}`)
 })
