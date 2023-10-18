@@ -31,8 +31,8 @@ app.use(cookieParser())
 // Routes
 app.use('/', express.static(path.join(__dirname, 'public')))
 app.use('/', rootRouter)
-app.use('/users', userRouter)
-app.use('/posts', postRouter)
+app.use('/api/users', userRouter)
+app.use('/api/posts', postRouter)
 app.use('*', errorHandler)
 
 const PORT = process.env.PORT ?? 1234

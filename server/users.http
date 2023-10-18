@@ -52,7 +52,7 @@ content-type: application/json
 POST http://localhost:1234/api/users/logout
 
 ### Follow user
-POST http://localhost:1234/api/users/follow/652f166dc7d9bf9f38391085
+POST http://localhost:1234/api/users/follow/652faca5a63a1e87d8ed0a55
 
 ### Update user
 PATCH http://localhost:1234/api/users/update/652eda0aa299150a6dbf1fef

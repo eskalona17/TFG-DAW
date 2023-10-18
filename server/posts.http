@@ -4,6 +4,22 @@ GET http://localhost:1234/api/posts/652edb68a299150a6dbf2008
 ### Get user feed
 GET http://localhost:1234/api/posts/feed
 
+### Get user 'personal' feed
+GET http://localhost:1234/api/posts/feed
+Content-Type: application/json
+
+{
+    "profileType": "personal"
+}
+
+### Get user 'profesional' feed
+GET http://localhost:1234/api/posts/feed
+Content-Type: application/json
+
+{
+    "profileType": "profesional"
+}
+
 ### Get all posts by username
 GET http://localhost:1234/api/posts/user/test
 
@@ -12,8 +28,8 @@ POST http://localhost:1234/api/posts/create
 Content-Type: application/json
 
 {
-    "author": "652f166dc7d9bf9f38391085",
-    "content": "Post de prueba 2"
+    "author": "652faca5a63a1e87d8ed0a55",
+    "content": "Post de prueba f1"
 }
 
 ### Update a post
