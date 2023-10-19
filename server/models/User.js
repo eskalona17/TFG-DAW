@@ -36,7 +36,7 @@ const UserSchema = new mongoose.Schema(
     // Campos opcionales
     profilePic: {
       type: String,
-      default: ''
+      default: null
     },
     followers: {
       type: [String],

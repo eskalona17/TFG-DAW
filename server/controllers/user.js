@@ -7,6 +7,8 @@ import {
 import generateTokenAndSetCookie from '../utils/generateTokenAndSetCookie.js'
 import User from '../models/User.js'
 import bcrypt from 'bcryptjs'
+import multer from 'multer'
+import upload from '../config/multerConfig.js'
 
 export async function register (req, res) {
   const data = req.body
@@ -38,23 +40,31 @@ export async function register (req, res) {
     }
     const hashedPwd = await bcrypt.hash(password, 10)
 
-    const newUser = new User({
-      name,
-      username,
-      email,
-      password: hashedPwd,
-      profile,
-      address
+    upload.single('profilePic')(req, res, async function (err) {
+      if (err instanceof multer.MulterError) {
+        return res.status(400).json({ message: 'Error en la carga de la imagen de perfil' })
+      } else if (err) {
+        return res.status(500).json({ message: 'Error interno del servidor' })
+      }
+      const newUser = new User({
+        name,
+        username,
+        email,
+        password: hashedPwd,
+        profile,
+        address,
+        profilePic: req.file ? req.file.filename : null // Almacena el nombre del archivo de imagen
+      })
+
+      await newUser.save()
+
+      if (newUser) {
+        generateTokenAndSetCookie(newUser._id, res)
+        res
+          .status(201)
+          .json({ success: true, message: 'User registered successfully', newUser })
+      }
     })
-
-    await newUser.save()
-
-    if (newUser) {
-      generateTokenAndSetCookie(newUser._id, res)
-      res
-        .status(201)
-        .json({ success: true, message: 'User registered successfully', newUser })
-    }
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })
