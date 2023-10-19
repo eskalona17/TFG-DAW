@@ -4,6 +4,7 @@ import connectDB from './config/connectDB.js'
 import rootRouter from './routes/root.js'
 import userRouter from './routes/user.js'
 import postRouter from './routes/post.js'
+import messageRouter from './routes/message.js'
 import cookieParser from 'cookie-parser'
 import { fileURLToPath } from 'url'
 import express from 'express'
@@ -36,6 +37,7 @@ app.use('/', express.static(path.join(__dirname, 'public')))
 app.use('/', rootRouter)
 app.use('/api/users', userRouter)
 app.use('/api/posts', postRouter)
+app.use('/api/messages', messageRouter)
 app.use('*', errorHandler)
 
 app.listen(PORT, () => {
