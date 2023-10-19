@@ -28,8 +28,8 @@ POST http://localhost:1234/api/posts/create
 Content-Type: application/json
 
 {
-    "author": "652faca5a63a1e87d8ed0a55",
-    "content": "Post de prueba f1"
+    "author": "65303e9f97378e1fe910b74c",
+    "content": "Post de prueba n2"
 }
 
 ### Update a post
