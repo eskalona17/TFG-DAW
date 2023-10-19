@@ -57,7 +57,7 @@ content-type: application/json
 }
 
 ### Reset password
-POST http://localhost:1234/api/users/reset-password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTMwM2U5Zjk3Mzc4ZTFmZTkxMGI3NGMiLCJpYXQiOjE2OTc2NzAyNzMsImV4cCI6MTY5NzY3MDg3M30.AuN_2MiPcIPYon8WaPFaGuzeGQaZKfaR8ea3VEYitBQ
+POST http://localhost:1234/api/users/reset-password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTMwM2U5Zjk3Mzc4ZTFmZTkxMGI3NGMiLCJpYXQiOjE2OTc3MDc4NTYsImV4cCI6MTY5NzcwODQ1Nn0.teedRHgqOz87z3LJ7wg8q8kB8AvTdFfxk_lEWKAiHDg
 content-type: application/json
 
 {

@@ -9,6 +9,7 @@ import User from '../models/User.js'
 import nodemailer from 'nodemailer'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
+import emailTemplate from '../utils/emailTemplate.js'
 
 export async function register (req, res) {
   const data = req.body
@@ -130,18 +131,8 @@ export async function forgetPassword (req, res) {
       from: process.env.MAIL_USERNAME,
       to: user.email,
       subject: '¿Has olvidado tu contraseña?',
-      text: `${BASEURL}:${PORT}/reset-password/${token}`,
-      html:
-      `
-        <h1>¿Has olvidado tu contraseña?</h1>
-        <p>Por favor, haz click en el siguiente enlace para restablecer tu contraseña:</p>
-
-        <a href="${BASEURL}:${PORT}/reset-password/${token}">Restablecer contraseña</a>
-
-        <p>El enlace es válido durante los próximos 10 minutos.</p>
-
-        <p>Si no has solicitado una nueva contraseña, puedes ignorar este mensaje.</p>
-      `
+      text: `Restablecer contraseña: ${BASEURL}:${PORT}/reset-password/${token}`,
+      html: emailTemplate({ link: `${BASEURL}:${PORT}/reset-password/${token}` })
     }
 
     await transporter.sendMail(info)
@@ -149,7 +140,10 @@ export async function forgetPassword (req, res) {
 
     res
       .status(201)
-      .json({ message: 'A reset password link has been sent to your email', link: `${BASEURL}:${PORT}/reset-password/${token}` })
+      .json({
+        message: 'A reset password link has been sent to your email',
+        link: `${BASEURL}:${PORT}/reset-password/${token}`
+      })
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })
