@@ -12,7 +12,7 @@ POST http://localhost:1234/api/posts/create
 Content-Type: application/json
 
 {
-    "author": "652f166dc7d9bf9f38391085",
+    "author": "6532a892929368a1d583aea2",
     "content": "Post de prueba 2"
 }
 
