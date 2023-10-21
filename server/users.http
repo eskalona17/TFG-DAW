@@ -78,3 +78,6 @@ content-type: application/json
 
 ### Search posts
 GET http://localhost:1234/api/posts/search?q=prueba
+
+### Search users
+GET http://localhost:1234/api/users/search?q=Nacho

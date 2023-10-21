@@ -6,6 +6,7 @@ import {
 } from '../utils/validator.js'
 import generateTokenAndSetCookie from '../utils/generateTokenAndSetCookie.js'
 import User from '../models/User.js'
+import Post from '../models/Post.js'
 import bcrypt from 'bcryptjs'
 
 export async function register (req, res) {
@@ -235,6 +236,31 @@ export async function remove (req, res) {
     res
       .status(200)
       .json({ success: true, message: 'User removed successfully' })
+  } catch (error) {
+    console.error('Error:', error.message)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+}
+
+export async function searchUsers (req, res) {
+  const query = req.query.q
+  try {
+    const users = await User.find({
+      $or: [
+        { username: { $regex: query, $options: 'i' } }, // search for username
+        { name: { $regex: query, $options: 'i' } } // search for name
+      ]
+    })
+
+    // get all the posts for that specific user
+    const usersWithPosts = await Promise.all(
+      users.map(async (user) => {
+        const posts = await Post.find({ author: user._id })
+        return { user, posts }
+      })
+    )
+
+    res.status(200).json(usersWithPosts)
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })
