@@ -201,12 +201,18 @@ export async function replyToPost (req, res) {
 export async function searchPosts (req, res) {
   const query = req.query.q
   try {
-    const posts = await Post.find({
-      $text: {
-        $search: query
-      }
-    })
-    res.status(200).json(posts)
+    // search for post content
+    const posts = await Post.find({ $text: { $search: query } })
+
+    // get all the user info for each post
+    const postsWithUserInfo = await Promise.all(
+      posts.map(async (post) => {
+        const user = await User.findById(post.author)
+        return { post, user }
+      })
+    )
+
+    res.status(200).json(postsWithUserInfo)
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })
