@@ -6,6 +6,7 @@ import {
 } from '../utils/validator.js'
 import generateTokenAndSetCookie from '../utils/generateTokenAndSetCookie.js'
 import User from '../models/User.js'
+import Post from '../models/Post.js'
 import bcrypt from 'bcryptjs'
 
 export async function register (req, res) {
@@ -69,6 +70,7 @@ export async function login (req, res) {
       return res.status(400).json({ error: 'Email or username is required' })
     }
 
+    // user can login with username or email
     const user = await User.findOne({
       $or: [{ username: input }, { email: input }]
     })
@@ -217,7 +219,7 @@ export async function getUserProfile (req, res) {
   }
 }
 
-export async function remove (req, res) {
+export async function removeUser (req, res) {
   const { id } = req.params
   const userId = req.user._id
 
@@ -232,9 +234,40 @@ export async function remove (req, res) {
       return res.status(404).json({ error: 'User not found' })
     }
 
-    res
-      .status(200)
-      .json({ success: true, message: 'User removed successfully' })
+    res.status(200).json({ success: true, message: 'User removed successfully' })
+  } catch (error) {
+    console.error('Error:', error.message)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+}
+
+export async function searchUsers (req, res) {
+  const query = req.query.q
+  try {
+    const users = await User.find({
+      $or: [
+        { username: { $regex: query, $options: 'i' } }, // search for username
+        { name: { $regex: query, $options: 'i' } } // search for name
+      ]
+    })
+
+    if (!users) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+
+    // get all the posts for that specific user
+    const usersWithPosts = await Promise.all(
+      users.map(async (user) => {
+        const posts = await Post.find({ author: user._id })
+        return { user, posts }
+      })
+    )
+
+    if (!usersWithPosts) {
+      return res.status(404).json({ error: 'Post not found' })
+    }
+
+    res.status(200).json(usersWithPosts)
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })

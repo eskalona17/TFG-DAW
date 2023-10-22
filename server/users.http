@@ -74,3 +74,6 @@ GET http://localhost:1234/api/users/profile/nacho
 ### Delete user
 DELETE http://localhost:1234/api/users/delete/652db54a61d352777ee1f54c
 content-type: application/json
+
+### Search users
+GET http://localhost:1234/api/users/search?q=Nacho
