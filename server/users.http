@@ -92,9 +92,5 @@ GET http://localhost:1234/api/users/profile/nacho
 DELETE http://localhost:1234/api/users/delete/652fc482a5c430d083c52e81
 content-type: application/json
 
-
-### Search posts
-GET http://localhost:1234/api/posts/search?q=prueba
-
 ### Search users
 GET http://localhost:1234/api/users/search?q=Nacho

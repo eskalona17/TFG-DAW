@@ -204,6 +204,10 @@ export async function searchPosts (req, res) {
     // search for post content
     const posts = await Post.find({ $text: { $search: query } })
 
+    if (!posts) {
+      return res.status(404).json({ error: 'Post not found' })
+    }
+
     // get all the user info for each post
     const postsWithUserInfo = await Promise.all(
       posts.map(async (post) => {
