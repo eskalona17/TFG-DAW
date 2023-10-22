@@ -25,7 +25,7 @@ Content-Type: application/json
 }
 
 ### Delete a post
-DELETE http://localhost:1234/api/posts/delete/652e5ee159f46d0599871f18
+DELETE http://localhost:1234/api/posts/delete/6532b2bc929368a1d583aeac
 
 ### Fav / Unfav post
 POST http://localhost:1234/api/posts/fav/652edb68a299150a6dbf2008
@@ -37,3 +37,6 @@ Content-Type: application/json
 {
     "text": "Esta es una respuesta"
 }
+
+### Search posts
+GET http://localhost:1234/api/posts/search?q=prueba
