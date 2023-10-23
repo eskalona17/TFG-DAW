@@ -43,7 +43,7 @@ export default function emailTemplate (link) {
 <body>
   <center style="width: 100%;
   table-layout: fixed;
-  padding: 60px 0px;">
+  padding: 10px 0px;">
     <table class="main">
       <tr>
         <td style="padding: 0 20px;">

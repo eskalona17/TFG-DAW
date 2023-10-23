@@ -1,10 +1,11 @@
 import { errorHandler } from './middlewares/errorHandler.js'
 import corsOptions from './config/corsOptions.js'
+import { app, server } from './socket/socket.js'
+import messageRouter from './routes/message.js'
 import connectDB from './config/connectDB.js'
 import rootRouter from './routes/root.js'
 import userRouter from './routes/user.js'
 import postRouter from './routes/post.js'
-import messageRouter from './routes/message.js'
 import cookieParser from 'cookie-parser'
 import { fileURLToPath } from 'url'
 import express from 'express'
@@ -15,8 +16,6 @@ import path from 'path'
 dotenv.config()
 
 connectDB()
-
-const app = express()
 
 const PORT = process.env.PORT
 const BASEURL = process.env.BASEURL
@@ -40,6 +39,6 @@ app.use('/api/posts', postRouter)
 app.use('/api/messages', messageRouter)
 app.use('*', errorHandler)
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server started at ${BASEURL}:${PORT}`)
 })
