@@ -1,5 +1,6 @@
 import { errorHandler } from './middlewares/errorHandler.js'
 import corsOptions from './config/corsOptions.js'
+import { baseUrl, PORT } from './utils/env.js'
 import connectDB from './config/connectDB.js'
 import rootRouter from './routes/root.js'
 import userRouter from './routes/user.js'
@@ -35,8 +36,6 @@ app.use('/api/users', userRouter)
 app.use('/api/posts', postRouter)
 app.use('*', errorHandler)
 
-const PORT = process.env.PORT ?? 1234
-
 app.listen(PORT, () => {
-  console.log(`Server started at http://localhost:${PORT}`)
+  console.log(`Server started at ${baseUrl}:${PORT}`)
 })
