@@ -5,11 +5,11 @@ import {
   validateText
 } from '../utils/validator.js'
 import generateTokenAndSetCookie from '../utils/generateTokenAndSetCookie.js'
+import emailTemplate from '../utils/emailTemplate.js'
 import User from '../models/User.js'
 import nodemailer from 'nodemailer'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
-import emailTemplate from '../utils/emailTemplate.js'
 
 export async function register (req, res) {
   const data = req.body
