@@ -14,6 +14,9 @@ router.get('^/$|/index(.html)?', (req, res) => {
   // Send the index.html file
   res.sendFile(path.join(__dirname, '..', 'views', 'index.html'))
 })
-
+router.get('^/$|/prueba(.html)?', (req, res) => {
+  // Send the index.html file
+  res.sendFile(path.join(__dirname, '..', 'views', 'prueba.html'))
+})
 // Export the router
 export default router

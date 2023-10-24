@@ -11,41 +11,40 @@ import multer from 'multer'
 import upload from '../config/multerConfig.js'
 
 export async function register (req, res) {
-  const data = req.body
-  const { name, username, email, password, confirmPassword, profile, address } =
-    data
-
-  try {
-    await validateText(name)
-    await validateText(username)
-    await validateEmail(email)
-    await validatePassword(password)
-    await validatePassword(confirmPassword)
-
-    if (address) {
-      await validateAddress(address)
+  upload.single('profilePic')(req, res, async function (err) {
+    if (err instanceof multer.MulterError) {
+      return res.status(400).json({ message: 'Error en la carga de la imagen de perfil' })
+    } else if (err) {
+      return res.status(500).json({ message: 'Error interno del servidor' })
     }
 
-    if (password !== confirmPassword) {
-      throw new Error('Passwords do not match')
-    }
+    const { name, username, email, password, confirmPassword, profile, address } = req.body
 
-    const userExists = await User.findOne({ $or: [{ username }, { email }] })
-    if (userExists) {
-      return res.status(409).json({ error: 'User already exists' })
-    }
+    try {
+      await validateText(name)
+      await validateText(username)
+      await validateEmail(email)
+      await validatePassword(password)
+      await validatePassword(confirmPassword)
 
-    if (profile === 'profesional' && !address) {
-      throw new Error('Address is required for professional profiles')
-    }
-    const hashedPwd = await bcrypt.hash(password, 10)
-
-    upload.single('profilePic')(req, res, async function (err) {
-      if (err instanceof multer.MulterError) {
-        return res.status(400).json({ message: 'Error en la carga de la imagen de perfil' })
-      } else if (err) {
-        return res.status(500).json({ message: 'Error interno del servidor' })
+      if (address) {
+        await validateAddress(address)
       }
+
+      if (password !== confirmPassword) {
+        throw new Error('Passwords do not match')
+      }
+
+      const userExists = await User.findOne({ $or: [{ username }, { email }] })
+      if (userExists) {
+        return res.status(409).json({ error: 'User already exists' })
+      }
+
+      if (profile === 'profesional' && !address) {
+        throw new Error('Address is required for professional profiles')
+      }
+      const hashedPwd = await bcrypt.hash(password, 10)
+
       const newUser = new User({
         name,
         username,
@@ -53,7 +52,7 @@ export async function register (req, res) {
         password: hashedPwd,
         profile,
         address,
-        profilePic: req.file ? req.file.filename : null // Almacena el nombre del archivo de imagen
+        profilePic: req.file ? req.file.filename : null
       })
 
       await newUser.save()
@@ -64,11 +63,11 @@ export async function register (req, res) {
           .status(201)
           .json({ success: true, message: 'User registered successfully', newUser })
       }
-    })
-  } catch (error) {
-    console.error('Error:', error.message)
-    res.status(500).json({ error: 'Internal server error' })
-  }
+    } catch (error) {
+      console.error('Error:', error.message)
+      res.status(500).json({ error: 'Internal server error' })
+    }
+  })
 }
 
 export async function login (req, res) {
