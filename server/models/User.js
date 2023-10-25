@@ -66,6 +66,9 @@ const UserSchema = new mongoose.Schema(
         type: String,
         enum: ['spain']
       }
+    },
+    resetToken: {
+      type: String
     }
   },
   {

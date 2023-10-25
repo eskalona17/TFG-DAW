@@ -1,5 +1,7 @@
 import { errorHandler } from './middlewares/errorHandler.js'
 import corsOptions from './config/corsOptions.js'
+import { app, server } from './socket/socket.js'
+import messageRouter from './routes/message.js'
 import connectDB from './config/connectDB.js'
 import rootRouter from './routes/root.js'
 import userRouter from './routes/user.js'
@@ -15,7 +17,8 @@ dotenv.config()
 
 connectDB()
 
-const app = express()
+const PORT = process.env.PORT
+const BASEURL = process.env.BASEURL
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -33,10 +36,9 @@ app.use('/', express.static(path.join(__dirname, 'public')))
 app.use('/', rootRouter)
 app.use('/api/users', userRouter)
 app.use('/api/posts', postRouter)
+app.use('/api/messages', messageRouter)
 app.use('*', errorHandler)
 
-const PORT = process.env.PORT ?? 1234
-
-app.listen(PORT, () => {
-  console.log(`Server started at http://localhost:${PORT}`)
+server.listen(PORT, () => {
+  console.log(`Server started at ${BASEURL}:${PORT}`)
 })

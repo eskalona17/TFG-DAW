@@ -1,5 +1,5 @@
 ### Get post by the ID 
-GET http://localhost:1234/api/posts/652edb68a299150a6dbf2008
+GET http://localhost:1234/api/posts/6532a892929368a1d583aea2
 
 ### Get user feed
 GET http://localhost:1234/api/posts/feed
@@ -21,7 +21,7 @@ Content-Type: application/json
 }
 
 ### Get all posts by username
-GET http://localhost:1234/api/posts/user/test
+GET http://localhost:1234/api/posts/user/nacho
 
 ### Create new post
 POST http://localhost:1234/api/posts/create
@@ -41,7 +41,7 @@ Content-Type: application/json
 }
 
 ### Delete a post
-DELETE http://localhost:1234/api/posts/delete/652e5ee159f46d0599871f18
+DELETE http://localhost:1234/api/posts/delete/6532b2bc929368a1d583aeac
 
 ### Fav / Unfav post
 POST http://localhost:1234/api/posts/fav/652edb68a299150a6dbf2008
@@ -53,3 +53,6 @@ Content-Type: application/json
 {
     "text": "Esta es una respuesta"
 }
+
+### Search posts
+GET http://localhost:1234/api/posts/search?q=prueba

@@ -48,6 +48,23 @@ content-type: application/json
   "password": "123456"
 }
 
+### Forget password
+POST http://localhost:1234/api/users/forget-password
+content-type: application/json
+
+{
+  "email": "nchmnndzlpz@gmail.com"
+}
+
+### Reset password
+POST http://localhost:1234/api/users/reset-password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTMwM2U5Zjk3Mzc4ZTFmZTkxMGI3NGMiLCJpYXQiOjE2OTc3MDc4NTYsImV4cCI6MTY5NzcwODQ1Nn0.teedRHgqOz87z3LJ7wg8q8kB8AvTdFfxk_lEWKAiHDg
+content-type: application/json
+
+{
+  "password": "123456",
+  "confirmPassword": "123456"
+}
+
 ### Logout
 POST http://localhost:1234/api/users/logout
 
@@ -72,5 +89,8 @@ content-type: application/json
 GET http://localhost:1234/api/users/profile/nacho
 
 ### Delete user
-DELETE http://localhost:1234/api/users/delete/652db54a61d352777ee1f54c
+DELETE http://localhost:1234/api/users/delete/652fc482a5c430d083c52e81
 content-type: application/json
+
+### Search users
+GET http://localhost:1234/api/users/search?q=Nacho
