@@ -1,13 +1,13 @@
-import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import './variables.css'
+import SignUp from './pages/SignUp'
 
-function App() {
+export default function App() {
 
-  return (
-    <>
-      <h1>hola que tal estais</h1>
-      <div>aprendiendo con Fer</div>
-    </>
-  )
+  return <BrowserRouter>
+     <Routes>
+      <Route path='/sign-up' element={<SignUp />} />
+     </Routes>
+    </BrowserRouter>
+  
 }
-
-export default App
