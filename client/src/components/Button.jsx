@@ -12,6 +12,7 @@ const ButtonComponent = styled.button`
   cursor: pointer;
   user-select: none;
   border-radius: 0.375rem;
+  margin: 10px 0;
   padding: 0;
   color: ${(props) =>
     props.color === "light-color"
