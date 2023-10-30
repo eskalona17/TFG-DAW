@@ -3,6 +3,13 @@ import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import { Input } from "./Input";
 import { Button } from "./Button";
+import styled from "styled-components";
+
+const FormContainer = styled.div`
+  background-color: var(--bg-white-color);
+  padding: 20px;
+  border-radius: 0.3rem
+`
 
 export default function Form() {
   const { handleSubmit, control } = useForm();
@@ -18,6 +25,7 @@ export default function Form() {
   const [accountType, setAccountType] = useState("personal"); // Por defecto, "personal" seleccionado
 
   return (
+    <FormContainer>
     <form onSubmit={handleSubmit(onSubmit)}>
       <Controller
         name="name"
@@ -143,5 +151,6 @@ export default function Form() {
       )}
       <Button type="submit">Enviar</Button>
     </form>
+    </FormContainer>
   );
 }

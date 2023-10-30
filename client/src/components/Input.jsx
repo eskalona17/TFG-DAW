@@ -1,10 +1,40 @@
 import React from "react";
 import styled from "styled-components";
 
-const InputComponent = styled.input`
+const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 10px 0;
+  position: relative;
+  width: 300px;
+  border-bottom: 1px solid var(--dark-line);
+  input:focus ~ label {
+    top: -5px;
+  }
+  input:valid ~ label {
+    top: -5px;
+  }
+`;
+
+const InputIcon = styled.i`
+  /* Estilos para el ícono si es necesario */
+`;
+
+const InputComponent = styled.input`
+  width: 100%;
+  height: 50px;
+  background-color: transparent;
+  border: none;
+`;
+
+const InputLabel = styled.label`
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  color: white;
+  font-size: 1rem;
+  transition: .6s;
 `;
 
 const ErrorComponent = styled.div`
@@ -22,10 +52,12 @@ export const Input = ({
   placeholder,
   error,
   disabled,
-  onChange
+  onChange,
+  icon,
 }) => {
   return (
-    <>
+    <InputContainer className="your-class">
+      <InputIcon>{icon && <i className={icon}></i>}</InputIcon>
       <InputComponent
         type={type ? type : "text"}
         value={value}
@@ -34,11 +66,12 @@ export const Input = ({
         onChange={onChange}
         disabled={disabled}
       />
+      <InputLabel htmlFor={name}>{name}</InputLabel>
       {error && (
         <ErrorComponent>
           <p className="error">Input field can't be empty!</p>
         </ErrorComponent>
       )}
-    </>
+    </InputContainer>
   );
 };
