@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
-import { Input } from "./Input";
+import { Input } from "./input/Input";
 import { Button } from "./Button";
 import styled from "styled-components";
 
@@ -35,10 +35,9 @@ export default function Form() {
         render={({ field }) => (
           <Input
             type="text"
-            label="Nombre"
             value={field.value}
             onChange={field.onChange}
-            placeholder="Nombre completo"
+            label="Nombre completo"
           />
         )}
       />
@@ -50,10 +49,9 @@ export default function Form() {
         render={({ field }) => (
           <Input
             type="text"
-            label="Usuario"
             value={field.value}
             onChange={field.onChange}
-            placeholder="Usuario"
+            label="Usuario"
           />
         )}
       />
@@ -65,10 +63,9 @@ export default function Form() {
         render={({ field }) => (
           <Input
             type="text"
-            label="Email"
             value={field.value}
             onChange={field.onChange}
-            placeholder="Email"
+            label="Email"
           />
         )}
       />
@@ -80,10 +77,9 @@ export default function Form() {
         render={({ field }) => (
           <Input
             type="password"
-            label="Contraseña"
             value={field.value}
             onChange={field.onChange}
-            placeholder="Contraseña"
+            label="Contraseña"
           />
         )}
       />
@@ -100,10 +96,9 @@ export default function Form() {
         render={({ field }) => (
           <Input
             type="password"
-            label="Confirmar contraseña"
             value={field.value}
             onChange={field.onChange}
-            placeholder="Confirmar contraseña"
+            label="Confirmar contraseña"
           />
         )}
       />
@@ -125,10 +120,9 @@ export default function Form() {
             render={({ field }) => (
               <Input
                 type="text"
-                label="Localización"
                 value={field.value}
                 onChange={field.onChange}
-                placeholder="Localización"
+                label="Localización"
               />
             )}
           />
@@ -140,16 +134,15 @@ export default function Form() {
             render={({ field }) => (
               <Input
                 type="text"
-                label="Código postal"
                 value={field.value}
                 onChange={field.onChange}
-                placeholder="Código postal"
+                label="Código postal"
               />
             )}
           />
         </>
       )}
-      <Button type="submit">Enviar</Button>
+      <Button type="submit" width="large">Enviar</Button>
     </form>
     </FormContainer>
   );
