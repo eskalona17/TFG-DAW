@@ -7,9 +7,7 @@ export default function SignUp() {
   return (
     <>
       <h3>Crea tu perfil</h3>
-      <div className="form">
         <Form isProfessional={isProfessional} />
-      </div>
     </>
   );
 }
