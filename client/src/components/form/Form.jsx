@@ -13,7 +13,8 @@ const FormContainer = styled.div`
 
 export default function Form() {
   const { handleSubmit, control } = useForm();
-  const onSubmit = (data) => {
+  const onSubmit = (data, event) => {
+    event.preventDefault()
     console.log(data);
   };
 
