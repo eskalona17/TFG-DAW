@@ -1,0 +1,19 @@
+.tabs {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+  padding: 5px;
+}
+
+.tabs .active {
+  background-color: var(--orange-color);
+}
+
+.tabs > li {
+  width: 100%;
+  padding: 5px;
+}
