@@ -1,15 +1,16 @@
 @font-face {
-    font-family: 'Inter';
-    src: local('Inter'), local('Inter'),
-    url('./fonts/Inter/Inter-Regular.ttf') format('truetype');
+  font-family: "Inter";
+  src: local("Inter"), local("Inter"),
+    url("./fonts/Inter/Inter-Regular.ttf") format("truetype");
 }
 
 :root {
-    --main-font: 'Inter';
-    --bg-main-color: #F2F2F2;
-    --white-color: #FAFAFA;
-    --dark-color: #1E1E1E;
-    --orange-color: #FFA07A;
-    --dark-line: #1E1E1E;
-    --bg-white-color: #FFFFFF;
-  }
+  --main-font: "Inter";
+  --bg-main-color: #f2f2f2;
+  --white-color: #fafafa;
+  --dark-color: #1e1e1e;
+  --orange-color: #ffa07a;
+  --dark-line: #1e1e1e;
+  --bg-white-color: #ffffff;
+  font-size: 1rem;
+}
