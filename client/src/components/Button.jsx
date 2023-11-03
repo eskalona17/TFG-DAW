@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import "./../variables.css";
 
@@ -12,6 +11,7 @@ const ButtonComponent = styled.button`
   cursor: pointer;
   user-select: none;
   border-radius: 0.375rem;
+  margin: 20px 0;
   padding: 0;
   color: ${(props) =>
     props.color === "light-color"
@@ -27,16 +27,17 @@ const ButtonComponent = styled.button`
       : props.size === "lg"
       ? "1.6rem"
       : "1.1rem"};
-  height: ${(props) =>
-    props.size === "sm"
-      ? "34px"
-      : props.size === "md"
-      ? "37px"
-      : props.size === "lg"
-      ? "40px"
-      : "35px"};
-      font-family: ${(props) => props.fontFamily || "var(--main-font, 'Inter')"};
-      font-weight: ${(props) => props.fontWeight || 500};
+  width: ${(props) =>
+    props.width === "small"
+      ? "100px" // Ancho para tamaño pequeño
+      : props.width === "medium"
+      ? "150px" // Ancho para tamaño mediano
+      : props.width === "large"
+      ? "100%" // Ancho para tamaño grande
+      : "150px"}; // Ancho predeterminado (puedes ajustarlo)
+  height: 35px;
+  font-family: ${(props) => props.fontFamily || "var(--main-font, 'Inter')"};
+  font-weight: ${(props) => props.fontWeight || 500};
   border: 1px solid transparent;
   background-color: ${(props) =>
     props.variant === "light"
@@ -50,11 +51,11 @@ export const Button = ({
   type,
   variant,
   className,
-  id,
   onClick,
   children,
   fontFamily,
-  color
+  color,
+  width,
 }) => {
   return (
     <ButtonComponent
@@ -62,9 +63,9 @@ export const Button = ({
       variant={variant}
       className={className ? `btn-component ${className}` : "btn-component"}
       color={color}
-      id={id}
       onClick={onClick}
       fontFamily={fontFamily}
+      width={width}
     >
       {children}
     </ButtonComponent>

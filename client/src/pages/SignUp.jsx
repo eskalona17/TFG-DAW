@@ -1,10 +1,9 @@
-import React from 'react'
-import { Button } from '../components/Button'
+import Form from "./../components/form/Form";
 
-export default function SignUp () {
+export default function SignUp() {
   return (
     <>
-    <Button color="light-color" variant="light">Test button</Button>
+      <Form />
     </>
-  )
+  );
 }
