@@ -1,5 +1,7 @@
 import Post from '../models/Post.js'
 import User from '../models/User.js'
+import multer from 'multer'
+import { mediaUpload } from '../config/multerConfig.js'
 
 export async function getPost (req, res) {
   const { id } = req.params
@@ -61,7 +63,7 @@ export async function getUserPosts (req, res) {
 }
 
 export async function newPost (req, res) {
-  const { author, content, media } = req.body
+  const { author, content } = req.body
   const userId = req.user._id
 
   try {
@@ -82,8 +84,15 @@ export async function newPost (req, res) {
     if (content.length > maxLength) {
       return res.status(400).json({ error: `Text must be less than ${maxLength} characters` })
     }
+    mediaUpload.single('media')(req, res, async function (err) {
+      if (err instanceof multer.MulterError) {
+        return res.status(400).json({ message: 'Error en la carga de archivos de medios' })
+      } else if (err) {
+        return res.status(500).json({ message: 'Error interno del servidor' })
+      }
+    })
 
-    const newPost = new Post({ author, content, media })
+    const newPost = new Post({ author, content, media: req.file ? req.file.filename : null })
     await newPost.save()
     res.status(201).json({ message: 'Post created successfully', newPost })
   } catch (error) {
@@ -115,7 +124,15 @@ export async function updatePost (req, res) {
       return res.status(400).json({ error: `Text must be less than ${maxLength} characters` })
     }
 
-    await Post.findByIdAndUpdate(id, { content, media })
+    mediaUpload.single('media')(req, res, async function (err) {
+      if (err instanceof multer.MulterError) {
+        return res.status(400).json({ message: 'Error en la carga de archivos de medios' })
+      } else if (err) {
+        return res.status(500).json({ message: 'Error interno del servidor' })
+      }
+    })
+
+    await Post.findByIdAndUpdate(id, { content, media: req.file ? req.file.filename : null })
     const updatedPost = await Post.findById(id)
 
     res.status(201).json({ message: 'Post updated successfully', updatedPost })

@@ -28,16 +28,16 @@ POST http://localhost:1234/api/posts/create
 Content-Type: application/json
 
 {
-    "author": "6532a892929368a1d583aea2",
-    "content": "Post de prueba 2"
+    "author": "6544c81c90831c86769c355d",
+    "content": "Post de prueba 1"
 }
 
 ### Update a post
-PATCH http://localhost:1234/api/posts/652edb68a299150a6dbf2008
+PATCH http://localhost:1234/api/posts/6544d21dc6bd32f6c1e4b906
 Content-Type: application/json
 
 {
-    "content": "Contenido actualizado"
+    "content": "Contenido cambiado"
 }
 
 ### Delete a post
