@@ -1,13 +1,28 @@
-import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import './variables.css'
+import './index.css'
+import SignUp from './pages/SignUp'
+import Home from './pages/Home'
+import Layout from './components/layout/Layout'
 
-function App() {
+export default function App () {
 
   return (
-    <>
-      <h1>hola que tal estais</h1>
-      <div>aprendiendo con Fer</div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/sign-up' element={<SignUp />} />
+        {/* <Route path='/login' element={<Login />} /> */}
+        {/* <Route path='/mensajes' element={<Messages />} /> */}
+        <Route path='/' element={<Layout />}>
+          <Route path='/' element={<Home />} />
+          {/* <Route path='/explora' element={<Explore />} /> */}
+          {/* <Route path='/editar-perfil' element={<EditProfile />} /> */}
+          {/* <Route path='/ajustes' element={<Settings />} /> */}
+          {/* <Route path='/:username' element={<UserProfile />} /> */}
+          {/* <Route path='/:username/post/:postId' element={<PostPage />} /> */}
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
-}
 
-export default App
+}

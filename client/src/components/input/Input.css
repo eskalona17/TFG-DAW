@@ -1,0 +1,40 @@
+/* Input style */
+.input-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  border-bottom: 1px solid var(--dark-line);
+}
+
+.input-container:focus-within label {
+  transform: translate(0, 25px) scale(0.8);
+}
+
+.input-container .filled {
+  transform: translate(0, 25px) scale(0.8);
+}
+
+.input-container label {
+  position: absolute;
+  pointer-events: none;
+  transform: translate(0, 40px) scale(1);
+  transform-origin: top left;
+  transition: 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  color: #6f81a5;
+  font-size: 16px;
+  line-height: 1;
+  left: 6px;
+}
+
+.input-container input {
+  border-radius: 4px;
+  border: none;
+  padding: 24px 16px 4px 16px;
+  margin-top: 20px;
+  font-size: 16px;
+  line-height: 1;
+  outline: none;
+  box-shadow: none;
+  transition: 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+}

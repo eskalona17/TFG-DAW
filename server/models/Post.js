@@ -46,6 +46,8 @@ const PostSchema = new mongoose.Schema(
   }
 )
 
+PostSchema.index({ content: 'text', 'replies.username': 'text' })
+
 const Post = mongoose.model('Post', PostSchema)
 
 export default Post

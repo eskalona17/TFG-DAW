@@ -7,13 +7,15 @@ import {
   getUserPosts,
   newPost,
   replyToPost,
-  updatePost
+  updatePost,
+  searchPosts
 } from '../controllers/post.js'
 import express from 'express'
 
 const router = express.Router()
 
 router.get('/feed', protectRoute, getFeedPosts)
+router.get('/search', protectRoute, searchPosts)
 router.get('/:id', getPost)
 router.get('/user/:username', getUserPosts)
 router.post('/create', protectRoute, newPost)
