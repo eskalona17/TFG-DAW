@@ -20,7 +20,7 @@ const RegisterContainer = styled.div`
 `;
 
 const ErrorsDisplay = styled.div`
-  display: block;
+  display: flex;
   color: tomato;
   font-size: x-small;
 `;
@@ -264,7 +264,7 @@ export default function Form() {
       </form>
       <RegisterContainer>
         <p>¿Ya tienes cuenta?</p>
-        <Link to="/#">Inicia sesión</Link>
+        <Link to="/login">Inicia sesión</Link>
       </RegisterContainer>
     </FormContainer>
   );
