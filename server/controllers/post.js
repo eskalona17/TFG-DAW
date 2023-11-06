@@ -197,3 +197,18 @@ export async function replyToPost (req, res) {
     res.status(500).json({ error: 'Internal server error' })
   }
 }
+
+export async function searchPosts (req, res) {
+  const query = req.query.q
+  try {
+    const posts = await Post.find({
+      $text: {
+        $search: query
+      }
+    })
+    res.status(200).json(posts)
+  } catch (error) {
+    console.error('Error:', error.message)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+}
