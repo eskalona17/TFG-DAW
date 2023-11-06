@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../Button";
-import Tabs from "../tabs/Tabs";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import "./Form.css";
 
 const FormContainer = styled.div`
-min-width: 400px;
+  min-width: 400px;
   background-color: var(--bg-white-color);
   padding: 20px;
   border-radius: 0.3rem;
@@ -21,7 +20,7 @@ const RegisterContainer = styled.div`
 `;
 
 const ErrorsDisplay = styled.div`
-  display: block;
+  display: flex;
   color: tomato;
   font-size: x-small;
 `;
@@ -35,7 +34,6 @@ export default function Form() {
     reset,
   } = useForm();
 
-
   const onSubmit = handleSubmit((data) => {
     // event.preventDefault()
     console.log(data);
@@ -44,37 +42,9 @@ export default function Form() {
   });
 
   //personal profile as a default
-  const [accountType, setAccountType] = useState("personal");
+  const [profile, setProfile] = useState("personal");
 
   return (
-    // <FormContainer>
-    //   <form onSubmit={handleSubmit(onSubmit)}>
-    //     <Input type="text" label="Nombre completo" />
-    //     <Input type="text" label="Usuario" />
-    //     <Input type="text" label="Email" />
-    //     <Input type="password" label="Contraseña" name="password" />
-    //     <Input
-    //       type="password"
-    //       label="Confirmar contraseña"
-    //       name="confirm_password"
-    //     />
-    //     <Tabs setAccountType={setAccountType} accountType={accountType} />
-    //     {accountType === "profesional" && (
-    //       <>
-    //         <Input type="text" label="Localización" />
-    //         <Input type="text" label="Código postal" />
-    //       </>
-    //     )}
-    //     <Button type="submit" width="large">
-    //       Enviar
-    //     </Button>
-    //   </form>
-    //   <RegisterContainer>
-    //     <p>¿Ya tienes cuenta?</p>
-    //     <Link to='/#'>Inicia sesión</Link>
-    //   </RegisterContainer>
-    // </FormContainer>
-
     <FormContainer>
       <h3>Crea tu perfil</h3>
       <form onSubmit={onSubmit}>
@@ -135,7 +105,7 @@ export default function Form() {
         {/* password */}
         <div className="input-container">
           <input
-            type="text"
+            type="password"
             label="Contraseña"
             name="password"
             {...register("password", {
@@ -158,7 +128,7 @@ export default function Form() {
         {/* Confirm password */}
         <div className="input-container">
           <input
-            type="text"
+            type="password"
             label="Confirmar contraseña"
             name="confirm_password"
             {...register("confirm_password", {
@@ -178,11 +148,123 @@ export default function Form() {
           )}
         </ErrorsDisplay>
 
-        <Button type="submit" width="large">Enviar</Button>
+        {/* choose profesional or personal */}
+        <ul className="tabs">
+          <li
+            onClick={() => {
+              setProfile("personal");
+            }}
+            className={profile === "personal" ? "active" : ""}
+          >
+            Personal
+          </li>
+          <li
+            onClick={() => {
+              setProfile("profesional");
+            }}
+            className={profile === "profesional" ? "active" : ""}
+          >
+            Profesional
+          </li>
+        </ul>
+
+        {profile === "profesional" && (
+          <>
+            {/* dirección */}
+            <div className="input-container">
+              <input
+                type="text"
+                label="direccion"
+                name="direccion"
+                {...register("direccion", {
+                  required: {
+                    value: true,
+                    message: "La dirección es requerida",
+                  },
+                })}
+              />
+              <label htmlFor="direccion">Dirección</label>
+            </div>
+            <ErrorsDisplay>
+              {errors.direccion && <span>{errors.direccion.message}</span>}
+            </ErrorsDisplay>
+
+            {/* ciudad */}
+            <div className="input-container">
+              <input
+                type="text"
+                label="ciudad"
+                name="ciudad"
+                {...register("ciudad", {
+                  required: {
+                    value: true,
+                    message: "La ciudad es requerida",
+                  },
+                })}
+              />
+              <label htmlFor="ciudad">Ciudad</label>
+            </div>
+            <ErrorsDisplay>
+              {errors.ciudad && <span>{errors.ciudad.message}</span>}
+            </ErrorsDisplay>
+            <div className="addedInputs">
+              {/* codigo postal */}
+              <div className="input-container">
+                <input
+                  type="number"
+                  label="postal"
+                  name="postal"
+                  {...register("postal_code", {
+                    required: {
+                      value: true,
+                      message: "El codigo postal requerido",
+                    },
+                    maxLength: {
+                      value: 5,
+                      message:
+                        "El código postal debe tener como máximo 5 caracteres",
+                    },
+                  })}
+                />
+                <label htmlFor="postal">Código postal</label>
+              </div>
+              <ErrorsDisplay>
+                {errors.postal_code && (
+                  <span>{errors.postal_code.message}</span>
+                )}
+              </ErrorsDisplay>
+
+              {/* pais */}
+              <div className="input-container">
+                <input
+                  type="text"
+                  label="pais"
+                  name="pais"
+                  {...register("pais", {
+                    required: {
+                      value: true,
+                      message: "El pais es requerido",
+                    },
+                  })}
+                />
+                <label htmlFor="pais">Pais</label>
+              </div>
+              <ErrorsDisplay>
+                {errors.postal_code && (
+                  <span>{errors.postal_code.message}</span>
+                )}
+              </ErrorsDisplay>
+            </div>
+          </>
+        )}
+
+        <Button type="submit" width="large">
+          Enviar
+        </Button>
       </form>
       <RegisterContainer>
         <p>¿Ya tienes cuenta?</p>
-        <Link to="/#">Inicia sesión</Link>
+        <Link to="/login">Inicia sesión</Link>
       </RegisterContainer>
     </FormContainer>
   );
