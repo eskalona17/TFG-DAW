@@ -8,6 +8,7 @@
 
 .title_container {
   padding: 0.5rem 2rem;
+  flex: 1;
 }
 
 .title {
@@ -15,29 +16,44 @@
 }
 
 .search_container {
+  position: relative;
   padding: 0.5rem 2rem;
+  flex: 2;
+}
+
+.search_form {
+  display: flex;
 }
 
 .search {
-  background-color: var(--bg-main-color);
+  background-color: inherit;
+  width: 100%;
   border: none;
-  border-radius: 2rem;
-  padding: 1rem 1.5rem;
+  padding: .5rem 1rem;
   font-size: 1rem;
-  outline: 1px solid var(--orange-color);
+  border-bottom: 1px solid var(--orange-color);
+  outline: none;
 }
 
 .search:focus {
-  outline: 1.5px solid var(--orange-color);
+  border-bottom: 1.5px solid var(--orange-color);
+  outline: none;
 }
 
 .search_button {
   position: absolute;
-  font-size: 1rem;
   right: 2rem;
+  font-size: 1rem;
   background-color: inherit;
   border: none;
   border-radius: 0.5rem;
-  padding: 1rem 1.5rem;
+  padding: .5rem 1rem;
   cursor: pointer;
+}
+
+.notifications_container {
+  padding: 0.5rem 2rem;
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
 }
