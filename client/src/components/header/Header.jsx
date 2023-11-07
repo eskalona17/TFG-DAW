@@ -7,10 +7,13 @@ const Header = () => {
         <h1 className={Styles.title}>Mascotas</h1>
       </div>
       <div className={Styles.search_container}>
-        <form>
+        <form className={Styles.search_form}>
           <input type="text" placeholder="Buscar..." className={Styles.search} />
-          <button className={Styles.search_button}>E</button>
+          <button className={Styles.search_button}>i</button>
         </form>
+      </div>
+      <div className={Styles.notifications_container}>
+        <span className={Styles.notifications}>i</span>
       </div>
     </header>
   )
