@@ -2,9 +2,10 @@ body {
   margin: 0;
   padding: 0;
   max-width: 1440px;
-  /* display: grid;
-  place-items: center; */
+  display: grid;
+  /* place-items: center; */
   min-height: 100vh;
   background-color: var(--bg-main-color);
   font-family: var(--main-font);
+  grid-gap: 1rem;
 }
