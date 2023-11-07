@@ -1,5 +1,5 @@
-.aside {
-  width: 220px;
+.user {
+  width: 20%;
   background-color: var(--white-color);
   display: flex;
   flex-direction: column;
@@ -32,6 +32,6 @@
 .followers {
   font-size: 0.8rem;
   background-color: var(--light-orange);
-  padding: 0.1rem 0.3rem;
+  padding: 0.2rem 0.8rem;
   border-radius: 6px;
 }

@@ -1,8 +1,8 @@
-import Styles from './aside.module.css'
+import Styles from './user.module.css'
 
-const Aside = () => {
+const User = () => {
   return (
-    <aside className={Styles.aside}>
+    <aside className={Styles.user}>
       <div className={Styles.user_container}>
         <img src="" alt="" className={Styles.user_img} />
         <div className={Styles.user_info}>
@@ -18,4 +18,4 @@ const Aside = () => {
   )
 }
 
-export default Aside
+export default User
