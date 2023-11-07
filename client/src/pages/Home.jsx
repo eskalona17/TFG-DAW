@@ -1,7 +1,8 @@
-
-export default function Home() {
+import Styles from './home.module.css'
+function Home() {
   return (
-    <div>Home</div>
+    <div className={Styles.home}>Home</div>
   )
 }
 
+export default Home

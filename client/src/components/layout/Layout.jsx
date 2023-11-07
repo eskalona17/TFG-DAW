@@ -1,16 +1,18 @@
 import { Outlet } from "react-router-dom";
 import Header from "../header/Header"
-import Aside from "../aside/Aside"
+import User from "../user/User"
 import Footer from "../footer/Footer";
+import Navbar from "../navbar/Navbar";
 
 const Layout = () => {
   return (
-    <div>
+    <>
       <Header />
-      <Aside />
+      <User />
+      <Navbar />
       <Outlet />
       <Footer />
-    </div>
+    </>
   );
 };
 

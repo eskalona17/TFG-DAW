@@ -1,0 +1,42 @@
+.user {
+  background-color: var(--white-color);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  grid-row: 2;
+  grid-column: 1 / 2;
+  padding: 1rem;
+  margin: 0;
+  gap: 1rem;
+}
+
+.user_container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user_img {
+  min-width: 75px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: var(--light-orange);
+}
+
+.user_info {
+  width: auto;
+}
+
+.follow_container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  justify-content: space-evenly;
+}
+
+.followers {
+  font-size: 0.7rem;
+  background-color: var(--light-orange);
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+}
