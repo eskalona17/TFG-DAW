@@ -1,0 +1,6 @@
+.footer {
+  grid-row: 4;
+  grid-column: 1 / 5;
+  background-color: var(--white-color);
+  border-radius: 6px;
+}
