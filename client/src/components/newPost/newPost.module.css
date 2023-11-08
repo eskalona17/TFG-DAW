@@ -1,0 +1,13 @@
+.newPost {
+  background-color: var(--white-color);
+  border-radius: 6px;
+  grid-column: 2 / 4;
+  padding: 1rem;
+}
+
+.user_img {
+  min-width: 75px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: var(--light-orange);
+}
