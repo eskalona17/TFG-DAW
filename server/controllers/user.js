@@ -5,12 +5,12 @@ import {
   validateText
 } from '../utils/validator.js'
 import generateTokenAndSetCookie from '../utils/generateTokenAndSetCookie.js'
+import emailTemplate from '../utils/emailTemplate.js'
 import User from '../models/User.js'
-import Post from '../models/Post.js'
 import nodemailer from 'nodemailer'
+import Post from '../models/Post.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
-import emailTemplate from '../utils/emailTemplate.js'
 import multer from 'multer'
 import { profilePicUpload } from '../config/multerConfig.js'
 
