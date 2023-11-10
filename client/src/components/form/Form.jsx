@@ -10,7 +10,6 @@ const {
   errors_display,
   register_container,
   tabs,
-  active,
   addedInputs,
 } = Styles;
 

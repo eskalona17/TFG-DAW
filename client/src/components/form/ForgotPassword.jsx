@@ -2,7 +2,6 @@
 import { useForm } from "react-hook-form";
 import { Button } from "../Button";
 import styled from "styled-components";
-import "./Form.css";
 
 const FormContainer = styled.div`
   min-width: 400px;

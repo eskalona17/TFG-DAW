@@ -1,7 +1,8 @@
+import { useContext } from "react";
+import { AuthContext } from "../../context/authContext";
 import { useForm } from "react-hook-form";
 import { Button } from "../Button";
 import { Link } from "react-router-dom";
-import "./Form.css";
 import Styles from "./form.module.css";
 
 const {
@@ -13,6 +14,7 @@ const {
 } = Styles;
 
 export default function LoginForm() {
+  const authContext = useContext(AuthContext);
   const {
     handleSubmit,
     register,
@@ -20,11 +22,16 @@ export default function LoginForm() {
     reset,
   } = useForm();
 
-  const onSubmit = handleSubmit((data) => {
-    // event.preventDefault()
-    console.log(data);
-    alert("enviando datos...");
-    reset();
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      // Llama a la función login del contexto para enviar los datos del usuario
+      await authContext.login(data);
+      alert("Datos enviados correctamente");
+      reset();
+    } catch (error) {
+      console.error("Error al enviar datos:", error);
+      // Maneja el error según tus necesidades
+    }
   });
 
   return (
