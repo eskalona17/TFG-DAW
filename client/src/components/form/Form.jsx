@@ -1,29 +1,18 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../Button";
-import styled from "styled-components";
 import { Link } from "react-router-dom";
-import "./Form.css";
+import Styles from "./form.module.css";
 
-const FormContainer = styled.div`
-  min-width: 400px;
-  background-color: var(--bg-white-color);
-  padding: 20px;
-  border-radius: 0.3rem;
-`;
-
-const RegisterContainer = styled.div`
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  gap: 10px;
-`;
-
-const ErrorsDisplay = styled.div`
-  display: flex;
-  color: tomato;
-  font-size: x-small;
-`;
+const {
+  input_container,
+  form_container,
+  errors_display,
+  register_container,
+  tabs,
+  active,
+  addedInputs,
+} = Styles;
 
 export default function Form() {
   const {
@@ -45,11 +34,11 @@ export default function Form() {
   const [profile, setProfile] = useState("personal");
 
   return (
-    <FormContainer>
+    <div className={form_container}>
       <h3>Crea tu perfil</h3>
       <form onSubmit={onSubmit}>
         {/* Nombre */}
-        <div className="input-container">
+        <div className={input_container}>
           <input
             type="text"
             label="Nombre"
@@ -71,12 +60,12 @@ export default function Form() {
           />
           <label htmlFor="nombre">Nombre completo</label>
         </div>
-        <ErrorsDisplay>
+        <div className={errors_display}>
           {errors.nombre && <span>{errors.nombre.message}</span>}
-        </ErrorsDisplay>
+        </div>
 
         {/* username */}
-        <div className="input-container">
+        <div className={input_container}>
           <input
             type="text"
             label="usuario"
@@ -98,12 +87,12 @@ export default function Form() {
           />
           <label htmlFor="usuario">Usuario</label>
         </div>
-        <ErrorsDisplay>
+        <div className={errors_display}>
           {errors.usuario && <span>{errors.usuario.message}</span>}
-        </ErrorsDisplay>
+        </div>
 
         {/* password */}
-        <div className="input-container">
+        <div className={input_container}>
           <input
             type="password"
             label="Contraseña"
@@ -121,12 +110,12 @@ export default function Form() {
           />
           <label htmlFor="contraseña">Contraseña</label>
         </div>
-        <ErrorsDisplay>
+        <div className={errors_display}>
           {errors.password && <span>{errors.password.message}</span>}
-        </ErrorsDisplay>
+        </div>
 
         {/* Confirm password */}
-        <div className="input-container">
+        <div className={input_container}>
           <input
             type="password"
             label="Confirmar contraseña"
@@ -142,19 +131,19 @@ export default function Form() {
           />
           <label htmlFor="confirm_contraseña">Confirmar contraseña</label>
         </div>
-        <ErrorsDisplay>
+        <div className={errors_display}>
           {errors.confirm_password && (
             <span>{errors.confirm_password.message}</span>
           )}
-        </ErrorsDisplay>
+        </div>
 
         {/* choose profesional or personal */}
-        <ul className="tabs">
+        <ul className={tabs}>
           <li
             onClick={() => {
               setProfile("personal");
             }}
-            className={profile === "personal" ? "active" : ""}
+            className={profile === "personal" ? Styles.active : ""}
           >
             Personal
           </li>
@@ -162,7 +151,7 @@ export default function Form() {
             onClick={() => {
               setProfile("profesional");
             }}
-            className={profile === "profesional" ? "active" : ""}
+            className={profile === "profesional" ? Styles.active : ""}
           >
             Profesional
           </li>
@@ -171,7 +160,7 @@ export default function Form() {
         {profile === "profesional" && (
           <>
             {/* dirección */}
-            <div className="input-container">
+            <div className={input_container}>
               <input
                 type="text"
                 label="direccion"
@@ -185,12 +174,12 @@ export default function Form() {
               />
               <label htmlFor="direccion">Dirección</label>
             </div>
-            <ErrorsDisplay>
+            <div className={errors_display}>
               {errors.direccion && <span>{errors.direccion.message}</span>}
-            </ErrorsDisplay>
+            </div>
 
             {/* ciudad */}
-            <div className="input-container">
+            <div className={input_container}>
               <input
                 type="text"
                 label="ciudad"
@@ -204,12 +193,12 @@ export default function Form() {
               />
               <label htmlFor="ciudad">Ciudad</label>
             </div>
-            <ErrorsDisplay>
+            <div className={errors_display}>
               {errors.ciudad && <span>{errors.ciudad.message}</span>}
-            </ErrorsDisplay>
-            <div className="addedInputs">
+            </div>
+            <div className={addedInputs}>
               {/* codigo postal */}
-              <div className="input-container">
+              <div className={input_container}>
                 <input
                   type="number"
                   label="postal"
@@ -228,14 +217,14 @@ export default function Form() {
                 />
                 <label htmlFor="postal">Código postal</label>
               </div>
-              <ErrorsDisplay>
+              <div className={errors_display}>
                 {errors.postal_code && (
                   <span>{errors.postal_code.message}</span>
                 )}
-              </ErrorsDisplay>
+              </div>
 
               {/* pais */}
-              <div className="input-container">
+              <div className={input_container}>
                 <input
                   type="text"
                   label="pais"
@@ -249,11 +238,11 @@ export default function Form() {
                 />
                 <label htmlFor="pais">Pais</label>
               </div>
-              <ErrorsDisplay>
+              <div className={errors_display}>
                 {errors.postal_code && (
                   <span>{errors.postal_code.message}</span>
                 )}
-              </ErrorsDisplay>
+              </div>
             </div>
           </>
         )}
@@ -262,10 +251,10 @@ export default function Form() {
           Enviar
         </Button>
       </form>
-      <RegisterContainer>
+      <div className={register_container}>
         <p>¿Ya tienes cuenta?</p>
         <Link to="/login">Inicia sesión</Link>
-      </RegisterContainer>
-    </FormContainer>
+      </div>
+    </div>
   );
 }

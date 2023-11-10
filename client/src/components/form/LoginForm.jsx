@@ -1,34 +1,16 @@
 import { useForm } from "react-hook-form";
 import { Button } from "../Button";
-import styled from "styled-components";
 import { Link } from "react-router-dom";
 import "./Form.css";
+import Styles from "./form.module.css";
 
-const FormContainer = styled.div`
-  min-width: 400px;
-  background-color: var(--bg-white-color);
-  padding: 20px;
-  border-radius: 0.3rem;
-`;
-
-const RegisterContainer = styled.div`
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  gap: 10px;
-`;
-
-const ForgotPassword = styled.div`
-text-align: end;
-margin-top: 20px;
-margin-bottom: 40px
-`
-
-const ErrorsDisplay = styled.div`
-  display: flex;
-  color: tomato;
-  font-size: x-small;
-`;
+const {
+  input_container,
+  form_container,
+  errors_display,
+  forgot_container,
+  register_container,
+} = Styles;
 
 export default function LoginForm() {
   const {
@@ -46,11 +28,11 @@ export default function LoginForm() {
   });
 
   return (
-    <FormContainer>
+    <div className={form_container}>
       <h3>LOGIN</h3>
       <form onSubmit={onSubmit}>
         {/* username */}
-        <div className="input-container">
+        <div className={input_container}>
           <input
             type="text"
             label="usuario"
@@ -72,12 +54,12 @@ export default function LoginForm() {
           />
           <label htmlFor="usuario">Usuario</label>
         </div>
-        <ErrorsDisplay>
+        <div className={errors_display}>
           {errors.usuario && <span>{errors.usuario.message}</span>}
-        </ErrorsDisplay>
+        </div>
 
         {/* password */}
-        <div className="input-container">
+        <div className={input_container}>
           <input
             type="password"
             label="Contraseña"
@@ -95,21 +77,21 @@ export default function LoginForm() {
           />
           <label htmlFor="contraseña">Contraseña</label>
         </div>
-        <ErrorsDisplay>
+        <div className={errors_display}>
           {errors.password && <span>{errors.password.message}</span>}
-        </ErrorsDisplay>
-        <ForgotPassword>
-        <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
-      </ForgotPassword>
+        </div>
+        <div className={forgot_container}>
+          <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
+        </div>
 
         <Button type="submit" width="large">
           Entrar
         </Button>
       </form>
-      <RegisterContainer>
+      <div className={register_container}>
         <p>¿No tienes cuenta?</p>
         <Link to="/register">Registrate</Link>
-      </RegisterContainer>
-    </FormContainer>
+      </div>
+    </div>
   );
 }
