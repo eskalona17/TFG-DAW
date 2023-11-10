@@ -8,7 +8,7 @@ import generateTokenAndSetCookie from '../utils/generateTokenAndSetCookie.js'
 import emailTemplate from '../utils/emailTemplate.js'
 import User from '../models/User.js'
 import nodemailer from 'nodemailer'
-import Post from '../models/Post'
+import Post from '../models/Post.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 

@@ -1,9 +1,19 @@
+/* Diseño principal con GRID dividido en X columnas y en cada componente especificar el lugar que ocupa */
+
 body {
-  margin: 0;
-  padding: 0;
-  display: grid;
-  place-items: center;
   min-height: 100vh;
   background-color: var(--bg-main-color);
+  margin: 0;
+}
+
+#root {
+  margin: 0 auto;
+  padding: 1rem;
+  display: grid;
+  /* place-items: center; */
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+  grid-gap: 1rem;
   font-family: var(--main-font);
+  max-width: 1280px;
 }

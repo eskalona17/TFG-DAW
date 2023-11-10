@@ -1,7 +1,11 @@
-
-export default function Home() {
+import NewPost from '../components/newPost/NewPost'
+/* import Styles from './home.module.css' */
+function Home() {
   return (
-    <div>Home</div>
+    <>
+      <NewPost />
+    </>
   )
 }
 
+export default Home
