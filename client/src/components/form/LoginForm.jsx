@@ -15,7 +15,7 @@ const {
 } = Styles;
 
 export default function LoginForm() {
-  const authContext = useContext(AuthContext);
+  // const authContext = useContext(AuthContext);
   const {
     handleSubmit,
     register,
@@ -25,16 +25,23 @@ export default function LoginForm() {
 
   const [originalState, setOriginalState] = useState(true); // Nuevo estado para manejar el estado original
 
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      // Llama a la función login del contexto para enviar los datos del usuario
-      await authContext.login(data);
-      alert("Datos enviados correctamente");
-      reset();
-    } catch (error) {
-      console.error("Error al enviar datos:", error);
-      // Maneja el error según tus necesidades
-    }
+  // const onSubmit = handleSubmit(async (data) => {
+  //   try {
+  //     // Llama a la función login del contexto para enviar los datos del usuario
+  //     await authContext.login(data);
+  //     alert("Datos enviados correctamente");
+  //     reset();
+  //   } catch (error) {
+  //     console.error("Error al enviar datos:", error);
+  //     // Maneja el error según tus necesidades
+  //   }
+  // });
+
+  const onSubmit = handleSubmit((data) => {
+    // event.preventDefault()
+    console.log(data);
+    alert("enviando datos...");
+    reset();
   });
 
   const [recoverPassword, setRecoverPassword] = useState(false);
@@ -42,11 +49,13 @@ export default function LoginForm() {
   const handleForgotPasswordClick = () => {
     setOriginalState(false); // Cambiar al estado de recuperación de contraseña
     setRecoverPassword(true);
+    reset();
   };
 
   const handleGoBackClick = () => {
     setOriginalState(true); // Cambiar al estado original
     setRecoverPassword(false);
+    reset();
   };
 
   return (
@@ -58,21 +67,17 @@ export default function LoginForm() {
             {/* Email */}
             <div className={input_container}>
               <input
-                type="text"
+                type="email"
                 label="email"
                 name="email"
                 {...register("email", {
                   required: {
                     value: true,
-                    message: "email es requerido",
+                    message: "El email es requerido",
                   },
-                  minLength: {
-                    value: 2,
-                    message: "email tiene que tener dos caracteres",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "email no puede tener más de 20 caracteres",
+                  pattern: {
+                    value: /^[a-z0-9._%+-]+@[a-z0-9·-]+\.[a-z]{2,4}$/,
+                    message: "El email no es valido",
                   },
                 })}
               />
@@ -105,15 +110,15 @@ export default function LoginForm() {
                 {...register("usuario", {
                   required: {
                     value: true,
-                    message: "Usuario es requerido",
+                    message: "El usuario es requerido",
                   },
                   minLength: {
                     value: 2,
-                    message: "Usuario tiene que tener dos caracteres",
+                    message: "El usuario tiene que tener dos caracteres",
                   },
                   maxLength: {
                     value: 20,
-                    message: "Usuario no puede tener más de 20 caracteres",
+                    message: "El usuario no puede tener más de 20 caracteres",
                   },
                 })}
               />
@@ -132,7 +137,7 @@ export default function LoginForm() {
                 {...register("password", {
                   required: {
                     value: true,
-                    message: "Password es requerido",
+                    message: "La contraseña es requerida",
                   },
                   minLength: {
                     value: 6,
@@ -151,7 +156,6 @@ export default function LoginForm() {
               </span>
             </div>
             <button type="submit">Entrar</button>
-
           </form>
         </>
       )}

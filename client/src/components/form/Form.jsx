@@ -45,15 +45,15 @@ export default function Form() {
             {...register("nombre", {
               required: {
                 value: true,
-                message: "Nombre es requerido",
+                message: "El nombre es requerido",
               },
               minLength: {
                 value: 2,
-                message: "Nombre tiene que tener dos caracteres",
+                message: "El nombre tiene que tener dos caracteres",
               },
               maxLength: {
                 value: 20,
-                message: "Nombre no puede tener más de 20 caracteres",
+                message: "El nombre no puede tener más de 20 caracteres",
               },
             })}
           />
@@ -72,15 +72,15 @@ export default function Form() {
             {...register("usuario", {
               required: {
                 value: true,
-                message: "Usuario es requerido",
+                message: "El usuario es requerido",
               },
               minLength: {
                 value: 2,
-                message: "Usuario tiene que tener dos caracteres",
+                message: "El usuario tiene que tener dos caracteres",
               },
               maxLength: {
                 value: 20,
-                message: "Usuario no puede tener más de 20 caracteres",
+                message: "El usuario no puede tener más de 20 caracteres",
               },
             })}
           />
@@ -99,7 +99,7 @@ export default function Form() {
             {...register("password", {
               required: {
                 value: true,
-                message: "Password es requerido",
+                message: "La contraseña es requerida",
               },
               minLength: {
                 value: 6,
