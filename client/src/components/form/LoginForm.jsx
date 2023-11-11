@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useForm } from "react-hook-form";
-import { Button } from "../Button";
 import { Link } from "react-router-dom";
 import Styles from "./form.module.css";
 import { RiArrowGoBackFill } from "react-icons/ri";
