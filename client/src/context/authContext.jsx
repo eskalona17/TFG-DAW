@@ -14,6 +14,7 @@ export const AuthContextProvider = ({ children }) => {
       const res = await axios.post(`${apiUrl}/auth/login`, inputs);
       setCurrentUser(res.data);
     } catch (err) {
+      console.error("Ocurrió un error en el login: ", err);
       throw err;
     }
   };

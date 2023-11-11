@@ -11,6 +11,7 @@ const {
   register_container,
   tabs,
   addedInputs,
+  inputs_errors
 } = Styles;
 
 export default function Form() {
@@ -195,52 +196,56 @@ export default function Form() {
             <div className={errors_display}>
               {errors.ciudad && <span>{errors.ciudad.message}</span>}
             </div>
-            <div className={addedInputs}>
-              {/* codigo postal */}
-              <div className={input_container}>
-                <input
-                  type="number"
-                  label="postal"
-                  name="postal"
-                  {...register("postal_code", {
-                    required: {
-                      value: true,
-                      message: "El codigo postal requerido",
-                    },
-                    maxLength: {
-                      value: 5,
-                      message:
-                        "El código postal debe tener como máximo 5 caracteres",
-                    },
-                  })}
-                />
-                <label htmlFor="postal">Código postal</label>
-              </div>
-              <div className={errors_display}>
-                {errors.postal_code && (
-                  <span>{errors.postal_code.message}</span>
-                )}
-              </div>
 
-              {/* pais */}
-              <div className={input_container}>
-                <input
-                  type="text"
-                  label="pais"
-                  name="pais"
-                  {...register("pais", {
-                    required: {
-                      value: true,
-                      message: "El pais es requerido",
-                    },
-                  })}
-                />
-                <label htmlFor="pais">Pais</label>
+            <div className={addedInputs}>
+              <div className={inputs_errors}>
+                {/* codigo postal */}
+                <div className={input_container}>
+                  <input
+                    type="number"
+                    label="postal"
+                    name="postal"
+                    {...register("postal_code", {
+                      required: {
+                        value: true,
+                        message: "El codigo postal requerido",
+                      },
+                      maxLength: {
+                        value: 5,
+                        message:
+                          "El código postal debe tener como máximo 5 caracteres",
+                      },
+                    })}
+                  />
+                  <label htmlFor="postal">Código postal</label>
+                </div>
+                <div className={errors_display}>
+                  {errors.postal_code && (
+                    <span>{errors.postal_code.message}</span>
+                  )}
+                </div>
               </div>
-              <div className={errors_display}>
-                {errors.postal_code && (
-                  <span>{errors.postal_code.message}</span>
-                )}
+              <div className={inputs_errors}>
+                {/* pais */}
+                <div className={input_container}>
+                  <input
+                    type="text"
+                    label="pais"
+                    name="pais"
+                    {...register("pais", {
+                      required: {
+                        value: true,
+                        message: "El pais es requerido",
+                      },
+                    })}
+                  />
+                  <label htmlFor="pais">Pais</label>
+                </div>
+                <div className={errors_display}>
+                  {errors.postal_code && (
+                    <span>{errors.postal_code.message}</span>
+                  )}
+                </div>
               </div>
             </div>
           </>

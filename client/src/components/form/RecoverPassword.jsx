@@ -1,22 +1,10 @@
-
 import { useForm } from "react-hook-form";
 import { Button } from "../Button";
-import styled from "styled-components";
+import Styles from "./form.module.css";
 
-const FormContainer = styled.div`
-  min-width: 400px;
-  background-color: var(--bg-white-color);
-  padding: 20px;
-  border-radius: 0.3rem;
-`;
+const { input_container, form_container, errors_display } = Styles;
 
-const ErrorsDisplay = styled.div`
-  display: flex;
-  color: tomato;
-  font-size: x-small;
-`;
-
-export default function ForgotPassword() {
+export default function RecoverPassword() {
   const {
     handleSubmit,
     register,
@@ -33,11 +21,11 @@ export default function ForgotPassword() {
   });
 
   return (
-    <FormContainer>
-      <h3>Recupera tu contraseña</h3>
+    <div className={form_container}>
+      <h3>Reestablece tu contraseña</h3>
       <form onSubmit={onSubmit}>
         {/* password */}
-        <div className="input-container">
+        <div className={input_container}>
           <input
             type="password"
             label="Contraseña"
@@ -55,12 +43,12 @@ export default function ForgotPassword() {
           />
           <label htmlFor="contraseña">Contraseña</label>
         </div>
-        <ErrorsDisplay>
+        <div className={errors_display}>
           {errors.password && <span>{errors.password.message}</span>}
-        </ErrorsDisplay>
+        </div>
 
         {/* Confirm password */}
-        <div className="input-container">
+        <div className={input_container}>
           <input
             type="password"
             label="Confirmar contraseña"
@@ -76,16 +64,16 @@ export default function ForgotPassword() {
           />
           <label htmlFor="confirm_contraseña">Repite contraseña</label>
         </div>
-        <ErrorsDisplay>
+        <div className={errors_display}>
           {errors.confirm_password && (
             <span>{errors.confirm_password.message}</span>
           )}
-        </ErrorsDisplay>
+        </div>
 
         <Button type="submit" width="large">
           Enviar
         </Button>
       </form>
-    </FormContainer>
+    </div>
   );
 }

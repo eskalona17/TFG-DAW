@@ -59,6 +59,7 @@ h3 {
   display: flex;
   color: tomato;
   font-size: x-small;
+  margin-top: 3px;
 }
 
 .forgot_container {
@@ -116,3 +117,8 @@ h3 {
   width: 45%;
 }
 
+.inputs_errors {
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+}
