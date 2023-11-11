@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 export const AuthContext = createContext();
 
@@ -14,6 +14,7 @@ export const AuthContextProvider = ({ children }) => {
       const res = await axios.post(`${apiUrl}/auth/login`, inputs);
       setCurrentUser(res.data);
     } catch (err) {
+      console.error("Ocurrió un error en el login: ", err);
       throw err;
     }
   };
