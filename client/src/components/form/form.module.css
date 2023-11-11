@@ -64,8 +64,11 @@ h3 {
 
 .forgot_container {
   text-align: end;
-  margin-top: 20px;
-  margin-bottom: 40px;
+  margin: 20px 0;
+}
+
+.forgot_container span {
+  cursor: pointer;
 }
 
 .register_container {
@@ -75,13 +78,19 @@ h3 {
   gap: 10px;
 }
 
+.register_container .goback {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 5px;
+}
+
 /* Estilos para pantallas más pequeñas */
 @media (max-width: 768px) {
   .form_container {
     width: calc(80% - 3rem); /* Ajusta el ancho según sea necesario */
   }
 }
-
 
 .tabs {
   display: flex;

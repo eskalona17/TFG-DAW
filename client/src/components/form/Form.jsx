@@ -251,9 +251,9 @@ export default function Form() {
           </>
         )}
 
-        <Button type="submit" width="large">
+        <button type="submit" width="large">
           Enviar
-        </Button>
+        </button>
       </form>
       <div className={register_container}>
         <p>¿Ya tienes cuenta?</p>

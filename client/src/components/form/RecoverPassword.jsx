@@ -70,9 +70,9 @@ export default function RecoverPassword() {
           )}
         </div>
 
-        <Button type="submit" width="large">
+        <button type="submit" width="large">
           Enviar
-        </Button>
+        </button>
       </form>
     </div>
   );
