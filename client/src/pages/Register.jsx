@@ -1,9 +1,9 @@
-import Form from "../components/form/Form";
+import RegisterForm from "../components/form/RegisterForm";
 
 export default function Register() {
   return (
     <>
-      <Form />
+      <RegisterForm />
     </>
   );
 }

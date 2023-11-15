@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Styles from "./form.module.css";
+import axios from "axios";
+
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const {
   input_container,
@@ -10,7 +13,7 @@ const {
   register_container,
   tabs,
   addedInputs,
-  inputs_errors
+  inputs_errors,
 } = Styles;
 
 export default function Form() {
@@ -22,10 +25,31 @@ export default function Form() {
     reset,
   } = useForm();
 
-  const onSubmit = handleSubmit((data) => {
-    // event.preventDefault()
-    console.log(data);
-    alert("enviando datos...");
+  const navigate = useNavigate();
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      // Aquí podrías realizar validaciones adicionales si es necesario
+      console.log(data);
+      // Enviar datos al backend
+      const response = await axios.post(apiUrl + ":1234/api/users/register", {
+        ...data,
+        profile: profile,
+      });
+
+      if (response.status === 201) {
+        console.log("Usuario registrado exitosamente");
+        alert("Usuario registrado exitosamente");
+        navigate("/login");
+        reset();
+      } else {
+        console.error("Error al registrar usuario:", response.statusText);
+        alert("Error al registrar usuario");
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+      alert("Error al registrar usuario");
+    }
     reset();
   });
 
@@ -42,7 +66,7 @@ export default function Form() {
             type="text"
             label="Nombre"
             name="nombre"
-            {...register("nombre", {
+            {...register("name", {
               required: {
                 value: true,
                 message: "Nombre es requerido",
@@ -59,8 +83,8 @@ export default function Form() {
           />
           <label htmlFor="nombre">Nombre completo</label>
         </div>
-        <div className={errors_display}>
-          {errors.nombre && <span>{errors.nombre.message}</span>}
+        <div className={errors.name ? errors_display : ""}>
+          {errors.name && <span>{errors.name.message}</span>}
         </div>
 
         {/* username */}
@@ -69,7 +93,7 @@ export default function Form() {
             type="text"
             label="usuario"
             name="usuario"
-            {...register("usuario", {
+            {...register("username", {
               required: {
                 value: true,
                 message: "Usuario es requerido",
@@ -86,8 +110,31 @@ export default function Form() {
           />
           <label htmlFor="usuario">Usuario</label>
         </div>
+        <div className={errors.username ? errors_display : ""}>
+          {errors.username && <span>{errors.username.message}</span>}
+        </div>
+
+        {/* Email */}
+        <div className={input_container}>
+          <input
+            type="email"
+            label="email"
+            name="email"
+            {...register("email", {
+              required: {
+                value: true,
+                message: "El email es requerido",
+              },
+              pattern: {
+                value: /^[a-z0-9._%+-]+@[a-z0-9·-]+\.[a-z]{2,4}$/,
+                message: "El email no es valido",
+              },
+            })}
+          />
+          <label htmlFor="email">Email</label>
+        </div>
         <div className={errors_display}>
-          {errors.usuario && <span>{errors.usuario.message}</span>}
+          {errors.email && <span>{errors.email.message}</span>}
         </div>
 
         {/* password */}
@@ -107,9 +154,9 @@ export default function Form() {
               },
             })}
           />
-          <label htmlFor="contraseña">Contraseña</label>
+          <label htmlFor="password">Contraseña</label>
         </div>
-        <div className={errors_display}>
+        <div className={errors.password ? errors_display : ""}>
           {errors.password && <span>{errors.password.message}</span>}
         </div>
 
@@ -119,7 +166,7 @@ export default function Form() {
             type="password"
             label="Confirmar contraseña"
             name="confirm_password"
-            {...register("confirm_password", {
+            {...register("confirmPassword", {
               required: {
                 value: true,
                 message: "Confirmar contraseña es requerido",
@@ -128,11 +175,11 @@ export default function Form() {
                 value === watch("password") || "Las contraseñas no coinciden",
             })}
           />
-          <label htmlFor="confirm_contraseña">Confirmar contraseña</label>
+          <label htmlFor="confirm_password">Confirmar contraseña</label>
         </div>
-        <div className={errors_display}>
-          {errors.confirm_password && (
-            <span>{errors.confirm_password.message}</span>
+        <div className={errors.confirmPassword ? errors_display : ""}>
+          {errors.confirmPassword && (
+            <span>{errors.confirmPassword.message}</span>
           )}
         </div>
 
@@ -164,7 +211,7 @@ export default function Form() {
                 type="text"
                 label="direccion"
                 name="direccion"
-                {...register("direccion", {
+                {...register("address", {
                   required: {
                     value: true,
                     message: "La dirección es requerida",
@@ -173,7 +220,7 @@ export default function Form() {
               />
               <label htmlFor="direccion">Dirección</label>
             </div>
-            <div className={errors_display}>
+            <div className={errors.direccion ? errors_display : ""}>
               {errors.direccion && <span>{errors.direccion.message}</span>}
             </div>
 
@@ -183,7 +230,7 @@ export default function Form() {
                 type="text"
                 label="ciudad"
                 name="ciudad"
-                {...register("ciudad", {
+                {...register("city", {
                   required: {
                     value: true,
                     message: "La ciudad es requerida",
@@ -204,7 +251,7 @@ export default function Form() {
                     type="number"
                     label="postal"
                     name="postal"
-                    {...register("postal_code", {
+                    {...register("zipCode", {
                       required: {
                         value: true,
                         message: "El codigo postal requerido",
@@ -218,7 +265,7 @@ export default function Form() {
                   />
                   <label htmlFor="postal">Código postal</label>
                 </div>
-                <div className={errors_display}>
+                <div className={errors.postal_code ? errors_display : ""}>
                   {errors.postal_code && (
                     <span>{errors.postal_code.message}</span>
                   )}
@@ -231,7 +278,7 @@ export default function Form() {
                     type="text"
                     label="pais"
                     name="pais"
-                    {...register("pais", {
+                    {...register("country", {
                       required: {
                         value: true,
                         message: "El pais es requerido",
@@ -240,7 +287,7 @@ export default function Form() {
                   />
                   <label htmlFor="pais">Pais</label>
                 </div>
-                <div className={errors_display}>
+                <div className={errors.postal_code ? errors_display : ""}>
                   {errors.postal_code && (
                     <span>{errors.postal_code.message}</span>
                   )}
@@ -250,9 +297,7 @@ export default function Form() {
           </>
         )}
 
-        <button type="submit" width="large">
-          Enviar
-        </button>
+        <button type="submit">Enviar</button>
       </form>
       <div className={register_container}>
         <p>¿Ya tienes cuenta?</p>
