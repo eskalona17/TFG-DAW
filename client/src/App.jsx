@@ -12,10 +12,10 @@ export default function App () {
       <Routes>
         <Route path='/sign-up' element={<SignUp />} />
         {/* <Route path='/login' element={<Login />} /> */}
-        {/* <Route path='/mensajes' element={<Messages />} /> */}
         <Route path='/' element={<Layout />}>
           <Route path='/' element={<Home />} />
           {/* <Route path='/explora' element={<Explore />} /> */}
+          {/* <Route path='/mensajes' element={<Messages />} /> */}
           {/* <Route path='/editar-perfil' element={<EditProfile />} /> */}
           {/* <Route path='/ajustes' element={<Settings />} /> */}
           {/* <Route path='/:username' element={<UserProfile />} /> */}
