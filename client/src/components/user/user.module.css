@@ -3,11 +3,12 @@
   border-radius: 6px;
   display: flex;
   flex-direction: column;
-  grid-row: 2 / 4;
+  grid-row: 2 ;
   grid-column: 1 / 2;
   padding: 1rem;
   margin: 0;
   gap: 1rem;
+  height: fit-content;
 }
 
 .user_container {

@@ -17,7 +17,7 @@ export default function App () {
         <Route path='/forgot-password' element={<GetPassword />} />
         {/* <Route path='/mensajes' element={<Messages />} /> */}
         <Route path='/' element={<Layout />}>
-          <Route path='/' element={<Home />} />
+          <Route index element={<Home />} />
           {/* <Route path='/explora' element={<Explore />} /> */}
           {/* <Route path='/editar-perfil' element={<EditProfile />} /> */}
           {/* <Route path='/ajustes' element={<Settings />} /> */}
