@@ -33,12 +33,21 @@ export default function LoginForm() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
+<<<<<<< HEAD
+=======
+      // Aquí podrías realizar validaciones adicionales si es necesario
+      console.log(data);
+      
+>>>>>>> df0f478 (login form working without authcontext)
       // Enviar datos al backend
       const response = await axios.post(apiUrl + ":1234/api/users/login", data);
   
       // Verificar el estado de la respuesta
       if (response.status === 200) {
+<<<<<<< HEAD
         authContext.login(response.data);
+=======
+>>>>>>> df0f478 (login form working without authcontext)
         alert("Bienvenido");
         navigate("/");
       } else {
