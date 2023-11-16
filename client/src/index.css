@@ -7,7 +7,7 @@ body {
 
 #root {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   grid-template-rows: auto;
   grid-gap: 1rem;
   font-family: var(--main-font);
