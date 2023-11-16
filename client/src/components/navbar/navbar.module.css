@@ -2,8 +2,6 @@
   grid-area: navbar;
   background-color: var(--white-color);
   border-radius: 6px;
-  grid-column: 1 / 2;
-  grid-row: 4;
   margin: 0;
   padding: 1rem;
   list-style-type: none;
