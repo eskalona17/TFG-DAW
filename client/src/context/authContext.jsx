@@ -10,8 +10,9 @@ export const AuthContextProvider = ({ children }) => {
   );
 
   const login = async (inputs) => {
+    console.log(inputs);
     try {
-      const res = await axios.post(`${apiUrl}/auth/login`, inputs);
+      const res = await axios.post(`${apiUrl}:1234/api/users/login`, inputs);
       setCurrentUser(res.data);
     } catch (err) {
       console.error("Ocurrió un error en el login: ", err);
