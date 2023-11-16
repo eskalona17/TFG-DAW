@@ -1,9 +1,12 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Styles from "./form.module.css";
 import { RiArrowGoBackFill } from "react-icons/ri";
+import axios from "axios";
+
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const {
   input_container,
@@ -23,26 +26,32 @@ export default function LoginForm() {
     reset,
   } = useForm();
 
+  const navigate = useNavigate();
+
   const [originalState, setOriginalState] = useState(true); // Nuevo estado para manejar el estado original
 
-  // const onSubmit = handleSubmit(async (data) => {
-  //   try {
-  //     // Llama a la función login del contexto para enviar los datos del usuario
-  //     await authContext.login(data);
-  //     alert("Datos enviados correctamente");
-  //     reset();
-  //   } catch (error) {
-  //     console.error("Error al enviar datos:", error);
-  //     // Maneja el error según tus necesidades
-  //   }
-  // });
-
-  const onSubmit = handleSubmit((data) => {
-    // event.preventDefault()
-    console.log(data);
-    alert("enviando datos...");
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      // Aquí podrías realizar validaciones adicionales si es necesario
+      console.log(data);
+      
+      // Enviar datos al backend
+      const response = await axios.post(apiUrl + ":1234/api/users/login", data);
+  
+      // Verificar el estado de la respuesta
+      if (response.status === 200) {
+        alert("Bienvenido");
+        navigate("/");
+      } else {
+        console.error("El usuario no existe:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+      alert("Error al iniciar sesión");
+    }
     reset();
   });
+  
 
   const [recoverPassword, setRecoverPassword] = useState(false);
 
@@ -105,27 +114,28 @@ export default function LoginForm() {
             <div className={input_container}>
               <input
                 type="text"
-                label="usuario"
-                name="usuario"
-                {...register("usuario", {
+                label="input"
+                name="input"
+                {...register("input", {
                   required: {
                     value: true,
-                    message: "El usuario es requerido",
+                    message: "Usuario o email es requerido",
                   },
                   minLength: {
                     value: 2,
-                    message: "El usuario tiene que tener dos caracteres",
+                    message: "Usuario o email tiene que tener dos caracteres",
                   },
                   maxLength: {
                     value: 20,
-                    message: "El usuario no puede tener más de 20 caracteres",
+                    message:
+                      "Usuario o email no puede tener más de 20 caracteres",
                   },
                 })}
               />
-              <label htmlFor="usuario">Usuario</label>
+              <label htmlFor="input">Usuario o email</label>
             </div>
             <div className={errors_display}>
-              {errors.usuario && <span>{errors.usuario.message}</span>}
+              {errors.input && <span>{errors.input.message}</span>}
             </div>
 
             {/* password */}

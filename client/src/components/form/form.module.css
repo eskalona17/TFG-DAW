@@ -46,13 +46,11 @@ h3 {
   background-color: var(--bg-white-color);
   padding: 20px;
   border-radius: 0.3rem;
-  margin: auto;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: calc(100% - 2rem); /* Ancho del 100% menos 2 veces el margen */
-  max-width: 400px; /* Ancho máximo para evitar que sea demasiado ancho en pantallas grandes */
+  width: calc(400px - 1rem); /* Ancho del 100% menos 2 veces el margen */
+  justify-self: center;
+  align-self: center;
+  grid-column: 2 / 4;
+  margin: 50px 0;
 }
 
 .errors_display {
@@ -85,10 +83,12 @@ h3 {
   gap: 5px;
 }
 
-/* Estilos para pantallas más pequeñas */
 @media (max-width: 768px) {
   .form_container {
-    width: calc(80% - 3rem); /* Ajusta el ancho según sea necesario */
+    width: calc(300px - 1rem); /* Ancho del 100% menos 2 veces el margen */
+  }
+  .register_container {
+    gap: 5px;
   }
 }
 
