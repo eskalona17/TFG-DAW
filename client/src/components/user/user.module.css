@@ -4,6 +4,8 @@
   border-radius: 6px;
   display: flex;
   flex-direction: column;
+  grid-row: 2 / 4;
+  grid-column: 2 / 3;
   padding: 1rem;
   margin: 0;
   gap: 1rem;
