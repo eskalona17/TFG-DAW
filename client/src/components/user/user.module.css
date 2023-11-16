@@ -1,10 +1,9 @@
 .user {
+  grid-area: user;
   background-color: var(--white-color);
   border-radius: 6px;
   display: flex;
   flex-direction: column;
-  grid-row: 2 / 4;
-  grid-column: 1 / 2;
   padding: 1rem;
   margin: 0;
   gap: 1rem;

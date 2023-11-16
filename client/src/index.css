@@ -5,16 +5,47 @@ body {
   margin: 0 auto;
 }
 
-#root {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: auto;
-  grid-gap: 1rem;
+#root{
   font-family: var(--main-font);
-  min-height: 100vh;
   max-width: 1920px;
   margin: 0 auto;
-  justify-content: center;
+  min-height: 100vh;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "header"
+    "user"
+    "navbar"
+    "newPost"
+    "aside"
+    "footer";
+  grid-gap: 1rem;
+}
+
+@media (min-width: 600px) {
+  main {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "header header"
+      "user newPost"
+      "navbar aside"
+      "footer footer";
+  }
+}
+
+@media (min-width: 900px) {
+  main {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-areas:
+      "header header header header"
+      "user newPost newPost aside"
+      "navbar . . . "
+      "footer footer footer footer";
+  }
 }
 
 button {
