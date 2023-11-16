@@ -34,25 +34,24 @@ export default function LoginForm() {
     try {
       // Aquí podrías realizar validaciones adicionales si es necesario
       console.log(data);
+      
       // Enviar datos al backend
-      const response = await axios.post(apiUrl + ":1234/api/users/login", {
-        data
-      });
-
+      const response = await axios.post(apiUrl + ":1234/api/users/login", data);
+  
       // Verificar el estado de la respuesta
-      if (response.ok) {
-        console.log("Bienvenido");
+      if (response.status === 200) {
+        alert("Bienvenido");
         navigate("/");
-
       } else {
         console.error("El usuario no existe:", response.statusText);
       }
     } catch (error) {
       console.error("Error:", error.message);
-      alert("Error al registrar usuario");
+      alert("Error al iniciar sesión");
     }
     reset();
   });
+  
 
   const [recoverPassword, setRecoverPassword] = useState(false);
 
@@ -119,7 +118,7 @@ export default function LoginForm() {
                 type="text"
                 label="input"
                 name="input"
-                {...register("username", {
+                {...register("input", {
                   required: {
                     value: true,
                     message: "Usuario o email es requerido",
@@ -130,14 +129,15 @@ export default function LoginForm() {
                   },
                   maxLength: {
                     value: 20,
-                    message: "Usuario o email no puede tener más de 20 caracteres",
+                    message:
+                      "Usuario o email no puede tener más de 20 caracteres",
                   },
                 })}
               />
               <label htmlFor="input">Usuario o email</label>
             </div>
             <div className={errors_display}>
-              {errors.username && <span>{errors.username.message}</span>}
+              {errors.input && <span>{errors.input.message}</span>}
             </div>
 
             {/* password */}
