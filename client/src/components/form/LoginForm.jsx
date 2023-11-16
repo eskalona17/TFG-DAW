@@ -1,36 +1,24 @@
+import { useContext, useState } from "react";
+import { AuthContext } from "../../context/authContext";
 import { useForm } from "react-hook-form";
-import { Button } from "../Button";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import "./Form.css";
+import { Link, useNavigate } from "react-router-dom";
+import Styles from "./form.module.css";
+import { RiArrowGoBackFill } from "react-icons/ri";
+import axios from "axios";
 
-const FormContainer = styled.div`
-  min-width: 400px;
-  background-color: var(--bg-white-color);
-  padding: 20px;
-  border-radius: 0.3rem;
-`;
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
-const RegisterContainer = styled.div`
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  gap: 10px;
-`;
-
-const ForgotPassword = styled.div`
-text-align: end;
-margin-top: 20px;
-margin-bottom: 40px
-`
-
-const ErrorsDisplay = styled.div`
-  display: flex;
-  color: tomato;
-  font-size: x-small;
-`;
+const {
+  input_container,
+  form_container,
+  errors_display,
+  forgot_container,
+  register_container,
+  goback,
+} = Styles;
 
 export default function LoginForm() {
+  // const authContext = useContext(AuthContext);
   const {
     handleSubmit,
     register,
@@ -38,78 +26,155 @@ export default function LoginForm() {
     reset,
   } = useForm();
 
-  const onSubmit = handleSubmit((data) => {
-    // event.preventDefault()
-    console.log(data);
-    alert("enviando datos...");
+  const navigate = useNavigate();
+
+  const [originalState, setOriginalState] = useState(true); // Nuevo estado para manejar el estado original
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      // Aquí podrías realizar validaciones adicionales si es necesario
+      console.log(data);
+      
+      // Enviar datos al backend
+      const response = await axios.post(apiUrl + ":1234/api/users/login", data);
+  
+      // Verificar el estado de la respuesta
+      if (response.status === 200) {
+        alert("Bienvenido");
+        navigate("/");
+      } else {
+        console.error("El usuario no existe:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+      alert("Error al iniciar sesión");
+    }
     reset();
   });
+  
+
+  const [recoverPassword, setRecoverPassword] = useState(false);
+
+  const handleForgotPasswordClick = () => {
+    setOriginalState(false); // Cambiar al estado de recuperación de contraseña
+    setRecoverPassword(true);
+    reset();
+  };
+
+  const handleGoBackClick = () => {
+    setOriginalState(true); // Cambiar al estado original
+    setRecoverPassword(false);
+    reset();
+  };
 
   return (
-    <FormContainer>
-      <h3>LOGIN</h3>
-      <form onSubmit={onSubmit}>
-        {/* username */}
-        <div className="input-container">
-          <input
-            type="text"
-            label="usuario"
-            name="usuario"
-            {...register("usuario", {
-              required: {
-                value: true,
-                message: "Usuario es requerido",
-              },
-              minLength: {
-                value: 2,
-                message: "Usuario tiene que tener dos caracteres",
-              },
-              maxLength: {
-                value: 20,
-                message: "Usuario no puede tener más de 20 caracteres",
-              },
-            })}
-          />
-          <label htmlFor="usuario">Usuario</label>
-        </div>
-        <ErrorsDisplay>
-          {errors.usuario && <span>{errors.usuario.message}</span>}
-        </ErrorsDisplay>
+    <div className={form_container}>
+      {recoverPassword ? (
+        <>
+          <h3>Introduce tu email</h3>
+          <form onSubmit={onSubmit}>
+            {/* Email */}
+            <div className={input_container}>
+              <input
+                type="email"
+                label="email"
+                name="email"
+                {...register("email", {
+                  required: {
+                    value: true,
+                    message: "El email es requerido",
+                  },
+                  pattern: {
+                    value: /^[a-z0-9._%+-]+@[a-z0-9·-]+\.[a-z]{2,4}$/,
+                    message: "El email no es valido",
+                  },
+                })}
+              />
+              <label htmlFor="email">Email</label>
+            </div>
+            <div className={errors_display}>
+              {errors.email && <span>{errors.email.message}</span>}
+            </div>
+            <button type="submit" width="large">
+              Enviar
+            </button>
+          </form>
+          <div className={register_container}>
+            <span className={goback} onClick={handleGoBackClick}>
+              Volver
+              <RiArrowGoBackFill />
+            </span>
+          </div>
+        </>
+      ) : (
+        <>
+          <h3>LOGIN</h3>
+          <form onSubmit={onSubmit}>
+            {/* username */}
+            <div className={input_container}>
+              <input
+                type="text"
+                label="input"
+                name="input"
+                {...register("input", {
+                  required: {
+                    value: true,
+                    message: "Usuario o email es requerido",
+                  },
+                  minLength: {
+                    value: 2,
+                    message: "Usuario o email tiene que tener dos caracteres",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message:
+                      "Usuario o email no puede tener más de 20 caracteres",
+                  },
+                })}
+              />
+              <label htmlFor="input">Usuario o email</label>
+            </div>
+            <div className={errors_display}>
+              {errors.input && <span>{errors.input.message}</span>}
+            </div>
 
-        {/* password */}
-        <div className="input-container">
-          <input
-            type="password"
-            label="Contraseña"
-            name="password"
-            {...register("password", {
-              required: {
-                value: true,
-                message: "Password es requerido",
-              },
-              minLength: {
-                value: 6,
-                message: "La contraseña debe tener al menos 6 caracteres",
-              },
-            })}
-          />
-          <label htmlFor="contraseña">Contraseña</label>
+            {/* password */}
+            <div className={input_container}>
+              <input
+                type="password"
+                label="Contraseña"
+                name="password"
+                {...register("password", {
+                  required: {
+                    value: true,
+                    message: "La contraseña es requerida",
+                  },
+                  minLength: {
+                    value: 6,
+                    message: "La contraseña debe tener al menos 6 caracteres",
+                  },
+                })}
+              />
+              <label htmlFor="contraseña">Contraseña</label>
+            </div>
+            <div className={errors_display}>
+              {errors.password && <span>{errors.password.message}</span>}
+            </div>
+            <div className={forgot_container}>
+              <span onClick={handleForgotPasswordClick}>
+                ¿Olvidaste tu contraseña?
+              </span>
+            </div>
+            <button type="submit">Entrar</button>
+          </form>
+        </>
+      )}
+      {originalState && !recoverPassword && (
+        <div className={register_container}>
+          <p>¿No tienes cuenta?</p>
+          <Link to="/register">Registrate</Link>
         </div>
-        <ErrorsDisplay>
-          {errors.password && <span>{errors.password.message}</span>}
-        </ErrorsDisplay>
-        <ForgotPassword>
-        <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
-      </ForgotPassword>
-
-        <Button type="submit" width="large">
-          Entrar
-        </Button>
-      </form>
-      <RegisterContainer>
-        <p>¿No tienes cuenta?</p>
-        <Link to="/register">Registrate</Link>
-      </RegisterContainer>
-    </FormContainer>
+      )}
+    </div>
   );
 }
