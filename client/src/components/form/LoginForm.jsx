@@ -18,7 +18,8 @@ const {
 } = Styles;
 
 export default function LoginForm() {
-  // const authContext = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
+  console.log(authContext);
   const {
     handleSubmit,
     register,
@@ -32,14 +33,12 @@ export default function LoginForm() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      // Aquí podrías realizar validaciones adicionales si es necesario
-      console.log(data);
-      
       // Enviar datos al backend
       const response = await axios.post(apiUrl + ":1234/api/users/login", data);
   
       // Verificar el estado de la respuesta
       if (response.status === 200) {
+        authContext.login(response.data);
         alert("Bienvenido");
         navigate("/");
       } else {
