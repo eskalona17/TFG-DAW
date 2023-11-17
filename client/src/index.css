@@ -20,7 +20,7 @@ main {
     "header"
     "user"
     "navbar"
-    "newPost"
+    "main"
     "aside"
     "footer";
   grid-gap: 1rem;
@@ -31,7 +31,7 @@ main {
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
       "header header"
-      "user newPost"
+      "user main"
       "navbar aside"
       "footer footer";
   }
@@ -42,7 +42,7 @@ main {
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-areas:
       "header header header header"
-      "user newPost newPost aside"
+      "user main main aside"
       "navbar . . . "
       "footer footer footer footer";
   }

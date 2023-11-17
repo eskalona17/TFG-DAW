@@ -13,7 +13,7 @@ export const AuthContextProvider = ({ children }) => {
     console.log(inputs);
     try {
       const res = await axios.post(`${apiUrl}:1234/api/users/login`, inputs);
-      setCurrentUser(res.data);
+      setCurrentUser(res.data.name);
     } catch (err) {
       console.error("Ocurrió un error en el login: ", err);
       throw err;
@@ -22,11 +22,14 @@ export const AuthContextProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("user");
-    setCurrentUser(null)
+    setCurrentUser(null);
   };
 
   useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(currentUser));
+     // Check if the user is logged in before updating local storage
+    if (currentUser) {
+      localStorage.setItem("user", JSON.stringify(currentUser));
+    }
   }, [currentUser]);
 
   return (
