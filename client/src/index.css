@@ -21,6 +21,7 @@ main {
     "user"
     "navbar"
     "main"
+    "post"
     "aside"
     "footer";
   grid-gap: 1rem;
@@ -33,7 +34,7 @@ main {
       "header header"
       "user main"
       "navbar main"
-      "navbar main"
+      "navbar post"
       "aside ."
       "footer footer";
   }
