@@ -6,13 +6,13 @@ import Navbar from "../navbar/Navbar";
 
 const Layout = () => {
   return (
-    <>
+    <main>
       <Header />
       <User />
       <Navbar />
       <Outlet />
       <Footer />
-    </>
+    </main>
   );
 };
 

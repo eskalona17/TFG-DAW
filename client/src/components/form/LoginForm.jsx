@@ -18,7 +18,7 @@ const {
 } = Styles;
 
 export default function LoginForm() {
-  // const authContext = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
   const {
     handleSubmit,
     register,
@@ -32,25 +32,19 @@ export default function LoginForm() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      // Aquí podrías realizar validaciones adicionales si es necesario
-      console.log(data);
-      
-      // Enviar datos al backend
-      const response = await axios.post(apiUrl + ":1234/api/users/login", data);
+      // Use the login function from the context and await its completion
+      await authContext.login(data);
   
-      // Verificar el estado de la respuesta
-      if (response.status === 200) {
-        alert("Bienvenido");
-        navigate("/");
-      } else {
-        console.error("El usuario no existe:", response.statusText);
-      }
+      // Now that the login is complete, you can proceed with other actions
+      alert("Bienvenido");
+      navigate("/");
     } catch (error) {
       console.error("Error:", error.message);
       alert("Error al iniciar sesión");
     }
     reset();
   });
+  
   
 
   const [recoverPassword, setRecoverPassword] = useState(false);
