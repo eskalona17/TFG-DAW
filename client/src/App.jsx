@@ -8,6 +8,10 @@ import "./index.css";
 import Layout from "./components/layout/Layout";
 import { AuthContextProvider } from "./context/AuthContext";
 import { SocketContextProvider } from "./context/SocketContext";
+import Explore from "./pages/Explore";
+import Messages from "./pages/Messages";
+import EditProfile from "./pages/EditProfile";
+import Settings from "./pages/Settings";
 
 export default function App () {
   return (
@@ -20,10 +24,10 @@ export default function App () {
             <Route path="/forgot-password" element={<GetPassword />} />
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
-              {/* <Route path='/explora' element={<Explore />} /> */}
-              {/* <Route path='/mensajes' element={<Messages />} /> */}
-              {/* <Route path='/editar-perfil' element={<EditProfile />} /> */}
-              {/* <Route path='/ajustes' element={<Settings />} /> */}
+              <Route path='/explora' element={<Explore />} />
+              <Route path='/mensajes' element={<Messages />} />
+              <Route path='/editar-perfil' element={<EditProfile />} />
+              <Route path='/ajustes' element={<Settings />} />
               {/* <Route path='/:username' element={<UserProfile />} /> */}
               {/* <Route path='/:username/post/:postId' element={<PostPage />} /> */}
             </Route>

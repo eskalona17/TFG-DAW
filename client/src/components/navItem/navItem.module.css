@@ -1,3 +1,8 @@
 .navitem {
   list-style: none;
+  cursor: pointer;
+}
+
+.navitem:hover {
+  font-weight: bold;
 }
