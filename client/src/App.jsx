@@ -1,17 +1,18 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./variables.css";
-import Register from "./pages/Register";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import GetPassword from "./pages/GetPassword";
-import "./index.css";
-import Layout from "./components/layout/Layout";
 import { AuthContextProvider } from "./context/AuthContext";
 import { SocketContextProvider } from "./context/SocketContext";
+import "./variables.css";
+import "./index.css";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import GetPassword from "./pages/GetPassword";
+import Layout from "./components/layout/Layout";
+import Home from "./pages/Home";
 import Explore from "./pages/Explore";
 import Messages from "./pages/Messages";
 import EditProfile from "./pages/EditProfile";
 import Settings from "./pages/Settings";
+import Error404 from "./pages/Error404";
 
 export default function App () {
   return (
@@ -30,6 +31,7 @@ export default function App () {
               <Route path='/ajustes' element={<Settings />} />
               {/* <Route path='/:username' element={<UserProfile />} /> */}
               {/* <Route path='/:username/post/:postId' element={<PostPage />} /> */}
+              <Route path="*" element={<Error404 />} />
             </Route>
           </Routes>
         </SocketContextProvider>
