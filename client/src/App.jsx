@@ -6,26 +6,29 @@ import Login from "./pages/Login";
 import GetPassword from "./pages/GetPassword";
 import "./index.css";
 import Layout from "./components/layout/Layout";
-import { AuthContextProvider } from "./context/authContext";
+import { AuthContextProvider } from "./context/AuthContext";
+import { SocketContextProvider } from "./context/SocketContext";
 
-export default function App() {
+export default function App () {
   return (
     <AuthContextProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<GetPassword />} />
+        <SocketContextProvider>
+          <Routes>
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<GetPassword />} />
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
-            {/* <Route path='/explora' element={<Explore />} /> */}
-            {/* <Route path='/mensajes' element={<Messages />} /> */}
-          {/* <Route path='/editar-perfil' element={<EditProfile />} /> */}
-            {/* <Route path='/ajustes' element={<Settings />} /> */}
-            {/* <Route path='/:username' element={<UserProfile />} /> */}
-            {/* <Route path='/:username/post/:postId' element={<PostPage />} /> */}
-          </Route>
-        </Routes>
+              {/* <Route path='/explora' element={<Explore />} /> */}
+              {/* <Route path='/mensajes' element={<Messages />} /> */}
+              {/* <Route path='/editar-perfil' element={<EditProfile />} /> */}
+              {/* <Route path='/ajustes' element={<Settings />} /> */}
+              {/* <Route path='/:username' element={<UserProfile />} /> */}
+              {/* <Route path='/:username/post/:postId' element={<PostPage />} /> */}
+            </Route>
+          </Routes>
+        </SocketContextProvider>
       </BrowserRouter>
     </AuthContextProvider>
   );

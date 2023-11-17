@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "../../context/authContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Styles from "./form.module.css";
@@ -17,7 +17,7 @@ const {
   goback,
 } = Styles;
 
-export default function LoginForm() {
+export default function LoginForm () {
   const authContext = useContext(AuthContext);
   const {
     handleSubmit,
@@ -34,7 +34,7 @@ export default function LoginForm() {
     try {
       // Use the login function from the context and await its completion
       await authContext.login(data);
-  
+
       // Now that the login is complete, you can proceed with other actions
       alert("Bienvenido");
       navigate("/");
@@ -44,8 +44,8 @@ export default function LoginForm() {
     }
     reset();
   });
-  
-  
+
+
 
   const [recoverPassword, setRecoverPassword] = useState(false);
 
