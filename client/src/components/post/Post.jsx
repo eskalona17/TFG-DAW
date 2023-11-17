@@ -1,6 +1,7 @@
 import Styles from "./post.module.css"
 
 const Post = () => {
+  
     return (
       <div className={Styles.post}>
         <div className={Styles.post_container_user}>
