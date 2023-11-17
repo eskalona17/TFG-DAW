@@ -1,5 +1,5 @@
 .newPost {
-  grid-area: newPost;
+  grid-area: main;
   background-color: var(--white-color);
   border-radius: 6px;
   padding: 1rem;
