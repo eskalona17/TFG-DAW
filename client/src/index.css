@@ -32,7 +32,9 @@ main {
     grid-template-areas:
       "header header"
       "user main"
-      "navbar aside"
+      "navbar main"
+      "navbar main"
+      "aside ."
       "footer footer";
   }
 }
@@ -43,7 +45,8 @@ main {
     grid-template-areas:
       "header header header header"
       "user main main aside"
-      "navbar . . . "
+      "navbar main main . "
+      " . main main . "
       "footer footer footer footer";
   }
 }
