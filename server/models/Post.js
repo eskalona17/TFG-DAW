@@ -14,7 +14,8 @@ const PostSchema = new mongoose.Schema(
       maxLength: 500
     },
     media: {
-      type: String
+      type: String,
+      default: ''
     },
     favorites: {
       type: [mongoose.Schema.Types.ObjectId],

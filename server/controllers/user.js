@@ -11,11 +11,11 @@ import nodemailer from 'nodemailer'
 import Post from '../models/Post.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
+import multer from 'multer'
+import { profilePicUpload } from '../config/multerConfig.js'
 
 export async function register (req, res) {
-  const data = req.body
-  const { name, username, email, password, confirmPassword, profile, address } =
-    data
+  const { name, username, email, password, confirmPassword, profile, address } = req.body
 
   try {
     await validateText(name)
@@ -42,24 +42,31 @@ export async function register (req, res) {
     }
     const hashedPwd = await bcrypt.hash(password, 10)
 
+    profilePicUpload.single('profilePic')(req, res, async function (err) {
+      if (err instanceof multer.MulterError) {
+        return res.status(400).json({ message: 'Error en la carga de la imagen de perfil' })
+      } else if (err) {
+        return res.status(500).json({ message: 'Error interno del servidor' })
+      }
+    })
+
     const newUser = new User({
       name,
       username,
       email,
       password: hashedPwd,
       profile,
-      address
+      address,
+      profilePic: req.file ? req.file.filename : null
     })
 
     await newUser.save()
 
     if (newUser) {
       generateTokenAndSetCookie(newUser._id, res)
-      res.status(201).json({
-        success: true,
-        message: 'User registered successfully',
-        newUser
-      })
+      res
+        .status(201)
+        .json({ success: true, message: 'User registered successfully', newUser })
     }
   } catch (error) {
     console.error('Error:', error.message)
@@ -241,7 +248,6 @@ export async function updateProfile (req, res) {
     password,
     newPassword,
     confirmNewPassword,
-    profilePic,
     profile,
     address
   } = req.body
@@ -299,15 +305,24 @@ export async function updateProfile (req, res) {
     user.username = username ?? user.username
     user.email = email ?? user.email
     user.profile = profile ?? user.profile
-    user.profilePic = profilePic ?? user.profilePic
     user.address = address ?? user.address
 
-    user = await user.save()
+    profilePicUpload.single('profilePic')(req, res, async function (err) {
+      if (err instanceof multer.MulterError) {
+        return res.status(400).json({ message: 'Error en la carga de la imagen de perfil' })
+      } else if (err) {
+        return res.status(500).json({ message: 'Error interno del servidor' })
+      }
+      // Si la carga de la imagen es exitosa, actualiza la propiedad de la imagen de perfil
+      user.profilePic = req.file ? req.file.filename : user.profilePic
+    })
 
+    user = await user.save()
     res.status(200).json({
       success: true,
       message: 'User profile updated successfully',
       user
+
     })
   } catch (error) {
     console.error('Error:', error.message)

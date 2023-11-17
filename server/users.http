@@ -3,9 +3,9 @@ POST http://localhost:1234/api/users/register
 content-type: application/json
 
 {
-  "name": "Nacho",
-  "username": "nacho",
-  "email": "nchmnndzlpz@gmail.com",
+  "name": "shauny",
+  "username": "shauny",
+  "email": "shauny@gmail.com",
   "password": "123456",
   "confirmPassword": "123456",
   "profile": "personal"
@@ -35,7 +35,7 @@ POST http://localhost:1234/api/users/login
 content-type: application/json
 
 {
-  "input": "nacho",
+  "input": "laurashauny",
   "password": "123456"
 }
 
@@ -72,16 +72,16 @@ POST http://localhost:1234/api/users/logout
 POST http://localhost:1234/api/users/follow/652faca5a63a1e87d8ed0a55
 
 ### Update user
-PATCH http://localhost:1234/api/users/update/652eda0aa299150a6dbf1fef
+PATCH http://localhost:1234/api/users/update/6544c81c90831c86769c355d
 content-type: application/json
 
 {
-  "name": "Nacho",
-  "username": "nacho",
+  "name": "shauny",
+  "username": "laurashauny",
   "password": "123456",
   "newPassword": "123456",
   "confirmNewPassword": "123456",
-  "email": "nacho@email.es",
+  "email": "shauny@email.es",
   "profile": "personal"
 }
 

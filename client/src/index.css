@@ -45,8 +45,8 @@ main {
     grid-template-areas:
       "header header header header"
       "user main main aside"
-      "navbar main main . "
-      " . main main . "
+      "navbar post post . "
+      " . post post . "
       "footer footer footer footer";
   }
 }

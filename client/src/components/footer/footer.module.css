@@ -1,7 +1,21 @@
 .footer {
   grid-area: footer;
-  /* grid-column: 1 / 5;
-  grid-row: 5;
-  background-color: var(--white-color);
-  border-radius: 6px; */
+
+  background-color: #ffa07a;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.footer p {
+  margin: 0; 
+}
+
+.footer div:last-child {
+  
+  margin-top: 10px;
+  font-size: 0.8em;
 }
