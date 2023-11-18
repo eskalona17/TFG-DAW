@@ -1,11 +1,12 @@
 import Styles from './currentUser.module.css'
 import { useContext } from 'react'
 import { AuthContext } from "../../context/AuthContext"
+import Button from '../button/Button'
 
 
 const CurrentUser = () => {
   const { currentUser } = useContext(AuthContext)
-  
+
   return (
     <aside className={Styles.user}>
       <div className={Styles.user_container}>
@@ -16,8 +17,9 @@ const CurrentUser = () => {
         </div>
       </div>
       <div className={Styles.follow_container}>
-        <span className={Styles.followers}>{currentUser ? (`${currentUser.followers.length} seguidores`) : "0 seguidores"}</span>
-        <span className={Styles.followers}>{currentUser ? (`${currentUser.following.length} seguidos`) : "0 seguidos"}</span>
+        <Button text={currentUser ? (`${currentUser.followers.length === 1 ? `${currentUser.followers.length} seguidor` : `${currentUser.followers.length} seguidores`}`) : "0 seguidores"} onClick={() => console.log('click')} variant="alternative" />
+        <Button text={currentUser ? (`${currentUser.following.length === 1 ? `${currentUser.following.length} seguido` : `${currentUser.following.length} seguidos`}`) : "0 seguidos"} onClick={() => console.log('click')} variant="alternative" />
+
       </div>
     </aside>
   )

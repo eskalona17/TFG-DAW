@@ -1,0 +1,45 @@
+.user {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--white-color);
+  border-radius: 6px;
+  margin: 0;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.user_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  max-width: 60%;
+}
+
+.user_img {
+  width: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.user_info_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.user_info {
+  margin: .5rem 0;
+  text-align: start;
+}
+
+.button_container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 40%;
+}

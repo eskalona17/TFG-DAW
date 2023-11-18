@@ -10,6 +10,7 @@ export default function RecoverPassword() {
     watch,
     formState: { errors },
     reset,
+    button
   } = useForm();
 
   const onSubmit = handleSubmit((data) => {
@@ -69,7 +70,7 @@ export default function RecoverPassword() {
           )}
         </div>
 
-        <button type="submit" width="large">
+        <button className={button} type="submit" width="large">
           Enviar
         </button>
       </form>

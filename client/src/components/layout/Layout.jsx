@@ -3,6 +3,7 @@ import Header from "../header/Header"
 import CurrentUser from "../currentUser/CurrentUser"
 import Footer from "../footer/Footer";
 import Navbar from "../navbar/Navbar";
+import Suggestions from "../suggestions/Suggestions";
 
 const Layout = () => {
   return (
@@ -11,6 +12,7 @@ const Layout = () => {
       <CurrentUser />
       <Navbar />
       <Outlet />
+      <Suggestions />
       <Footer />
     </>
   );
