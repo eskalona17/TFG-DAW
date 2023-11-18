@@ -1,6 +1,11 @@
+import User from "../components/user/User"
+
 const Explore = () => {
   return (
-    <div>Explore</div>
+    <main className="main">
+      <User />
+      <User />
+    </main>
   )
 }
 

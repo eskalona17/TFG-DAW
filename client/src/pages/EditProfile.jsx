@@ -1,6 +1,8 @@
 const EditProfile = () => {
   return (
-    <div>EditProfile</div>
+    <main className="main">
+      <h2>Edit profile</h2>
+    </main>
   )
 }
 

@@ -1,6 +1,8 @@
 const Settings = () => {
   return (
-    <div>Settings</div>
+    <main className="main">
+      <h2>Settings</h2>
+    </main>
   )
 }
 

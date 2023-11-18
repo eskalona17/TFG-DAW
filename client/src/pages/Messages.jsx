@@ -1,6 +1,8 @@
 const Messages = () => {
   return (
-    <div>Messages</div>
+    <main className="main">
+      <h2>Messages</h2>
+    </main>
   )
 }
 
