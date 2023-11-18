@@ -11,12 +11,12 @@ export const useSocket = () => {
 export const SocketContextProvider = ({ children }) => {
   const [socket, setSocket] = useState(null)
   const [onlineUsers, setOnlineUsers] = useState([])
-  const { user } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     const socket = io('http://localhost:1234', {
       query: {
-        userId: user?._id
+        userId: currentUser?._id
       }
     })
     setSocket(socket)
@@ -24,7 +24,7 @@ export const SocketContextProvider = ({ children }) => {
       setOnlineUsers(users)
     })
     return () => socket && socket.close()
-  }, [user?._id])
+  }, [currentUser?._id])
 
 
   return (

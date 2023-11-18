@@ -96,13 +96,7 @@ export async function login (req, res) {
 
     generateTokenAndSetCookie(user._id, res)
 
-    res.status(200).json({
-      id: user.id,
-      name: user.name,
-      username: user.username,
-      email: user.email,
-      profile: user.profile
-    })
+    res.status(200).send(user)
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })

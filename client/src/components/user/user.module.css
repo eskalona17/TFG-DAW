@@ -7,7 +7,6 @@
   padding: 1rem;
   margin: 0;
   gap: 1rem;
-  height: fit-content;
 }
 
 .user_container {
@@ -16,9 +15,9 @@
   gap: 1rem;
 }
 
-.user_img {
-  min-width: 75px;
-  aspect-ratio: 1/1;
+.user_img {    
+  width: 100px;
+  object-fit: cover;
   border-radius: 50%;
   background-color: var(--light-orange);
 }
@@ -35,8 +34,16 @@
 }
 
 .followers {
-  font-size: 0.7rem;
+  font-size: .9rem;
+  min-width: 40%;
+  text-align: center;
   background-color: var(--light-orange);
   padding: 0.2rem 0.6rem;
   border-radius: 6px;
+}
+
+.followers:hover {
+  background-color: var(--orange-color);
+  color: var(--white-color);
+  cursor: pointer;
 }
