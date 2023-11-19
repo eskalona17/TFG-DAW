@@ -133,3 +133,14 @@ h3 {
   flex-direction: column;
   width: 48%;
 }
+
+.button {
+  width: 100%;
+  background-color: var(--orange-color);
+  height: 35px;
+  border-radius: 0.375rem;
+  border: 1px solid transparent;
+  color: var(--bg-white-color);
+  cursor: pointer;
+  margin: 20px 0;
+}

@@ -1,31 +1,40 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthContextProvider } from "./context/AuthContext";
+import { SocketContextProvider } from "./context/SocketContext";
 import "./variables.css";
+import "./index.css";
 import Register from "./pages/Register";
-import Home from "./pages/Home";
 import Login from "./pages/Login";
 import GetPassword from "./pages/GetPassword";
-import "./index.css";
 import Layout from "./components/layout/Layout";
-import { AuthContextProvider } from "./context/authContext";
+import Home from "./pages/Home";
+import Explore from "./pages/Explore";
+import Messages from "./pages/Messages";
+import EditProfile from "./pages/EditProfile";
+import Settings from "./pages/Settings";
+import Error404 from "./pages/Error404";
 
-export default function App() {
+export default function App () {
   return (
     <AuthContextProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<GetPassword />} />
+        <SocketContextProvider>
+          <Routes>
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<GetPassword />} />
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
-            {/* <Route path='/explora' element={<Explore />} /> */}
-            {/* <Route path='/mensajes' element={<Messages />} /> */}
-          {/* <Route path='/editar-perfil' element={<EditProfile />} /> */}
-            {/* <Route path='/ajustes' element={<Settings />} /> */}
-            {/* <Route path='/:username' element={<UserProfile />} /> */}
-            {/* <Route path='/:username/post/:postId' element={<PostPage />} /> */}
-          </Route>
-        </Routes>
+              <Route path='/explora' element={<Explore />} />
+              <Route path='/mensajes' element={<Messages />} />
+              <Route path='/editar-perfil' element={<EditProfile />} />
+              <Route path='/ajustes' element={<Settings />} />
+              {/* <Route path='/:username' element={<UserProfile />} /> */}
+              {/* <Route path='/:username/post/:postId' element={<PostPage />} /> */}
+              <Route path="*" element={<Error404 />} />
+            </Route>
+          </Routes>
+        </SocketContextProvider>
       </BrowserRouter>
     </AuthContextProvider>
   );

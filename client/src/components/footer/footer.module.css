@@ -1,7 +1,6 @@
 .footer {
   grid-area: footer;
-
-  background-color: #ffa07a;
+  background-color: var(--white-color);
   border-radius: 6px;
   display: flex;
   flex-direction: column;

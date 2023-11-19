@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "../../context/authContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Styles from "./form.module.css";
@@ -15,9 +15,10 @@ const {
   forgot_container,
   register_container,
   goback,
+  button
 } = Styles;
 
-export default function LoginForm() {
+export default function LoginForm () {
   const authContext = useContext(AuthContext);
   const {
     handleSubmit,
@@ -34,7 +35,7 @@ export default function LoginForm() {
     try {
       // Use the login function from the context and await its completion
       await authContext.login(data);
-  
+
       // Now that the login is complete, you can proceed with other actions
       alert("Bienvenido");
       navigate("/");
@@ -44,8 +45,8 @@ export default function LoginForm() {
     }
     reset();
   });
-  
-  
+
+
 
   const [recoverPassword, setRecoverPassword] = useState(false);
 
@@ -89,7 +90,7 @@ export default function LoginForm() {
             <div className={errors_display}>
               {errors.email && <span>{errors.email.message}</span>}
             </div>
-            <button type="submit" width="large">
+            <button className={button} type="submit" width="large">
               Enviar
             </button>
           </form>
@@ -159,7 +160,7 @@ export default function LoginForm() {
                 ¿Olvidaste tu contraseña?
               </span>
             </div>
-            <button type="submit">Entrar</button>
+            <button type="submit" className={button}>Entrar</button>
           </form>
         </>
       )}

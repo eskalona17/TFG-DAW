@@ -14,6 +14,7 @@ const {
   tabs,
   addedInputs,
   inputs_errors,
+  button
 } = Styles;
 
 export default function Form() {
@@ -297,7 +298,7 @@ export default function Form() {
           </>
         )}
 
-        <button type="submit">Enviar</button>
+        <button className={button} type="submit">Enviar</button>
       </form>
       <div className={register_container}>
         <p>¿Ya tienes cuenta?</p>
