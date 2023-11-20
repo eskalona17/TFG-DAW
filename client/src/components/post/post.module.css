@@ -1,6 +1,7 @@
 .post {
     grid-area: post;
     border: 1px solid #ccc;
+    background-color: white;
     border-radius: 8px;
     margin: 16px 0;
     padding: 16px;
@@ -54,9 +55,9 @@
 .multimedia_item {
   width: 100%; 
   display: flex;  
-  max-width: 75%;
+
   height: auto;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -65,16 +66,91 @@
   display: flex;
   flex-wrap: wrap;
   gap: .5rem;
-  justify-content: space-evenly;
+  justify-content: flex-start;
 }
 
-.coments  {
-  font-size: 0.7rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 6px;
-}
 .likes  {
-  font-size: 0.7rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 6px;
+  border-radius: 8px;
+}
+
+.comment {
+  border-radius: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  
+  }
+
+
+
+.comment_container{
+  background-color: var(--bg-main-color);
+  border-radius: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+
+.comment_user_info {
+  width: auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+.comment_user_img_container {
+  margin-right: 10px;
+}
+
+.comment_user_img {
+  width: 50px;
+  height: 50px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: var(--light-orange);
+}
+
+
+
+.comment_user_name {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.comment_user_publictime {
+  font-size: 10px;
+  margin-top: 0px ;
+}
+
+.comment_text_container {
+  flex-grow: 1;
+}
+
+.comment_text {
+  font-size: 14px;
+}
+
+.reply_container {
+  display: flex;
+  background-color: var(--bg-main-color);
+  border-radius: 8px;
+  margin-top: 8px;
+  padding: 8px;
+ 
+}
+
+.comment_input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 8px;
+  background-color: var(--bg-main-color);
+}
+
+.comment_submit {
+  
+  border: none;
+  border-radius: 4px;
+  color: black;
+  cursor: pointer;
+  background-color: var(--bg-main-color);
 }
