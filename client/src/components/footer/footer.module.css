@@ -1,20 +1,13 @@
 .footer {
   grid-area: footer;
   background-color: var(--white-color);
-  border-radius: 6px;
+  padding: 20px;
+}
+
+.list {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
 }
 
-.footer p {
-  margin: 0; 
-}
-
-.footer div:last-child {
-  
-  margin-top: 10px;
-  font-size: 0.8em;
-}

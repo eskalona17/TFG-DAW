@@ -10,8 +10,10 @@
   --white-color: #fafafa;
   --dark-color: #1e1e1e;
   --orange-color: #ffa07a;
-  --light-orange: #FFD5C5;
-  --dark-line: #1e1e1e;
+  --light-orange: #ffd5c5;
   --bg-white-color: #ffffff;
   font-size: 1rem;
+  font-family: var(--main-font);
+  max-width: 1920px;
+  margin: 0 auto;
 }

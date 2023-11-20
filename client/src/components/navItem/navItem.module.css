@@ -1,8 +1,14 @@
 .navitem {
   list-style: none;
-  cursor: pointer;
 }
 
-.navitem:hover {
-  font-weight: bold;
+.navitem a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.navitem svg {
+  margin-right: 0.5rem;
+  align-self: center;
 }

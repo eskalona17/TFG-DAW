@@ -7,7 +7,7 @@ h3 {
   position: relative;
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid var(--dark-line);
+  border-bottom: 1px solid var(--dark-color);
 }
 
 .input_container:focus-within label {
