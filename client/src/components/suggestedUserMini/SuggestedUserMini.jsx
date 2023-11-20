@@ -1,14 +1,16 @@
 import Styles from "./suggestedUserMini.module.css";
 import Button from "../button/Button";
+import url_image from "../../assets/img/media-1234.png"
 
 const SuggestedUserMini = ({ username }) => {
   const { user, user_container, user_img, user_info_container, user_info, button_container } =
     Styles;
 
+
   return (
     <div className={user}>
       <div className={user_container}>
-        <img src="/media-1234.png" alt="" className={user_img} />
+        <img src={url_image} alt="" className={user_img} />
         <div className={user_info_container}>
           <p className={user_info}>{username}</p>
           <div className={button_container}>

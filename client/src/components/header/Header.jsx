@@ -18,7 +18,7 @@ const Header = () => {
   return (
     <header className={header}>
       <div className={title_container}>
-        <img src="../../src/assets/img/logo.svg" alt="Insta Pet Logo" className={logo} />
+        <img src="../src/assets/img/logo.svg" alt="Insta Pet Logo" className={logo} />
       </div>
       <div className={search_container}>
         <form className={search_form}>
