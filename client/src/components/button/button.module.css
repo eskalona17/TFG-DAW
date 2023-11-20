@@ -1,12 +1,12 @@
 .button {
-  border-width: 1px;
-  border-style: solid;
+  border: 1px solid;
   border-radius: 6px;
   padding: 0.5rem 2rem;
   cursor: pointer;
   font-size: 1rem;
-  max-width: fit-content;
+  width: fit-content;
   align-self: center;
+  transition: 0.3s;
 }
 
 .button:hover {
@@ -15,43 +15,50 @@
   border-color: var(--light-orange);
 }
 
-.primary {
+.primary,
+.primary-small,
+.primary-large,
+.secondary,
+.secondary-small,
+.alternative {
+  font-size: .9rem;
+  border-radius: 6px;
+}
+
+.primary,
+.primary-small,
+.primary-large {
   background-color: var(--orange-color);
   border-color: var(--orange-color);
   color: var(--white-color);
 }
 
 .primary-small {
-  background-color: var(--orange-color);
-  border-color: var(--orange-color);
-  color: var(--white-color);
   padding: 0.2rem 0.6rem;
-  font-size: .9rem;
 }
 
-.secondary {
-  background-color: inherit;
+.primary-large {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.secondary,
+.secondary-small {
   border-color: var(--orange-color);
-  color: --dark-color;
+  color: var(--dark-color);
 }
 
 .secondary-small {
-  background-color: inherit;
-  border-color: var(--orange-color);
-  color: --dark-color;
   padding: 0.2rem 0.6rem;
-  font-size: .9rem;
 }
 
 .alternative {
   border-color: var(--light-orange);
-  font-size: .9rem;
   min-width: 40%;
   text-align: center;
   background-color: var(--light-orange);
   color: var(--dark-color);
   padding: 0.2rem 0.6rem;
-  border-radius: 6px;
 }
 
 .alternative:hover {

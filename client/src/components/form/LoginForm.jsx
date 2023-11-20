@@ -4,9 +4,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Styles from "./form.module.css";
 import { RiArrowGoBackFill } from "react-icons/ri";
-import axios from "axios";
-
-const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+import Button from "../button/Button";
 
 const {
   input_container,
@@ -15,10 +13,10 @@ const {
   forgot_container,
   register_container,
   goback,
-  button
+  button,
 } = Styles;
 
-export default function LoginForm () {
+export default function LoginForm() {
   const authContext = useContext(AuthContext);
   const {
     handleSubmit,
@@ -45,8 +43,6 @@ export default function LoginForm () {
     }
     reset();
   });
-
-
 
   const [recoverPassword, setRecoverPassword] = useState(false);
 
@@ -90,9 +86,12 @@ export default function LoginForm () {
             <div className={errors_display}>
               {errors.email && <span>{errors.email.message}</span>}
             </div>
-            <button className={button} type="submit" width="large">
-              Enviar
-            </button>
+            <Button
+              text="Enviar"
+              className={button}
+              type="submit"
+              variant="primary-large"
+            />
           </form>
           <div className={register_container}>
             <span className={goback} onClick={handleGoBackClick}>
@@ -160,7 +159,12 @@ export default function LoginForm () {
                 ¿Olvidaste tu contraseña?
               </span>
             </div>
-            <button type="submit" className={button}>Entrar</button>
+            <Button
+              text="Entrar"
+              className={button}
+              type="submit"
+              variant="primary-large"
+            />
           </form>
         </>
       )}
