@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Styles from "./post.module.css";
+import { VscStarEmpty, VscStarFull, VscComment, VscSend } from "react-icons/vsc";
 import url_image from "../../assets/img/media-1234.png";
 
 const Post = () => {
@@ -8,7 +9,11 @@ const Post = () => {
   const [commentsList, setCommentsList] = useState([
     { user: "Usuario Ejemplo", text: "Este es un comentario de ejemplo 1." },
   ]);
+  const [isFavorited, setIsFavorited] = useState(false);
 
+  const handleFavoriteClick = () => {
+    setIsFavorited(!isFavorited);
+  };
   const handleCommentClick = () => {
     setShowComments(!showComments);
   };
@@ -47,7 +52,8 @@ const Post = () => {
     comment_submit,
     reply_container,
   } = Styles;
-
+  
+  const orange_color = "#ffa07a";
   return (
     <div className={post}>
       <div className={post_container_user}>
@@ -64,15 +70,23 @@ const Post = () => {
         </div>
       </div>
       <div className={likes_container}>
-        <span className={likes}>1 favorito</span>
+        <span className={likes} onClick={handleFavoriteClick}>
+          {isFavorited ? (
+             <VscStarFull  color={orange_color}/>
+          ):(
+            <VscStarEmpty  color={orange_color}/>
+          )}
+          favorito
+        </span>
         <span className={comments} onClick={handleCommentClick}>
+          <VscComment color={orange_color} />
           2 comentarios
         </span>
       </div>
       {showComments && (
         <div className={comments_container}>
           {commentsList.map((comment, index) => (
-            <div key={index} className={comment}>
+            <div key={index} className={Styles.comment}>
               <div className={comment_user_img_container}>
                 <img src={url_image} alt="" className={comment_user_img} />
               </div>
@@ -97,7 +111,7 @@ const Post = () => {
               className={comment_input}
             />
             <button onClick={handleCommentSubmit} className={comment_submit}>
-              Enviar
+              <VscSend color={orange_color} />
             </button>
           </div>
         </div>
