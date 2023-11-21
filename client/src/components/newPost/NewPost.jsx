@@ -11,7 +11,7 @@ const NewPost = () => {
     newPost_button,
   } = Styles;
 
-  const orange_color = "ffa07a";
+  const orange_color = "#ffa07a";
   
   return (
     <div className={newPost}>
