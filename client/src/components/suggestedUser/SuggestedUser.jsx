@@ -1,22 +1,40 @@
-import Styles from './suggestedUser.module.css'
-import Button from '../button/Button';
+import Styles from "./suggestedUser.module.css";
+import Button from "../button/Button";
+import url_image from "../../assets/img/media-1234.png";
 
 const SuggestedUser = () => {
+  const {
+    user,
+    user_container,
+    user_img,
+    user_info_container,
+    user_info,
+    button_container,
+  } = Styles;
+
   return (
-    <div className={Styles.user}>
-      <div className={Styles.user_container}>
-        <img src="/media-1234.png" alt="" className={Styles.user_img} />
-        <div className={Styles.user_info_container}>
-          <p className={Styles.user_info}>Nombre apellido apellido</p>
-          <p className={Styles.user_info}>@username</p>
+    <div className={user}>
+      <div className={user_container}>
+        <img src={url_image} alt="" className={user_img} />
+        <div className={user_info_container}>
+          <p className={user_info}>Nombre apellido apellido</p>
+          <p className={user_info}>@username</p>
         </div>
       </div>
-      <div className={Styles.button_container}>
-        <Button text="Seguir" onClick={() => console.log('click')} variant="primary" />
-        <Button text="Mensaje" onClick={() => console.log('click')} variant="secondary" />
+      <div className={button_container}>
+        <Button
+          text="Seguir"
+          onClick={() => console.log("click")}
+          variant="primary"
+        />
+        <Button
+          text="Mensaje"
+          onClick={() => console.log("click")}
+          variant="secondary"
+        />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SuggestedUser
+export default SuggestedUser;

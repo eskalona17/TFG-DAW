@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Styles from "./form.module.css";
 import axios from "axios";
+import Button from "../button/Button";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -14,7 +15,7 @@ const {
   tabs,
   addedInputs,
   inputs_errors,
-  button
+  button,
 } = Styles;
 
 export default function Form() {
@@ -298,7 +299,12 @@ export default function Form() {
           </>
         )}
 
-        <button className={button} type="submit">Enviar</button>
+        <Button
+          text="Enviar"
+          className={button}
+          type="submit"
+          variant="primary-large"
+        />
       </form>
       <div className={register_container}>
         <p>¿Ya tienes cuenta?</p>
