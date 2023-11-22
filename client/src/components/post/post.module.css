@@ -1,7 +1,7 @@
 .post {
     grid-area: post;
     border: 1px solid #ccc;
-    background-color: white;
+    background-color: var(--white-color);
     border-radius: 8px;
     margin: 16px 0;
     padding: 16px;
