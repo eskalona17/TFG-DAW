@@ -1,7 +1,8 @@
+import EditProfileForm from "./../components/form/EditProfileForm"
 const EditProfile = () => {
   return (
     <main className="main">
-      <h2>Edit profile</h2>
+      <EditProfileForm/>
     </main>
   )
 }
