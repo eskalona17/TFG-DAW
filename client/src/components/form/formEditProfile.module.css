@@ -29,7 +29,7 @@
   .inputContainer {
     width: 100%;
     display: flex;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     
   }
 
@@ -55,13 +55,19 @@
     flex-grow: 1;
     padding: 10px;
     margin-right: 5px;
-    margin-bottom: 5px;
+    
     font-size: 14px;
     border: 1px solid var(--light-orange);
     border-radius: 4px;
 
   }
-  
+  .errors_display {
+    display: flex;
+    color: tomato;
+    font-size: x-small;
+    flex-direction: column;
+    align-items: center;
+  }
   .selectorContainer {
     background-color: var(--white-color);
     width: 100%;
