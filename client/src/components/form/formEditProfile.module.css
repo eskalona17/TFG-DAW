@@ -19,19 +19,13 @@
   }
   .editButton {
     position: absolute;
-    bottom: 25px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 85%;
+    left: 45%;
     background-color: var(--orange-color);
-    color: var(--white-color);
-    padding: 5px 10px;
-    border-radius: 50%; /* Hace que el botón tenga la forma del círculo */
-    cursor: pointer;
-    clip-path: circle(50% at 50% 50%); /* Recorta el botón para que tenga la forma del círculo */
+    color: var(--dark-color);
+  
   }
-  
-  
-  
+
   .inputContainer {
     width: 100%;
     display: flex;
