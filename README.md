@@ -36,15 +36,14 @@ Ahora, tendrás ambos servidores desplegados en tu entorno local.
 
 ### Iniciar Sesión
 
-1. Abre tu navegador y ve a [http://localhost:5173/login](http://localhost:5173/login).
+1. Abre tu navegador y ve a [http://localhost:5173/login](http://localhost:5173/login)
 2. Ingresa con el usuario de prueba:
-
     - Usuario: test
     - Contraseña: 123456
 
 ### Registro de Usuario
 
-1. Para registrar un nuevo usuario, visita [http://localhost:5173/register](http://localhost:5173/register).
+1. Para registrar un nuevo usuario, visita [http://localhost:5173/register](http://localhost:5173/register)
 2. Completa el formulario y crea un nuevo usuario.
 
 ## 4. Navegación y Funcionalidades
@@ -59,7 +58,7 @@ Después de iniciar sesión, puedes explorar las distintas vistas de la aplicaci
 
 ## 5. Estado de Desarrollo
 
-- La parte del servidor está configurada en un 90% y funcionando.
+- La parte del servidor está configurada y funcionando en un 95%.
 - Se está trabajando en la conexión entre el cliente y el servidor.
 - El diseño definitivo y la funcionalidad completa del frontend están en desarrollo.
 
