@@ -36,7 +36,7 @@ npm run dev
 
 ### a. Iniciar Sesión
 
-1. Abre tu navegador y ve a `[http://localhost:1234/login](http://localhost:1234/login)`.
+1. Abre tu navegador y ve a [http://localhost:1234/login](http://localhost:1234/login).
 2. Ingresa con el usuario de prueba:
 
     - Usuario: test
@@ -44,18 +44,18 @@ npm run dev
 
 ### b. Registro de Usuario
 
-1. Para registrar un nuevo usuario, visita `[http://localhost:1234/register](http://localhost:1234/register)`.
+1. Para registrar un nuevo usuario, visita [http://localhost:1234/register](http://localhost:1234/register).
 2. Completa el formulario y crea un nuevo usuario.
 
 ## 4. Navegación y Funcionalidades
 
 - Después de iniciar sesión, puedes explorar las distintas vistas de la aplicación:
 
-    - Principal: Página principal después del inicio de sesión.
-    - Explora: Vista de exploración.
-    - Mensajes: (Aún no desarrollada)
-    - Editar Perfil: Edita la información de tu perfil.
-    - Configuración: (Aún no desarrollada)
+    - *Principal:* Página principal después del inicio de sesión.
+    - *Explora:* Vista de exploración.
+    - *Mensajes:* (En desarrollo).
+    - *Editar Perfil:* Edita la información de tu perfil.
+    - *Configuración:* (En desarrollo).
 
 ## 5. Estado de Desarrollo
 
