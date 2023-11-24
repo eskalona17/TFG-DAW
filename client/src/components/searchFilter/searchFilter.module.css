@@ -1,0 +1,41 @@
+.searchFilter {
+    grid-area: main;
+    background-color: var(--white-color);
+    border-radius: 6px;
+    padding: 1rem;
+    
+}
+
+.searchFilter_container {
+    background-color: var(--white-color);
+    display: flex;
+    width: 100%;
+    align-content: center;
+    justify-content: space-evenly;
+    border-radius: 4px;
+}
+.search_button {
+    border: 1px solid var(--light-orange);
+    cursor: pointer;
+    font-size: 15px;
+    border-radius: 8px;
+    align-items: center; 
+    width: 100%;
+    margin: 1px;
+    box-sizing: border-box;
+}
+
+
+.search_button.active {
+    color: var(--white-color);
+    background-color: var(--orange-color);
+    
+}
+
+.search_button.active svg {
+    fill: var(--white-color)
+}
+
+.search_button svg {
+    margin-right: 0.5rem;
+}
