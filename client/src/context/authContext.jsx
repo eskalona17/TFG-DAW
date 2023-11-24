@@ -23,6 +23,7 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
+  // ademas de borrar el user en el localstorage, hay que borrarlo tambien de la cookie y su jwt
   const logout = () => {
     localStorage.removeItem("user");
     setCurrentUser(null);
