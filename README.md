@@ -1,14 +1,14 @@
 # Guía de Uso de la aplicación (nombre por determinar)
 
-- Bienvenido/a a nuestra aplicación. A continuación, te proporcionamos una guía paso a paso para que puedas probar la aplicación de manera efectiva.
+Bienvenido/a a nuestra aplicación. A continuación, te proporcionamos una guía paso a paso para que puedas probar la aplicación de manera efectiva.
 
 ## 1. Descarga y Configuración Inicial
 
-- Descarga el archivo y descomprímelo. Obtendrás dos carpetas: `client` y `server`.
+Descarga el archivo y descomprímelo. Obtendrás dos carpetas: `client` y `server`.
 
 ## 2. Iniciar Servidores
 
-- Para ejecutar la aplicación, sigue estos pasos desde tu terminal:
+Para ejecutar la aplicación, sigue estos pasos desde tu terminal:
 
 ### a. Iniciar el Cliente
 
@@ -30,11 +30,11 @@ npm run dev
 npm run dev
 ```
 
-- Ahora, tendrás ambos servidores desplegados en tu entorno local.
+Ahora, tendrás ambos servidores desplegados en tu entorno local.
 
 ## 3. Acceso a la App
 
-### a. Iniciar Sesión
+### Iniciar Sesión
 
 1. Abre tu navegador y ve a [http://localhost:1234/login](http://localhost:1234/login).
 2. Ingresa con el usuario de prueba:
@@ -42,20 +42,20 @@ npm run dev
     - Usuario: test
     - Contraseña: 123456
 
-### b. Registro de Usuario
+### Registro de Usuario
 
 1. Para registrar un nuevo usuario, visita [http://localhost:1234/register](http://localhost:1234/register).
 2. Completa el formulario y crea un nuevo usuario.
 
 ## 4. Navegación y Funcionalidades
 
-- Después de iniciar sesión, puedes explorar las distintas vistas de la aplicación:
+Después de iniciar sesión, puedes explorar las distintas vistas de la aplicación:
 
-    - ***Principal:*** Página principal después del inicio de sesión.
-    - ***Explora:*** Vista de exploración.
-    - ***Mensajes:*** (En desarrollo).
-    - ***Editar Perfil:*** Edita la información de tu perfil.
-    - ***Configuración:*** (En desarrollo).
+- ***Principal:*** Página principal después del inicio de sesión.
+- ***Explora:*** Vista de exploración.
+- ***Mensajes:*** (En desarrollo).
+- ***Editar Perfil:*** Edita la información de tu perfil.
+- ***Configuración:*** (En desarrollo).
 
 ## 5. Estado de Desarrollo
 
