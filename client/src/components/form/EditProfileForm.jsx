@@ -1,14 +1,13 @@
 import { useState } from "react";
 import Styles from "./formEditProfile.module.css"; 
 import Button from "../button/Button";
+import { VscDeviceCamera } from "react-icons/vsc";
 import url_image from "../../assets/img/media-1234.png";
 
 const Formulario = () => {
   const [nombre, setNombre] = useState("");
   const [usuario, setUsuario] = useState("");
   const [email, setEmail] = useState("");
-  const [confirmarEmail, setConfirmarEmail] = useState("");
-  const [mostrarConfirmarEmail, setMostrarConfirmarEmail] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmarPassword, setConfirmarPassword] = useState("");
   const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false);
@@ -21,24 +20,12 @@ const Formulario = () => {
   const handleEditarImagen = () => {
 
   };
-  const handleGuardarNombre = () => {
-   
-  };
 
-  const handleGuardarUsuario = () => {
-   
-  };
-
-  const handleCambiarEmail = () => {
-    if(email !== ""){
-      setMostrarConfirmarEmail(true);
-    }
-  };
 
   const handleCambiarPassword = () => {
-    if(password !==""){
+   
       setMostrarConfirmarPassword(true);
-    }
+    
   };
 
   const handleCambiarPerfil = (selectedPerfil) => {
@@ -49,16 +36,12 @@ const Formulario = () => {
     setCodigoPostal("");
     setPais("");
   };
-  const handleGuardarCambiosPassword = () => {
-
-  }; 
+ 
   
-  const handleGuardarCambiosEmail = () => {
+  const handleGuardar = () => {
 
   };
-  const handleGuardarProfesional = () => {
-
-  };
+ 
 
   const {
     form,
@@ -80,7 +63,7 @@ const Formulario = () => {
       <div className={imageContainer}>
         <img src={url_image} alt="User" className={userImage} />
         <div className={editButton} onClick={handleEditarImagen}>
-          Editar
+          <VscDeviceCamera style={{ fontSize: '24px' }} />
         </div>
       </div>
       <div className={inputContainer}>
@@ -89,13 +72,6 @@ const Formulario = () => {
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
           className={input}
-        />
-        <Button
-          onClick={handleGuardarNombre}
-          text="Guardar"
-          className={button}
-          type="submit"
-          variant="primary"
         />
       </div>
       <div className={inputContainer}>
@@ -106,13 +82,6 @@ const Formulario = () => {
           onChange={(e) => setUsuario(e.target.value)}
           className={input}
         />
-        <Button
-          onClick={handleGuardarUsuario}
-          text="Guardar"
-          className={button}
-          type="submit"
-          variant="primary"
-        />
       </div>
       <div className={inputContainer}>
         <input
@@ -121,36 +90,7 @@ const Formulario = () => {
           onChange={(e) => setEmail(e.target.value)}
           className={input}
         />
-        {!mostrarConfirmarEmail && (
-          <Button
-            onClick={handleCambiarEmail}
-            text="Cambiar"
-            className={button}
-            type="submit"
-            variant="primary"
-          />
-        )}
       </div>
-        {mostrarConfirmarEmail && (
-          <>
-            <div className={inputConfirmContainer}>
-              <input
-                type="email"
-                value={confirmarEmail}
-                onChange={(e) => setConfirmarEmail(e.target.value)}
-                className={input}
-                placeholder="Confirmar Email"
-              />
-              <Button
-                onClick={handleGuardarCambiosEmail}
-                text="Guardar"
-                className={button}
-                type="submit"
-                variant="primary"
-              />
-            </div>
-          </>
-        )}
         
       
 
@@ -159,17 +99,10 @@ const Formulario = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onClick={handleCambiarPassword}
           className={input}
+          placeholder="Cambiar Contraseña"
         />
-        {!mostrarConfirmarPassword && (
-          <Button
-            onClick={handleCambiarPassword}
-            text="Cambiar"
-            className={button}
-            type="submit"
-            variant="primary"
-          />
-        )}
       </div>
         {mostrarConfirmarPassword && (
           <>
@@ -180,13 +113,6 @@ const Formulario = () => {
                 onChange={(e) => setConfirmarPassword(e.target.value)}
                 className={input}
                 placeholder="Confirmar Contraseña"
-              />
-              <Button
-                onClick={handleGuardarCambiosPassword}
-                text="Guardar"
-                className={button}
-                type="submit"
-                variant="primary"
               />
             </div>
           </>
@@ -247,18 +173,18 @@ const Formulario = () => {
             placeholder="País"
           />
         </div>
-        <div className={bottomButtonContainer}>
+        
+        </>
+      )}
+    <div className={bottomButtonContainer}>
             <Button
-              onClick={handleGuardarProfesional}
+              onClick={handleGuardar}
               text="Guardar"
               className={button}
               type="submit"
               variant="primary"
             />
           </div>
-        </>
-      )}
-
     </div>
   );
 };
