@@ -36,7 +36,7 @@ Ahora, tendrás ambos servidores desplegados en tu entorno local.
 
 ### Iniciar Sesión
 
-1. Abre tu navegador y ve a [http://localhost:1234/login](http://localhost:1234/login).
+1. Abre tu navegador y ve a [http://localhost:5173/login](http://localhost:5173/login).
 2. Ingresa con el usuario de prueba:
 
     - Usuario: test
@@ -44,7 +44,7 @@ Ahora, tendrás ambos servidores desplegados en tu entorno local.
 
 ### Registro de Usuario
 
-1. Para registrar un nuevo usuario, visita [http://localhost:1234/register](http://localhost:1234/register).
+1. Para registrar un nuevo usuario, visita [http://localhost:5173/register](http://localhost:5173/register).
 2. Completa el formulario y crea un nuevo usuario.
 
 ## 4. Navegación y Funcionalidades
