@@ -51,11 +51,11 @@ npm run dev
 
 - Después de iniciar sesión, puedes explorar las distintas vistas de la aplicación:
 
-    - *Principal:* Página principal después del inicio de sesión.
-    - *Explora:* Vista de exploración.
-    - *Mensajes:* (En desarrollo).
-    - *Editar Perfil:* Edita la información de tu perfil.
-    - *Configuración:* (En desarrollo).
+    - ***Principal:*** Página principal después del inicio de sesión.
+    - ***Explora:*** Vista de exploración.
+    - ***Mensajes:*** (En desarrollo).
+    - ***Editar Perfil:*** Edita la información de tu perfil.
+    - ***Configuración:*** (En desarrollo).
 
 ## 5. Estado de Desarrollo
 
