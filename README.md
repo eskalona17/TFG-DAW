@@ -70,6 +70,6 @@ Después de iniciar sesión, puedes explorar las distintas vistas de la aplicaci
 - La parte del servidor está configurada y funcionando en un 95%.
 - Se está trabajando en la conexión entre el cliente y el servidor.
 - El diseño definitivo y la funcionalidad completa del frontend están en desarrollo.
-- Puedes consultar el diseño final en el siguiente enlace [https://www.figma.com/proto/YBFfJ2qbnVAv2IiIzuYUrx/Mockup?type=design&node-id=1-9&t=BFUwUcrfdWatSBw3-1&scaling=scale-down-width&page-id=0%3A1&starting-point-node-id=1%3A9&mode=design](Figma)
+- Puedes consultar el diseño final en el siguiente enlace [Figma](https://www.figma.com/proto/YBFfJ2qbnVAv2IiIzuYUrx/Mockup?type=design&node-id=1-9&t=BFUwUcrfdWatSBw3-1&scaling=scale-down-width&page-id=0%3A1&starting-point-node-id=1%3A9&mode=design)
 
 ¡Gracias por utilizar nuestra aplicación! Si tienes alguna pregunta o problema, no dudes en contactarnos. ¡Disfruta explorando la aplicación!
