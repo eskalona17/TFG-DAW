@@ -43,8 +43,9 @@ Ahora, tendrás ambos servidores desplegados en tu entorno local.
 
 ### Iniciar Sesión
 
-1. Abre tu navegador y ve a [http://localhost:5173/login](http://localhost:5173/login)
-2. Ingresa con el usuario de prueba:
+1. Abre tu navegador y ve a [http://localhost:5173/](http://localhost:5173/)
+2. Como no hay ningun usuario con la sesión iniciada, se te muestra la página para hacer login.
+3. Ingresa con el usuario de prueba:
     - Usuario: test
     - Contraseña: 123456
 
@@ -52,6 +53,7 @@ Ahora, tendrás ambos servidores desplegados en tu entorno local.
 
 1. Para registrar un nuevo usuario, visita [http://localhost:5173/register](http://localhost:5173/register)
 2. Completa el formulario y crea un nuevo usuario.
+3. Después haz login en la página que se muestra.
 
 ## 5. Navegación y Funcionalidades
 
@@ -68,5 +70,6 @@ Después de iniciar sesión, puedes explorar las distintas vistas de la aplicaci
 - La parte del servidor está configurada y funcionando en un 95%.
 - Se está trabajando en la conexión entre el cliente y el servidor.
 - El diseño definitivo y la funcionalidad completa del frontend están en desarrollo.
+- Puedes consultar el diseño final en el siguiente enlace [https://www.figma.com/proto/YBFfJ2qbnVAv2IiIzuYUrx/Mockup?type=design&node-id=1-9&t=14b5ZOcaMXBf6FzR-1&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=1%3A9&show-proto-sidebar=1&mode=design](Figma)
 
 ¡Gracias por utilizar nuestra aplicación! Si tienes alguna pregunta o problema, no dudes en contactarnos. ¡Disfruta explorando la aplicación!
