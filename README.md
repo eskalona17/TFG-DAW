@@ -6,14 +6,26 @@ Bienvenido/a a nuestra aplicación. A continuación, te proporcionamos una guía
 
 Descarga el archivo y descomprímelo. Obtendrás dos carpetas: `client` y `server`.
 
-## 2. Variables de entorno
+## 2. Descarga dependencias
+
+Para que la aplicación se ejecute correctamente, debes hacer una instalación de las dependencias utilizadas.
+Para ello repite estos pasos en las rutas `client` y `server`.
+1. Abre una pestaña de la terminal.
+2. Navega a la raíz de la carpeta `client` o `server` respectivamente.
+3. Ejecuta el comando:
+
+```bash
+npm install
+``` 
+
+## 3. Variables de entorno
 
 Debes configurar las variables de entorno de cada servidor.
 Para ello repite estos pasos en las carpetas `client` y `server`.
 1. Abre la carpeta.
 2. Renombra el archivo `.env.example` por `.env`.
 
-## 3. Iniciar servidores
+## 4. Iniciar servidores
 
 Para ejecutar la aplicación, sigue estos pasos desde tu terminal:
 
@@ -39,7 +51,7 @@ npm run dev
 
 Ahora, tendrás ambos servidores desplegados en tu entorno local.
 
-## 4. Acceso a la app
+## 5. Acceso a la app
 
 ### Iniciar sesión
 
@@ -55,7 +67,7 @@ Ahora, tendrás ambos servidores desplegados en tu entorno local.
 2. Completa el formulario y crea un nuevo usuario.
 3. Después haz login en la página que se muestra.
 
-## 5. Navegación y funcionalidades
+## 6. Navegación y funcionalidades
 
 Después de iniciar sesión, puedes explorar las distintas vistas de la aplicación:
 
@@ -65,7 +77,7 @@ Después de iniciar sesión, puedes explorar las distintas vistas de la aplicaci
 - ***Editar Perfil:*** Edita la información de tu perfil.
 - ***Configuración:*** (En desarrollo).
 
-## 6. Estado de desarrollo
+## 7. Estado de desarrollo
 
 - La parte del servidor está configurada y funcionando en un 95%.
 - Se está trabajando en la conexión entre el cliente y el servidor.
