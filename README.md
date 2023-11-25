@@ -1,8 +1,8 @@
-# Guía de Uso de la aplicación (nombre por determinar)
+# Guía de uso de la aplicación (nombre por determinar)
 
 Bienvenido/a a nuestra aplicación. A continuación, te proporcionamos una guía paso a paso para que puedas probar la aplicación de manera efectiva.
 
-## 1. Descarga y Configuración Inicial
+## 1. Descarga y configuración Inicial
 
 Descarga el archivo y descomprímelo. Obtendrás dos carpetas: `client` y `server`.
 
@@ -13,7 +13,7 @@ Para ello repite estos pasos en las carpetas `client` y `server`.
 1. Abre la carpeta.
 2. Renombra el archivo `.env.example` por `.env`.
 
-## 3. Iniciar Servidores
+## 3. Iniciar servidores
 
 Para ejecutar la aplicación, sigue estos pasos desde tu terminal:
 
@@ -39,9 +39,9 @@ npm run dev
 
 Ahora, tendrás ambos servidores desplegados en tu entorno local.
 
-## 4. Acceso a la App
+## 4. Acceso a la app
 
-### Iniciar Sesión
+### Iniciar sesión
 
 1. Abre tu navegador y ve a [http://localhost:5173/](http://localhost:5173/)
 2. Como no hay ningun usuario con la sesión iniciada, se te muestra la página para hacer login.
@@ -49,13 +49,13 @@ Ahora, tendrás ambos servidores desplegados en tu entorno local.
     - Usuario: test
     - Contraseña: 123456
 
-### Registro de Usuario
+### Registro de usuario
 
 1. Para registrar un nuevo usuario, visita [http://localhost:5173/register](http://localhost:5173/register)
 2. Completa el formulario y crea un nuevo usuario.
 3. Después haz login en la página que se muestra.
 
-## 5. Navegación y Funcionalidades
+## 5. Navegación y funcionalidades
 
 Después de iniciar sesión, puedes explorar las distintas vistas de la aplicación:
 
@@ -65,7 +65,7 @@ Después de iniciar sesión, puedes explorar las distintas vistas de la aplicaci
 - ***Editar Perfil:*** Edita la información de tu perfil.
 - ***Configuración:*** (En desarrollo).
 
-## 6. Estado de Desarrollo
+## 6. Estado de desarrollo
 
 - La parte del servidor está configurada y funcionando en un 95%.
 - Se está trabajando en la conexión entre el cliente y el servidor.
