@@ -2,7 +2,7 @@ import Styles from "./suggestedUser.module.css";
 import Button from "../button/Button";
 import url_image from "../../assets/img/media-1234.png";
 
-const SuggestedUser = () => {
+const SuggestedUser = ({ name, username }) => {
   const {
     user,
     user_container,
@@ -17,8 +17,8 @@ const SuggestedUser = () => {
       <div className={user_container}>
         <img src={url_image} alt="" className={user_img} />
         <div className={user_info_container}>
-          <p className={user_info}>Nombre apellido apellido</p>
-          <p className={user_info}>@username</p>
+          <p className={user_info}>{name}</p>
+          <p className={user_info}>@{username}</p>
         </div>
       </div>
       <div className={button_container}>
