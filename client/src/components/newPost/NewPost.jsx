@@ -11,9 +11,8 @@ const NewPost = () => {
     newPost_button,
     multimedia_Container,
     multimedia_button,
+    icon
   } = Styles;
-
-  const orange_color = "#ffa07a";
   
   const handleMultimediaClick=() => {
     console.log("boton multimedia");
@@ -35,7 +34,7 @@ const NewPost = () => {
             className={newPost_input}
           />
           <button className={newPost_button}>
-            <VscSend color={orange_color} />
+            <VscSend className={icon} />
           </button>
         </form>
       </div>
