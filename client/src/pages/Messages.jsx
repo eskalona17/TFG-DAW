@@ -1,7 +1,9 @@
+import Conversation from "../components/conversation/Conversation"
+
 const Messages = () => {
   return (
     <main className="main">
-      <h2>Messages</h2>
+      <Conversation />
     </main>
   )
 }
