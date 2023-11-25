@@ -1,6 +1,10 @@
+import { useContext } from "react";
 import Styles from "./header.module.css";
 import { IoSearch } from "react-icons/io5";
-import { IoNotificationsOutline } from "react-icons/io5";
+/* import { IoNotificationsOutline } from "react-icons/io5"; */
+import { IoExitOutline } from "react-icons/io5";
+import { AuthContext } from "../../context/authContext";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const {
@@ -14,6 +18,14 @@ const Header = () => {
     notifications_container,
     notifications,
   } = Styles;
+
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
 
   return (
     <header className={header}>
@@ -29,8 +41,8 @@ const Header = () => {
         </form>
       </div>
       <div className={notifications_container}>
-        <span className={notifications}>
-          <IoNotificationsOutline />
+        <span className={notifications} onClick={handleLogout}>
+          <IoExitOutline />
         </span>
       </div>
     </header>

@@ -187,7 +187,7 @@ export async function resetPassword (req, res) {
 
 export async function logout (req, res) {
   try {
-    res.cookie('jwt', '', { maxAge: 1 })
+    res.cookie('jwt', 'a', { maxAge: -1, path: '/', httpOnly: true, sameSite: 'strict' })
     res.status(200).json({ success: true, message: 'Logged out successfully' })
   } catch (error) {
     console.error('Error:', error.message)
