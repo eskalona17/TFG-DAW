@@ -1,105 +1,89 @@
 .form {
-    background-color: var(--white-color);
-    align-items: center;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-  }
-  .imageContainer {
-    position: relative;
-    display: inline-block;
-  }
+  background-color: var(--white-color);
+  align-items: center;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.imageContainer {
+  position: relative;
+  display: inline-block;
+}
 
-  .userImage {
-    
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    margin-bottom: 20px;
-  }
-  .editButton {
-    position: absolute;
-    bottom: 85%;
-    left: 45%;
-    background-color: var(--orange-color);
-    color: var(--dark-color);
-  
-  }
+.userImage {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+.editButton {
+  position: absolute;
+  bottom: 85%;
+  left: 45%;
+  background-color: var(--orange-color);
+  color: var(--dark-color);
+}
 
-  .inputContainer {
-    width: 100%;
-    display: flex;
-    margin-bottom: 5px;
-    
-  }
+.inputContainer {
+  width: 100%;
+  display: flex;
+}
 
-  .inputConfirmContainer {
-    width: 100%;
-    flex-direction: column;
-    display: flex;
-    margin-bottom: 10px;
-    
-  }
-  .label {
-    background-color: var(--bg-main-color);
-    font-size: 20px;
-    align-self: center;
-    border: 1px solid var(--orange-color);
-    padding: 10px; 
-    border-radius: 8px;
-    border-color: var(--light-orange);
-  }
-  
-  .input {
-    background-color: var(--bg-main-color);
-    flex-grow: 1;
-    padding: 10px;
-    margin-right: 5px;
-    
-    font-size: 14px;
-    border: 1px solid var(--light-orange);
-    border-radius: 4px;
+.inputConfirmContainer {
+  width: 100%;
+  flex-direction: column;
+  display: flex;
+  margin-bottom: 10px;
+}
+.label {
+  background-color: var(--bg-main-color);
+  align-self: center;
+  border: 1px solid var(--orange-color);
+  border-right: 0;
+  padding: 10px;
+  border-radius: 4px 0px 0px 4px;
+  border-color: var(--light-orange);
+}
 
-  }
-  .errors_display {
-    display: flex;
-    color: tomato;
-    font-size: x-small;
-    flex-direction: column;
-    align-items: center;
-  }
-  .selectorContainer {
-    background-color: var(--white-color);
-    width: 100%;
-    align-content: center;
-    display: flex;
-    justify-content: space-between;
-    border-radius: 4px;
-    
-  }
-    
-  .perfilButton.active {
-    background-color:var(--orange-color);
-    color:var(--white-color);
-  }
+.input {
+  background-color: var(--bg-main-color);
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid var(--light-orange);
+  border-radius: 4px;
+}
+.errors_display {
+  color: tomato;
+  font-size: x-small;
+  margin: 3px 0;
+}
+.selectorContainer {
+  background-color: var(--white-color);
+  width: 100%;
+  align-content: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}
 
-  .perfilButton {
-    font-size: 20px;
-    padding: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    flex-grow: 1;
-    margin: 1px;
-    text-align: center;
-    color: black;
-    border: 1px solid var(--light-orange);
-  }
-  
- 
-  
+.perfilButton.active {
+  background-color: var(--orange-color);
+  color: var(--white-color);
+}
+
+.perfilButton {
+  padding: 10px;
+  cursor: pointer;
+  flex-grow: 1;
+  text-align: center;
+  color: black;
+  border: 1px solid var(--light-orange);
+}
+
 .bottomButtonContainer {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: auto;
+  margin: 10px 0;
 }

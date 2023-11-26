@@ -31,8 +31,6 @@ export default function Form() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      // Aquí podrías realizar validaciones adicionales si es necesario
-      console.log(data);
       // Enviar datos al backend
       const response = await axios.post(apiUrl + ":1234/api/users/register", {
         ...data,
@@ -62,7 +60,8 @@ export default function Form() {
     <div className={form_container}>
       <h3>Crea tu perfil</h3>
       <form onSubmit={onSubmit}>
-        {/* Nombre */}
+
+        {/* name */}
         <div className={input_container}>
           <input
             type="text"
@@ -135,7 +134,7 @@ export default function Form() {
           />
           <label htmlFor="email">Email</label>
         </div>
-        <div className={errors_display}>
+        <div className={errors.email ? errors_display : ""}>
           {errors.email && <span>{errors.email.message}</span>}
         </div>
 
@@ -207,7 +206,7 @@ export default function Form() {
 
         {profile === "profesional" && (
           <>
-            {/* dirección */}
+            {/* address */}
             <div className={input_container}>
               <input
                 type="text"
@@ -222,8 +221,8 @@ export default function Form() {
               />
               <label htmlFor="direccion">Dirección</label>
             </div>
-            <div className={errors.direccion ? errors_display : ""}>
-              {errors.direccion && <span>{errors.direccion.message}</span>}
+            <div className={errors.address ? errors_display : ""}>
+              {errors.address && <span>{errors.address.message}</span>}
             </div>
 
             {/* ciudad */}
@@ -241,8 +240,8 @@ export default function Form() {
               />
               <label htmlFor="ciudad">Ciudad</label>
             </div>
-            <div className={errors_display}>
-              {errors.ciudad && <span>{errors.ciudad.message}</span>}
+            <div className={errors.city ? errors_display : ""}>
+              {errors.city && <span>{errors.city.message}</span>}
             </div>
 
             <div className={addedInputs}>
@@ -267,9 +266,9 @@ export default function Form() {
                   />
                   <label htmlFor="postal">Código postal</label>
                 </div>
-                <div className={errors.postal_code ? errors_display : ""}>
-                  {errors.postal_code && (
-                    <span>{errors.postal_code.message}</span>
+                <div className={errors.zipCode ? errors_display : ""}>
+                  {errors.zipCode && (
+                    <span>{errors.zipCode.message}</span>
                   )}
                 </div>
               </div>
@@ -289,9 +288,9 @@ export default function Form() {
                   />
                   <label htmlFor="pais">Pais</label>
                 </div>
-                <div className={errors.postal_code ? errors_display : ""}>
-                  {errors.postal_code && (
-                    <span>{errors.postal_code.message}</span>
+                <div className={errors.country ? errors_display : ""}>
+                  {errors.country && (
+                    <span>{errors.country.message}</span>
                   )}
                 </div>
               </div>

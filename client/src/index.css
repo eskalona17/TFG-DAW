@@ -73,3 +73,8 @@ svg {
   width: 1.5rem;
   height: 1.5rem;
 }
+
+input {
+  font-size: 1rem;
+  font-family: var(--main-font);
+}

@@ -18,6 +18,5 @@
 @media (min-width: 600px) {
   .navbar {
     flex-direction: column;
-    justify-content: unsafe;
   }
 }
