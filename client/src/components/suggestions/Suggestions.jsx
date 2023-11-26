@@ -1,11 +1,11 @@
 import Styles from "./Suggestions.module.css";
 import SuggestedUserMini from "../suggestedUserMini/SuggestedUserMini";
 import Button from "../button/Button";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Suggestions = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  /* const location = useLocation(); */
 
   const { suggestions, title } = Styles;
 
@@ -21,8 +21,8 @@ const Suggestions = () => {
     <div className={suggestions}>
       <h2 className={title}>Sugerencias</h2>
       <SuggestedUserMini username="@nachomenendez" />
-      <SuggestedUserMini username="@fernandoeskalona" />
-      <SuggestedUserMini username="@laurashauny" />
+      <SuggestedUserMini username="@fereskalona" />
+      <SuggestedUserMini username="@lauratortosa" />
       <Button
         text="Ver más"
         onClick={() => navigate("/explora")}

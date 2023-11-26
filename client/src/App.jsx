@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthContextProvider } from "./context/AuthContext";
+import { AuthContextProvider } from "./context/authContext";
 import { SocketContextProvider } from "./context/SocketContext";
 import "./variables.css";
 import "./index.css";

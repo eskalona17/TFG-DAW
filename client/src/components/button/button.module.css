@@ -44,6 +44,7 @@
 
 .secondary,
 .secondary-small {
+  background-color: var(--bg-main-color);
   border-color: var(--orange-color);
   color: var(--dark-color);
 }

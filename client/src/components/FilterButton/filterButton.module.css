@@ -1,0 +1,27 @@
+.search_button {
+  border: 1px solid var(--light-orange);
+  background-color: var(--bg-main-color);
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 6px;
+  align-items: center; 
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.search_button.active {
+  color: var(--white-color);
+  background-color: var(--orange-color);
+  
+}
+
+.search_button.active svg {
+  fill: var(--white-color)
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}

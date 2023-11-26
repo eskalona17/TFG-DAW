@@ -5,7 +5,7 @@ import express from 'express'
 const router = express.Router()
 
 router.get('/search', protectRoute, searchUsers)
-router.get('/profile/:username', getUserProfile)
+router.get('/profile/:username', protectRoute, getUserProfile)
 router.post('/register', register)
 router.post('/login', login)
 router.post('/forget-password', forgetPassword)

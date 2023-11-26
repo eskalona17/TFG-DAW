@@ -23,10 +23,17 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
-  // ademas de borrar el user en el localstorage, hay que borrarlo tambien de la cookie y su jwt
-  const logout = () => {
-    localStorage.removeItem("user");
-    setCurrentUser(null);
+  const logout = async () => {
+    try {
+      await axios.post(`${apiUrl}:1234/api/users/logout`, "",{
+        withCredentials: true,
+      });
+      localStorage.removeItem('user');
+      setCurrentUser(null);
+    } catch (err) {
+      console.error('Ocurrió un error al cerrar la sesión: ', err);
+      throw err;
+    }
   };
 
   useEffect(() => {
@@ -36,8 +43,10 @@ export const AuthContextProvider = ({ children }) => {
     }
   }, [currentUser]);
 
+  const isAuthenticated = () => currentUser !== null;
+
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout }}>
+    <AuthContext.Provider value={{ currentUser, login, logout, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );

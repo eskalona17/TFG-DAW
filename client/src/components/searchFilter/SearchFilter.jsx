@@ -1,49 +1,32 @@
 import Styles from "./searchFilter.module.css";
 import { useState } from "react";
-import { VscListFilter } from "react-icons/vsc";
+import FilterButton from "../FilterButton/FilterButton";
 const SearchFilter = () => {
     const {
         searchFilter,
-        searchFilter_container,
-        search_button,
-        active
+        searchFilter_container
     } = Styles;
 
-    const [filterSearch, setFilterSearch] = useState('Todo');
-
-    const renderIcon = (filter) => {
-        return filter === filterSearch ? <VscListFilter /> : null;
-    };
+    const [activeFilter, setActiveFilter] = useState('Todo');
+    const filters = ['Todo', 'Personal', 'Profesional'];
 
     const handleSearchClick = (filter) => {
-        console.log("buscando en", filter);
-        setFilterSearch(filter === filterSearch ? null : filter);
-    };
-     
+        if (filter !== activeFilter) {
+          setActiveFilter(filter);
+        }
+      };
+
     return (
         <div className={searchFilter}>
             <div className={searchFilter_container}>
-                <button
-                    className={`${search_button} ${filterSearch === 'Todo' ? active : ''}`}
-                    onClick={() => handleSearchClick('Todo')}
-                >
-                    {renderIcon('Todo')}
-                    Todo
-                </button>
-                <button
-                    className={`${search_button} ${filterSearch === 'Personal' ? active : ''}`}
-                    onClick={() => handleSearchClick('Personal')}
-                >   
-                    {renderIcon('Personal')}
-                    Personal
-                </button>
-                <button
-                    className={`${search_button} ${filterSearch === 'Profesional' ? active : ''}`}
-                    onClick={() => handleSearchClick('Profesional')}
-                >
-                    {renderIcon('Profesional')}
-                    Profesional
-                </button>
+                {filters.map((filter) => (
+                    <FilterButton
+                        key={filter}
+                        filter={filter}
+                        activeFilter={activeFilter}
+                        handleSearchClick={handleSearchClick}
+                    />
+                ))}
             </div>
         </div>
     );
