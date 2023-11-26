@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Styles from "./formEditProfile.module.css";
 import Button from "../button/Button";
 import { VscDeviceCamera } from "react-icons/vsc";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import url_image from "../../assets/img/media-1234.png";
+
+
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+
 
 const {
   form,
@@ -24,37 +31,90 @@ const {
 export default function Formulario() {
   const {
     handleSubmit,
-    trigger,
     watch,
     register,
     formState: { errors },
+    reset,
+    setValue,
   } = useForm();
 
-  const userData = JSON.parse(localStorage.getItem("user"));
-
-  const [mostrarConfirmarPassword, setMostrarConfirmarPassword] =
-    useState(false);
-  const [perfil, setPerfil] = useState("personal");
-
-  const onSubmit = handleSubmit(async (userData) => {
-    const isValid = await trigger();
-
-    if (isValid) {
-      console.log("Datos válidos, puedes proceder con la acción de guardar");
-    } else {
-      console.log(
-        "Datos inválidos, no puedes proceder con la acción de guardar"
-      );
-    }
+  const navigate = useNavigate();
+ 
+  const [formData, setFormData] = useState({
+    id:'',
+    name: '',
+    username:'',
+    email:'',
+    addres:'',
+    city:'',
+    zipCode:'',
+    country:'',
   });
-  const handleEditarImagen = () => {};
+  const localStoreData =localStorage.getItem('user');
+  const userData = JSON.parse(localStoreData);
+  const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false);
+  const [profile, setProfile] = useState("personal");
+
+  useEffect(() => {
+    if (userData && userData.name !== formData.name) {
+      setFormData({
+        id: userData._id,
+        name: userData.name,
+        username: userData.username,
+        email: userData.email,
+        addres: userData.addres,
+        city: userData.city,
+        zipCode: userData.zipCode,
+        country: userData.country,
+      });
+      setValue("userId", userData._id)
+      setValue("name", userData.name);
+      setValue("username", userData.username);
+      setValue("email", userData.email);
+      setValue("addres", userData.addres);
+      setValue("city", userData.city);
+      setValue("zipCode", userData.zipCode);
+      setValue("country", userData.country);
+    }
+  }, [userData, setValue, formData.name]);
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      // Aquí podrías realizar validaciones adicionales si es necesario
+      console.log(data);
+      console.log('ID de userData:', userData._id);
+      // Enviar datos al backend
+      const response = await axios.patch(apiUrl + ":1234/api/users/update/" + userData._id, {
+        ...data,
+        profile: profile,
+      });
+
+      if (response.status === 201) {
+        console.log("Usuario actualizado exitosamente");
+        alert("Usuario actualizado exitosamente");
+        navigate("/home");
+        reset();
+      } else {
+        console.error("Error al actualizrr usuario:", response.statusText);
+        alert("Error al registrar usuario");
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+      alert("Error al registrar usuario");
+    }
+    reset();
+  });
+  
+  const handleEditarImagen = () => {
+  };
+
 
   const handleCambiarPassword = () => {
     setMostrarConfirmarPassword(true);
   };
 
-  const handleCambiarPerfil = (selectedPerfil) => {
-    setPerfil(selectedPerfil);
+  const handleCambiarprofile = (selectedprofile) => {
+    setProfile(selectedprofile);
   };
 
 
