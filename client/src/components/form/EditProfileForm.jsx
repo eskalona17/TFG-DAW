@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Styles from "./formEditProfile.module.css"; 
 import Button from "../button/Button";
@@ -30,9 +30,33 @@ export default function Formulario() {
     formState: { errors },
     
   } = useForm();
-
+  const [formData, setFormData] = useState({
+    name: '',
+    username:'',
+    email:'',
+    addres:'',
+    city:'',
+    zipCode:'',
+    country:'',
+  });
+  const localStoreData =localStorage.getItem('user');
+  const userData = JSON.parse(localStoreData);
   const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false);
   const [perfil, setPerfil] = useState("personal");
+
+  useEffect(() => {
+    if(userData){
+      setFormData({
+        name: userData.name,
+        username: userData.username,
+        email: userData.email,
+        address: userData.address,
+        city: userData.city,
+        zipCode: userData.zipCode,
+        country: userData.country,
+      });
+    }
+  }, [userData]);
 
   const handleGuardar = async () => {
     
@@ -76,6 +100,7 @@ export default function Formulario() {
           type="text"
           name="Nombre"
           className={input}
+          defaultValue={formData.name}
           {...register("name",{
               required:{
                 value:true,
@@ -101,6 +126,7 @@ export default function Formulario() {
           type="text"
           name="Usuario"
           className={input}
+          defaultValue={formData.username}
           {...register("username",{
             required: {
               value: true,
@@ -126,6 +152,7 @@ export default function Formulario() {
           type="email"
           name="email"
           className={input}
+          defaultValue={formData.email}
           {...register("email", {
             required: {
               value: true,
@@ -217,6 +244,7 @@ export default function Formulario() {
             type="text"
             name="direccion"
             className={input}
+            defaultValue={formData.address}
             placeholder="Dirección"
             {...register("address", {
               required: {
@@ -235,6 +263,7 @@ export default function Formulario() {
             type="text"
             name="ciudad"
             className={input}
+            defaultValue={formData.city}
             placeholder="Ciudad"
             {...register("city", {
               required: {
@@ -260,6 +289,7 @@ export default function Formulario() {
             type="text"
             name="codigo postal"
             className={input}
+            defaultValue={formData.zipCode}
             placeholder="Código Postal"
             {...register("zipCode", {
               required: {
@@ -277,6 +307,7 @@ export default function Formulario() {
             type="text"
             name="pais"
             className={input}
+            defaultValue={formData.country}
             placeholder="País"
             {...register("country", {
               required: {
