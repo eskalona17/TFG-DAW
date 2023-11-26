@@ -18,6 +18,7 @@ body {
     "aside"
     "footer";
   grid-gap: 1rem;
+  height: 100dvh;
 }
 
 .main {
@@ -50,6 +51,10 @@ body {
       " . main main . "
       "footer footer footer footer";
   }
+}
+
+ul {
+  padding: 0;
 }
 
 ul > li {
