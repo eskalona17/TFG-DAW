@@ -37,6 +37,9 @@ export default function Formulario() {
 
   const navigate = useNavigate();
 
+  const [profilePic, setProfilePic] = useState(null); // New state to track the selected profile picture
+
+  const [imagePreview, setImagePreview] = useState(null);
   const [formData, setFormData] = useState({
     id: "",
     name: "",
@@ -46,8 +49,9 @@ export default function Formulario() {
     city: "",
     zipCode: "",
     country: "",
+    profilePic: null,
   });
-  
+
   const localStoreData = localStorage.getItem("user");
   const userData = JSON.parse(localStoreData);
   const [mostrarConfirmarPassword, setMostrarConfirmarPassword] =
@@ -65,6 +69,7 @@ export default function Formulario() {
         city: userData.city || "",
         zipCode: userData.zipCode || "",
         country: userData.country || "",
+        profilePic: profilePic || userData.profilePic || null,
       });
       setValue("userId", userData._id);
       setValue("name", userData.name);
@@ -79,24 +84,33 @@ export default function Formulario() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      // Aquí podrías realizar validaciones adicionales si es necesario
-      console.log(data);
-      console.log("ID de userData:", userData._id);
-      // Enviar datos al backend
+      const formData = new FormData();
+      formData.append("image", data.profilePic[0]); // Assuming your file input is named "profilePic"
+
+      // Additional data
+      formData.append("name", data.name);
+      formData.append("username", data.username);
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+      formData.append("confirmPassword", data.confirmPassword);
+      formData.append("profile", profile);
+      formData.append("address", data.address);
+      formData.append("city", data.city);
+      formData.append("zipCode", data.zipCode);
+      formData.append("country", data.country);
+
       const response = await axios.patch(
-        apiUrl + ":1234/api/users/update/" + userData._id,
-        {
-          ...data,
-          profile: profile,
-        },
+        `${apiUrl}:1234/api/users/update/${userData._id}`,
+        formData,
         {
           withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
 
-      console.log("Response:", response);
-
-      if (response.status === 201) {
+      if (response.status === 200) {
         console.log("Usuario actualizado exitosamente");
         alert("Usuario actualizado exitosamente");
         navigate("/home");
@@ -112,7 +126,27 @@ export default function Formulario() {
     reset();
   });
 
-  const handleEditarImagen = () => {};
+  const handleEditarImagen = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      setValue("profilePic", file); // Set the selected file to the "profilePic" field
+
+      // Use FileReader to preview the image
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      if (file) {
+        reader.readAsDataURL(file);
+      } else {
+        setImagePreview(null);
+      }
+    };
+    input.click();
+  };
 
   const handleCambiarPassword = () => {
     setMostrarConfirmarPassword(true);
@@ -125,7 +159,16 @@ export default function Formulario() {
   return (
     <form onSubmit={onSubmit} className={form}>
       <div className={imageContainer}>
-        <img src={url_image} alt="User" className={userImage} />
+        <img
+          src={
+            imagePreview ||
+            (formData.profilePic
+              ? URL.createObjectURL(formData.profilePic)
+              : url_image)
+          }
+          alt="User"
+          className={userImage}
+        />
         <div className={editButton} onClick={handleEditarImagen}>
           <VscDeviceCamera style={{ fontSize: "24px" }} />
         </div>
