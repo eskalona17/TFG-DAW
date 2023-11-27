@@ -4,7 +4,7 @@ import Styles from "./formEditProfile.module.css";
 import Button from "../button/Button";
 import { VscDeviceCamera } from "react-icons/vsc";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import url_image from "../../assets/img/media-1234.png";
 
 
@@ -38,7 +38,7 @@ export default function Formulario() {
     setValue,
   } = useForm();
 
-  const navigate = useNavigate();
+  
  
   const [formData, setFormData] = useState({
     id:'',
@@ -87,20 +87,34 @@ export default function Formulario() {
       const response = await axios.patch(apiUrl + ":1234/api/users/update/" + userData._id, {
         ...data,
         profile: profile,
+      },{
+        withCredentials:true,
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         console.log("Usuario actualizado exitosamente");
         alert("Usuario actualizado exitosamente");
-        navigate("/home");
+        const updatedUserData = {
+          ...userData,
+          name: data.name, 
+          username: data.username,
+          email: data.email,
+          addres: data.addres,
+          city: data.city,
+          zipCode: data.zipCode,
+          country: data.country,
+        };
+      
+        localStorage.setItem('user', JSON.stringify(updatedUserData));
+      
         reset();
       } else {
         console.error("Error al actualizrr usuario:", response.statusText);
-        alert("Error al registrar usuario");
+        alert("Error al actulizar usuario");
       }
     } catch (error) {
       console.error("Error:", error.message);
-      alert("Error al registrar usuario");
+      alert("Error al actualizar  usuario");
     }
     reset();
   });

@@ -2,12 +2,11 @@
     background-color: var(--white-color);
     align-items: center;
     padding: 20px;
-    display: flex;
     flex-direction: column;
   }
   .imageContainer {
     position: relative;
-    display: inline-block;
+    text-align: center;
   }
 
   .userImage {
@@ -16,11 +15,12 @@
     height: 180px;
     border-radius: 50%;
     margin-bottom: 20px;
+    object-fit: cover;
   }
   .editButton {
     position: absolute;
     bottom: 85%;
-    left: 45%;
+    left: 48%;
     background-color: var(--orange-color);
     color: var(--dark-color);
   
@@ -55,7 +55,6 @@
     flex-grow: 1;
     padding: 10px;
     margin-right: 5px;
-    
     font-size: 14px;
     border: 1px solid var(--light-orange);
     border-radius: 4px;
