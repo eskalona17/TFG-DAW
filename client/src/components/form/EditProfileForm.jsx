@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import { useForm } from "react-hook-form";
 import Styles from "./formEditProfile.module.css"; 
 import Button from "../button/Button";
 import { VscDeviceCamera } from "react-icons/vsc";
 import axios from "axios";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import url_image from "../../assets/img/media-1234.png";
 
 
@@ -38,7 +38,6 @@ export default function Formulario() {
     setValue,
   } = useForm();
 
-  
  
   const [formData, setFormData] = useState({
     id:'',
@@ -50,10 +49,13 @@ export default function Formulario() {
     zipCode:'',
     country:'',
   });
+  const navigate = useNavigate();
   const localStoreData =localStorage.getItem('user');
   const userData = JSON.parse(localStoreData);
   const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false);
   const [profile, setProfile] = useState("personal");
+  const [selectedImage, setSelectedImage] = useState(null);
+  
 
   useEffect(() => {
     if (userData && userData.name !== formData.name) {
@@ -78,18 +80,42 @@ export default function Formulario() {
     }
   }, [userData, setValue, formData.name]);
 
+  
   const onSubmit = handleSubmit(async (data) => {
     try {
-      // Aquí podrías realizar validaciones adicionales si es necesario
+      var response ="";
       console.log(data);
       console.log('ID de userData:', userData._id);
-      // Enviar datos al backend
-      const response = await axios.patch(apiUrl + ":1234/api/users/update/" + userData._id, {
-        ...data,
-        profile: profile,
-      },{
-        withCredentials:true,
-      });
+      
+      if(selectedImage){
+        const formData = new FormData();
+        formData.append('name', data.name);
+        formData.append('username', data.username);
+        formData.append('email', data.email);
+        formData.append('password', data.password);
+        formData.append('confirmPassword', data.confirmPassword);
+        formData.append('profile', data.profile);
+        formData.append('address', data.address);
+        formData.append('city', data.city);
+        formData.append('zipCode', data.zipCode);
+        formData.append('country', data.country);
+
+       
+        formData.append('profilePic', selectedImage);
+
+        
+        response = await axios.patch(apiUrl + ':1234/api/users/update/'  + userData._id, formData, {
+          withCredentials: true,
+        });
+      }else{
+         response = await axios.patch(apiUrl + ":1234/api/users/update/" + userData._id, {
+          ...data,
+          profile: profile,
+        },{
+          withCredentials:true,
+        })
+      }
+     
 
       if (response.status === 200) {
         console.log("Usuario actualizado exitosamente");
@@ -106,7 +132,7 @@ export default function Formulario() {
         };
       
         localStorage.setItem('user', JSON.stringify(updatedUserData));
-      
+        navigate("/");
         reset();
       } else {
         console.error("Error al actualizrr usuario:", response.statusText);
@@ -118,10 +144,17 @@ export default function Formulario() {
     }
     reset();
   });
-  
-  const handleEditarImagen = () => {
-  };
 
+
+  const handleImageChange = (e) => {
+    const files = e.target.files;
+  
+    if (files && files.length > 0) {
+      const file = files[0];
+      setSelectedImage(file);
+    }
+  };
+  
 
   const handleCambiarPassword = () => {
    
@@ -139,10 +172,17 @@ export default function Formulario() {
       <form onSubmit={onSubmit}>
         <div className={imageContainer}>
           <img src={url_image} alt="User" className={userImage} />
-          <div className={editButton} onClick={handleEditarImagen}>
+          <label className={editButton} htmlFor="profileImageInput">
             <VscDeviceCamera style={{ fontSize: '24px' }} />
-          </div>
+          </label>
         </div>
+        <input
+          type="file"
+          id="profileImageInput"
+          accept="image/*"
+          onChange={handleImageChange}
+          style={{ display: 'none' }} 
+        />
         <div className={errors.name ? errors_display : ""}>
             {errors.name && <span>{errors.name.message}</span>}
         </div>
