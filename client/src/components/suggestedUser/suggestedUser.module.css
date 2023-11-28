@@ -15,11 +15,10 @@
   flex-direction: row;
   align-items: center;
   gap: 1rem;
-  max-width: 60%;
 }
 
 .user_img {
-  width: 100px;
+  width: 75px;
   object-fit: cover;
   border-radius: 50%;
 }
@@ -39,7 +38,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   gap: 1rem;
-  max-width: 40%;
+  width: 45%;
 }

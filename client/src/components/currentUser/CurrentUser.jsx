@@ -1,11 +1,12 @@
 import Styles from "./currentUser.module.css";
 import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
 import Button from "../button/Button";
-import url_image from "../../assets/img/media-1234.png";
+import { AuthContext } from "../../context/authContext";
+import useUserImage from './../../hooks/useUserImage';
 
 const CurrentUser = () => {
   const { currentUser } = useContext(AuthContext);
+  const { userImage } = useUserImage(currentUser);
 
   const {
     user,
@@ -16,11 +17,11 @@ const CurrentUser = () => {
     user_username,
     follow_container,
   } = Styles;
-
+  
   return (
     <aside className={user}>
       <div className={user_container}>
-        <img src={url_image} alt="" className={user_img} />
+        <img src={userImage} alt="" className={user_img} />
         <div className={user_info}>
           <p className={user_name}>
             {currentUser ? currentUser.name : "Nombre de usuario"}

@@ -12,7 +12,7 @@ const SuggestedUserMini = ({ username }) => {
       <div className={user_container}>
         <img src={url_image} alt="" className={user_img} />
         <div className={user_info_container}>
-          <p className={user_info}>{username}</p>
+          <p className={user_info}>@{username}</p>
           <div className={button_container}>
             <Button
               text="Seguir"

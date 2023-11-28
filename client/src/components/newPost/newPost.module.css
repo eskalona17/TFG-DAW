@@ -8,6 +8,7 @@
 .newPost_container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   background-color: var(--bg-main-color);
   border-radius: 6px;
 }
