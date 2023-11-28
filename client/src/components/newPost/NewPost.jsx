@@ -1,7 +1,13 @@
+import { useContext } from "react";
+import useUserImage from "../../hooks/useUserImage";
 import Styles from "./newPost.module.css";
 import { VscSend, VscVmRunning, VscLocation, VscBookmark  } from "react-icons/vsc";
+import { AuthContext } from "../../context/authContext";
 
 const NewPost = () => {
+  const { currentUser } = useContext(AuthContext);
+  const { userImage } = useUserImage(currentUser);
+
   const {
     newPost,
     newPost_container,
@@ -26,7 +32,7 @@ const NewPost = () => {
   return (
     <div className={newPost}>
       <div className={newPost_container}>
-        <img src="" alt="" className={user_img} />
+        <img src={userImage} alt="" className={user_img} />
         <form className={newPost_form}>
           <input
             type="text"

@@ -29,6 +29,7 @@ export const AuthContextProvider = ({ children }) => {
         withCredentials: true,
       });
       localStorage.removeItem('user');
+      localStorage.removeItem('acceptedCookies');
       setCurrentUser(null);
     } catch (err) {
       console.error('Ocurrió un error al cerrar la sesión: ', err);

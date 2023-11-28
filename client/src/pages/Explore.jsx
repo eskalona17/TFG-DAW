@@ -1,11 +1,9 @@
-import SuggestedUser from "../components/suggestedUser/SuggestedUser"
+import SuggestedUsers from "../components/suggestedUsers/SuggestedUsers"
 
 const Explore = () => {
   return (
     <main className="main">
-      <SuggestedUser name="Nacho Menendez Lopez" username="nachomenendez" />
-      <SuggestedUser name="Fernando Escalona" username="fereskalona" />
-      <SuggestedUser name="Laura Tortosa" username={"lauratortosa"} />
+      <SuggestedUsers />
     </main>
   )
 }

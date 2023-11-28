@@ -1,10 +1,13 @@
 import Styles from "./suggestedUser.module.css";
 import Button from "../button/Button";
-import url_image from "../../assets/img/media-1234.png";
+import followUnfollow from "../../hooks/followUnfollow";
+import useUserImage from "../../hooks/useUserImage";
 
-const SuggestedUser = ({ name, username }) => {
+const SuggestedUser = ({ user }) => {
+  const { userImage } = useUserImage(user, '75');
+  const { _id, name, username } = user;
+
   const {
-    user,
     user_container,
     user_img,
     user_info_container,
@@ -13,9 +16,9 @@ const SuggestedUser = ({ name, username }) => {
   } = Styles;
 
   return (
-    <div className={user}>
+    <div className={Styles.user}>
       <div className={user_container}>
-        <img src={url_image} alt="" className={user_img} />
+        <img src={userImage} alt="" className={user_img} />
         <div className={user_info_container}>
           <p className={user_info}>{name}</p>
           <p className={user_info}>@{username}</p>
@@ -24,7 +27,7 @@ const SuggestedUser = ({ name, username }) => {
       <div className={button_container}>
         <Button
           text="Seguir"
-          onClick={() => console.log("click")}
+          onClick={() => followUnfollow(_id)}
           variant="primary"
         />
         <Button

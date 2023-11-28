@@ -67,3 +67,9 @@
   color: var(--white-color);
   border-color: var(--orange-color);
 }
+
+.cookies:hover {
+  background-color: var(--orange-color);
+  color: var(--white-color);
+  border-color: var(--orange-color);
+}
