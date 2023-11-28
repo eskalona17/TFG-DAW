@@ -33,6 +33,7 @@ const SuggestedUsers = () => {
     })
       .then(response => {
         if (response.data.length === 0) {
+          setLoading(false);
           return;
         }
 
@@ -56,7 +57,7 @@ const SuggestedUsers = () => {
       ) : (
         <>
           {users.map(user => (
-            <SuggestedUser key={user._id} name={user.name} username={user.username} />
+            <SuggestedUser key={user._id} user={user}  />
           ))}
           <Button
             text="Ver más"
