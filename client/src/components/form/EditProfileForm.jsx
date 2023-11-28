@@ -1,4 +1,4 @@
-import { useState, useEffect} from "react";
+import { useState} from "react";
 import { useForm } from "react-hook-form";
 import Styles from "./formEditProfile.module.css"; 
 import Button from "../button/Button";
@@ -29,91 +29,77 @@ const {
 } = Styles;
 
 export default function Formulario() {
+  const navigate = useNavigate();
+  const localStoreData =localStorage.getItem('user');
+  const userData =  localStoreData ? JSON.parse(localStoreData) : null;
+  
   const {
     handleSubmit,
     watch,
     register,
     formState: { errors },
     reset,
-    setValue,
-  } = useForm();
+    
+  } = useForm({
+    defaultValues:{
+      name: userData?.name,
+      username: userData?.username,
+      email:userData?.email,
+      profile: userData?.profile,
+      address: userData?.address,
+      city: userData?.city,
+      zipCode: userData?.zipCode,
+      country: userData?.country,
+
+    }
+  });
 
  
-  const [formData, setFormData] = useState({
-    id:'',
-    name: '',
-    username:'',
-    email:'',
-    addres:'',
-    city:'',
-    zipCode:'',
-    country:'',
-  });
-  const navigate = useNavigate();
-  const localStoreData =localStorage.getItem('user');
-  const userData = JSON.parse(localStoreData);
+
+  
   const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false);
   const [profile, setProfile] = useState("personal");
   const [selectedImage, setSelectedImage] = useState(null);
   
 
-  useEffect(() => {
-    if (userData && userData.name !== formData.name) {
-      setFormData({
-        id: userData._id,
-        name: userData.name,
-        username: userData.username,
-        email: userData.email,
-        addres: userData.addres,
-        city: userData.city,
-        zipCode: userData.zipCode,
-        country: userData.country,
-      });
-      setValue("userId", userData._id)
-      setValue("name", userData.name);
-      setValue("username", userData.username);
-      setValue("email", userData.email);
-      setValue("addres", userData.addres);
-      setValue("city", userData.city);
-      setValue("zipCode", userData.zipCode);
-      setValue("country", userData.country);
-    }
-  }, [userData, setValue, formData.name]);
-
-  
+ 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      var response ="";
+      
       console.log(data);
       console.log('ID de userData:', userData._id);
-      
-      if(selectedImage){
-        const formData = new FormData();
-        formData.append('name', data.name);
-        formData.append('username', data.username);
-        formData.append('email', data.email);
-        formData.append('password', data.password);
-        formData.append('confirmPassword', data.confirmPassword);
-        formData.append('profile', data.profile);
-        formData.append('address', data.address);
-        formData.append('city', data.city);
-        formData.append('zipCode', data.zipCode);
-        formData.append('country', data.country);
 
-       
-        formData.append('profilePic', selectedImage);
+      const commonData = {
+        name: data.name,
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+        profile: data.profile,
+        address: data.address,
+        city: data.city,
+        zipCode: data.zipCode,
+        country: data.country,
+      };
+
+      let response = null;
+      if(selectedImage){
+
+        const formDataWithImage = new FormData();
+        Object.entries(commonData).forEach(([key, value]) => formDataWithImage.append(key, value));
+        formDataWithImage.append('profilePic', selectedImage);
 
         
-        response = await axios.patch(apiUrl + ':1234/api/users/update/'  + userData._id, formData, {
+        response = await axios.patch(apiUrl + ':1234/api/users/update/'  + userData._id, formDataWithImage, {
           withCredentials: true,
         });
       }else{
          response = await axios.patch(apiUrl + ":1234/api/users/update/" + userData._id, {
-          ...data,
+          ...commonData,
           profile: profile,
         },{
           withCredentials:true,
-        })
+        });
       }
      
 
@@ -191,7 +177,7 @@ export default function Formulario() {
             type="text"
             name="Nombre"
             className={input}
-            defaultValue={formData.name}
+            
             {...register("name",{
                 minLength: {
                   value: 2,
@@ -213,7 +199,7 @@ export default function Formulario() {
             type="text"
             name="Usuario"
             className={input}
-            defaultValue={formData.username}
+            
             {...register("username",{
               minLength: {
                 value: 2,
@@ -235,7 +221,7 @@ export default function Formulario() {
             type="email"
             name="email"
             className={input}
-            defaultValue={formData.email}
+            
             {...register("email", {
               pattern: {
                 value: /^[a-z0-9._%+-]+@[a-z0-9·-]+\.[a-z]{2,4}$/,
@@ -319,7 +305,6 @@ export default function Formulario() {
               type="text"
               name="direccion"
               className={input}
-              defaultValue={formData.address}
               placeholder="Dirección"
               {...register("address", {
                 required: {
@@ -338,7 +323,6 @@ export default function Formulario() {
               type="text"
               name="ciudad"
               className={input}
-              defaultValue={formData.city}
               placeholder="Ciudad"
               {...register("city", {
                 required: {
@@ -364,7 +348,6 @@ export default function Formulario() {
               type="text"
               name="codigo postal"
               className={input}
-              defaultValue={formData.zipCode}
               placeholder="Código Postal"
               {...register("zipCode", {
                 required: {
@@ -382,7 +365,6 @@ export default function Formulario() {
               type="text"
               name="pais"
               className={input}
-              defaultValue={formData.country}
               placeholder="País"
               {...register("country", {
                 required: {
