@@ -6,6 +6,7 @@ import Suggestions from "../suggestions/Suggestions";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/authContext";
 import CurrentUser from '../currentUser/CurrentUser';
+import BannerCookies from "../bannerCookies/BannerCookies";
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const Layout = () => {
       <Outlet />
       <Suggestions />
       <Footer />
+      <BannerCookies />
     </>
   );
 };
