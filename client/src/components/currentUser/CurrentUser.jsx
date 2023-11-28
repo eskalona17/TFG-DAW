@@ -1,7 +1,6 @@
 import Styles from "./currentUser.module.css";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import Button from "../button/Button";
-/* import url_image from "../../assets/img/media-1234.png"; */
 import { AuthContext } from "../../context/authContext";
 import useUserImage from './../../hooks/useUserImage';
 

@@ -1,9 +1,10 @@
-import { login, register, updateProfile, removeUser, logout, followUnfollow, getUserProfile, searchUsers, forgetPassword, resetPassword } from '../controllers/user.js'
+import { login, register, updateProfile, removeUser, logout, followUnfollow, getUserProfile, searchUsers, forgetPassword, resetPassword, getSuggestedUsers } from '../controllers/user.js'
 import protectRoute from '../middlewares/protectRoute.js'
 import express from 'express'
 
 const router = express.Router()
 
+router.get('/suggested-users', protectRoute, getSuggestedUsers)
 router.get('/search', protectRoute, searchUsers)
 router.get('/profile/:username', protectRoute, getUserProfile)
 router.post('/register', register)

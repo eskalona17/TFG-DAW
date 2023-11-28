@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Styles from "./form.module.css";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import Button from "../button/Button";
+import { AuthContext } from "../../context/authContext";
 
 const {
   input_container,
