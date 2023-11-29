@@ -7,7 +7,7 @@ const useFollowUnfollow = () => {
   const { currentUser, setCurrentUser } = useContext(AuthContext);
 
   const followUnfollow = (id) => {
-    axios.post(`${apiUrl}:1234/api/users/follow/${id}`, {}, {
+    axios.post(`${apiUrl}/api/users/follow/${id}`, {}, {
       withCredentials: true
     })
       .then(response => {

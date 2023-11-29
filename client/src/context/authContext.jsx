@@ -40,7 +40,7 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`${apiUrl}:1234/api/users/user`, { withCredentials: true });
+        const res = await axios.get(`${apiUrl}/api/users/user`, { withCredentials: true });
         const { password, ...userData } = res.data;
         const user = { ...userData };
         setCurrentUser(user);

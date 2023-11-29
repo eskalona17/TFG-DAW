@@ -15,7 +15,7 @@ const Suggestions = () => {
   const [users, setUsers] = useState([]);
   
   useEffect(() => {
-    axios.get(`${apiUrl}:1234/api/users/suggested-users?limit=3`, {
+    axios.get(`${apiUrl}/api/users/suggested-users?limit=3`, {
       withCredentials: true
     })
       .then(response => setUsers(response.data))
