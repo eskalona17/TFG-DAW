@@ -1,8 +1,14 @@
 import Styles from "./suggestedUserMini.module.css";
 import Button from "../button/Button";
 import url_image from "../../assets/img/media-1234.png"
+import useFollowUnfollow from "../../hooks/useFollowUnfollow";
 
-const SuggestedUserMini = ({ username }) => {
+const SuggestedUserMini = ({ id, username }) => {
+  const { currentUser, followUnfollow } = useFollowUnfollow();
+
+  const isFollowing = currentUser.following.includes(id);
+  const buttonText = isFollowing ? 'Eliminar' : 'Seguir';
+  const buttonVariant = isFollowing ? 'secondary-small' : 'primary-small';
   const { user, user_container, user_img, user_info_container, user_info, button_container } =
     Styles;
 
@@ -15,9 +21,9 @@ const SuggestedUserMini = ({ username }) => {
           <p className={user_info}>@{username}</p>
           <div className={button_container}>
             <Button
-              text="Seguir"
-              onClick={() => console.log("click")}
-              variant="primary-small"
+              text={buttonText}
+              onClick={() => followUnfollow(id)}
+              variant={buttonVariant}
             />
             <Button
               text="Mensaje"

@@ -34,7 +34,7 @@ const Suggestions = () => {
     <div className={suggestions}>
       <h2 className={title}>Sugerencias</h2>
       {users.map(user => (
-        <SuggestedUserMini key={user._id} username={user.username} />
+        <SuggestedUserMini key={user._id} username={user.username} id={user._id}/>
       ))}
       <Button
         text="Ver más"
