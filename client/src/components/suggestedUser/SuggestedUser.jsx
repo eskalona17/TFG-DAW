@@ -1,11 +1,16 @@
 import Styles from "./suggestedUser.module.css";
 import Button from "../button/Button";
-import followUnfollow from "../../hooks/followUnfollow";
 import useUserImage from "../../hooks/useUserImage";
+import useFollowUnfollow from './../../hooks/useFollowUnfollow';
 
 const SuggestedUser = ({ user }) => {
   const { userImage } = useUserImage(user, '75');
   const { _id, name, username } = user;
+  const { currentUser, followUnfollow } = useFollowUnfollow();
+
+  const isFollowing = currentUser.following.includes(user._id);
+  const buttonText = isFollowing ? 'Eliminar' : 'Seguir';
+  const buttonVariant = isFollowing ? 'secondary' : 'primary';
 
   const {
     user_container,
@@ -26,13 +31,13 @@ const SuggestedUser = ({ user }) => {
       </div>
       <div className={button_container}>
         <Button
-          text="Seguir"
+          text={buttonText}
           onClick={() => followUnfollow(_id)}
-          variant="primary"
+          variant={buttonVariant}
         />
         <Button
           text="Mensaje"
-          onClick={() => console.log("click")}
+          onClick={() => console.log("mensaje")}
           variant="secondary"
         />
       </div>

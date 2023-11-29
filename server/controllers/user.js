@@ -195,6 +195,19 @@ export async function logout (req, res) {
   }
 }
 
+export async function getCurrentUser (req, res) {
+  try {
+    const user = await User.findById(req.user._id)
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' })
+    }
+    res.status(200).json(user)
+  } catch (error) {
+    console.error('Error:', error.message)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+}
+
 export async function followUnfollow (req, res) {
   try {
     const { id } = req.params
@@ -213,7 +226,7 @@ export async function followUnfollow (req, res) {
 
     if (isFollowing) {
       // Unfollow User
-      await User.findByIdAndUpdate(id, { $pull: { following: id } })
+      await User.findByIdAndUpdate(req.user._id, { $pull: { following: id } })
       await User.findByIdAndUpdate(id, { $pull: { followers: req.user._id } })
       res
         .status(200)

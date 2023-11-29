@@ -38,16 +38,24 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-     // Check if the user is logged in before updating local storage
-    if (currentUser) {
-      localStorage.setItem("user", JSON.stringify(currentUser));
-    }
-  }, [currentUser]);
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`${apiUrl}:1234/api/users/user`, { withCredentials: true });
+        const { password, ...userData } = res.data;
+        const user = { ...userData };
+        setCurrentUser(user);
+        localStorage.setItem("user", JSON.stringify(user));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUser();
+  }, []);
 
   const isAuthenticated = () => currentUser !== null;
 
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ currentUser, setCurrentUser, login, logout, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );
