@@ -1,10 +1,10 @@
-import Styles from "./Suggestions.module.css";
 import SuggestedUserMini from "../suggestedUserMini/SuggestedUserMini";
-import Button from "../button/Button";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from 'axios';
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+import { useNavigate } from "react-router-dom";
+import Styles from "./Suggestions.module.css";
+import { useEffect, useState } from "react";
+import Button from "../button/Button";
+import axios from 'axios';
 
 const Suggestions = () => {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const Suggestions = () => {
     <div className={suggestions}>
       <h2 className={title}>Sugerencias</h2>
       {users.map(user => (
-        <SuggestedUserMini key={user._id} username={user.username} id={user._id}/>
+        <SuggestedUserMini key={user._id} user={user} />
       ))}
       <Button
         text="Ver más"

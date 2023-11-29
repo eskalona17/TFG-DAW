@@ -10,13 +10,13 @@ import BannerCookies from "../bannerCookies/BannerCookies";
 
 const Layout = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useContext(AuthContext);
+  const { loading, isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
-    if (!isAuthenticated()) {
+    if (!loading && !isAuthenticated()) {
       navigate('/login');
     }
-  }, [isAuthenticated, navigate]);
+  }, [loading, isAuthenticated, navigate]);
 
   return (
     <>

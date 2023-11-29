@@ -5,6 +5,7 @@ const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
+  const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user")) ?? null
   );
@@ -40,6 +41,7 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        setLoading(true);
         const res = await axios.get(`${apiUrl}/api/users/user`, { withCredentials: true });
         const { password, ...userData } = res.data;
         const user = { ...userData };
@@ -47,6 +49,8 @@ export const AuthContextProvider = ({ children }) => {
         localStorage.setItem("user", JSON.stringify(user));
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchUser();
@@ -55,7 +59,7 @@ export const AuthContextProvider = ({ children }) => {
   const isAuthenticated = () => currentUser !== null;
 
   return (
-    <AuthContext.Provider value={{ currentUser, setCurrentUser, login, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ loading, currentUser, setCurrentUser, login, logout, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );
