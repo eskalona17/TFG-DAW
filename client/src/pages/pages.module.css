@@ -1,0 +1,9 @@
+.message {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: var(--white-color);
+  padding: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+}

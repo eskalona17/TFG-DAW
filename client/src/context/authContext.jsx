@@ -11,7 +11,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const login = async (inputs) => {
     try {
-      const res = await axios.post(`${apiUrl}:1234/api/users/login`, inputs, {
+      const res = await axios.post(`${apiUrl}/api/users/login`, inputs, {
         withCredentials: true,
       });
       const { password, ...userData } = res.data;
@@ -25,7 +25,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post(`${apiUrl}:1234/api/users/logout`, "",{
+      await axios.post(`${apiUrl}/api/users/logout`, "",{
         withCredentials: true,
       });
       localStorage.removeItem('user');

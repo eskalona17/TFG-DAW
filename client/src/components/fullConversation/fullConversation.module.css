@@ -1,0 +1,16 @@
+.message {
+  display: inline-block;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  width: fit-content;
+  border-radius: 6px;
+  background-color: var(--light-orange);
+}
+
+.message-sent {
+  align-self: end;
+}
+
+.message-received {
+  align-self: start;
+}
