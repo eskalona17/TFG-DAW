@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  
+  color: var(--primary-font-color);
 }
 
 .conversation img {
@@ -33,6 +33,7 @@
 }
 
 .last_message {
+  color: var(--placeholder-color);
   padding-left: 1rem;
   font-size: 0.9rem;
 }

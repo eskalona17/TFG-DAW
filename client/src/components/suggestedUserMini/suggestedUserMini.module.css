@@ -1,5 +1,6 @@
 .user {
   margin: 0;
+  color: var(--primary-font-color);
 }
 
 .user_container {

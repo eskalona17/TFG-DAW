@@ -7,13 +7,29 @@
 :root {
   --main-font: "Inter";
   --bg-main-color: #f2f2f2;
-  --white-color: #fafafa;
-  --dark-color: #1e1e1e;
+  --bg-secondary-color: #fafafa;
+  --primary-font-color: #000;
+  --secondary-font-color: #fafafa;
+  --alternative-font-color: #000;
+  --btn-main-color: #fafafa;
   --orange-color: #ffa07a;
   --light-orange: #ffd5c5;
-  --bg-white-color: #ffffff;
+  --label-color: #6f81a5;
+  --placeholder-color: rgb(121, 121, 121);
   font-size: 1rem;
   font-family: var(--main-font);
   max-width: 1920px;
   margin: 0 auto;
+}
+
+/* Estilos para el modo oscuro */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-main-color: #1E1E1E;
+    --bg-secondary-color: #252525;
+    --primary-font-color: #fafafa;
+    --secondary-font-color: #000;
+    --label-color: #f2f2f2;
+  }
 }

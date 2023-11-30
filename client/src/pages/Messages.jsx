@@ -49,7 +49,6 @@ const Messages = () => {
               username={conversation.participants[1].username}
               lastSender={lastSender.name}
               lastMessage={conversation.lastMessage.text}
-              
             />
             {currentConversation[0] && currentConversation[0].conversationId === conversation._id && (
             <FullConversation conversation={currentConversation} />
