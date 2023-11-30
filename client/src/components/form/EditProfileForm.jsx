@@ -113,7 +113,7 @@ export default function Formulario() {
       if (response.status === 200) {
         console.log("Usuario actualizado exitosamente");
         alert("Usuario actualizado exitosamente");
-        navigate("/home");
+        navigate("/");
         reset();
       } else {
         console.error("Error al actualizar usuario:", response.statusText);

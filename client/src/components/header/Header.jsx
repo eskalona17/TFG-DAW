@@ -1,7 +1,7 @@
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import Styles from "./header.module.css";
 import { IoSearch } from "react-icons/io5";
-/* import { IoNotificationsOutline } from "react-icons/io5"; */
 import { IoExitOutline } from "react-icons/io5";
 import { AuthContext } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
@@ -24,13 +24,19 @@ const Header = () => {
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
     <header className={header}>
       <div className={title_container}>
-        <img src="../src/assets/img/logo.svg" alt="Insta Pet Logo" className={logo} />
+        <Link to="/">
+          <img
+            src="../src/assets/img/logo.svg"
+            alt="Insta Pet Logo"
+            className={logo}
+          />
+        </Link>
       </div>
       <div className={search_container}>
         <form className={search_form}>
