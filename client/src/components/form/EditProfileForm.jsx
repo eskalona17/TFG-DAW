@@ -90,11 +90,11 @@ export default function Formulario() {
         formDataWithImage.append('profilePic', selectedImage);
 
         
-        response = await axios.patch(apiUrl + ':1234/api/users/update/'  + userData._id, formDataWithImage, {
+        response = await axios.patch(apiUrl + '/api/users/update/'  + userData._id, formDataWithImage, {
           withCredentials: true,
         });
       }else{
-         response = await axios.patch(apiUrl + ":1234/api/users/update/" + userData._id, {
+         response = await axios.patch(apiUrl + "/api/users/update/" + userData._id, {
           ...commonData,
           profile: profile,
         },{
