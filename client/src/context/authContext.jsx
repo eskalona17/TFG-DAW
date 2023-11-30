@@ -17,6 +17,7 @@ export const AuthContextProvider = ({ children }) => {
       });
       const { password, ...userData } = res.data;
       const user = { ...userData };
+      localStorage.setItem("user", JSON.stringify(user));
       setCurrentUser(user);
     } catch (err) {
       console.error("Ocurrió un error en el login: ", err);
