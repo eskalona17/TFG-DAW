@@ -100,7 +100,7 @@ export default function Formulario() {
       formData.append("country", data.country);
 
       const response = await axios.patch(
-        `${apiUrl}:1234/api/users/update/${userData._id}`,
+        `${apiUrl}/api/users/update/${userData._id}`,
         formData,
         {
           withCredentials: true,
