@@ -34,7 +34,7 @@ export default function Form() {
       // Aquí podrías realizar validaciones adicionales si es necesario
       console.log(data);
       // Enviar datos al backend
-      const response = await axios.post(apiUrl + ":1234/api/users/register", {
+      const response = await axios.post(apiUrl + "/api/users/register", {
         ...data,
         profile: profile,
       });

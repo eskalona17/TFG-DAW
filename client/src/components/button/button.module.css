@@ -11,7 +11,7 @@
 
 .button:hover {
   background-color: var(--light-orange);
-  color: var(--dark-color);
+  color: var(--alternative-font-color);
   border-color: var(--light-orange);
 }
 
@@ -30,7 +30,7 @@
 .primary-large {
   background-color: var(--orange-color);
   border-color: var(--orange-color);
-  color: var(--white-color);
+  color: var(--btn-main-color);
 }
 
 .primary-small {
@@ -46,7 +46,7 @@
 .secondary-small {
   background-color: var(--bg-main-color);
   border-color: var(--orange-color);
-  color: var(--dark-color);
+  color: var(--primary-font-color);
 }
 
 .secondary-small {
@@ -58,18 +58,18 @@
   min-width: 40%;
   text-align: center;
   background-color: var(--light-orange);
-  color: var(--dark-color);
+  color: var(--alternative-font-color);
   padding: 0.2rem 0.6rem;
 }
 
 .alternative:hover {
   background-color: var(--orange-color);
-  color: var(--white-color);
+  color: var(--secondary-font-color);
   border-color: var(--orange-color);
 }
 
 .cookies:hover {
   background-color: var(--orange-color);
-  color: var(--white-color);
+  color: var(--secondary-font-color);
   border-color: var(--orange-color);
 }

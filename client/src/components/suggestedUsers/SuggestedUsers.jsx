@@ -13,7 +13,7 @@ const SuggestedUsers = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`${apiUrl}:1234/api/users/suggested-users?limit=5`, {
+    axios.get(`${apiUrl}/api/users/suggested-users?limit=5`, {
       withCredentials: true
     })
       .then(response => {
@@ -28,7 +28,7 @@ const SuggestedUsers = () => {
 
   const loadMoreUsers = () => {
     setLoading(true);
-    axios.get(`${apiUrl}:1234/api/users/suggested-users?page=${page + 1}&limit=5`, {
+    axios.get(`${apiUrl}/api/users/suggested-users?page=${page + 1}&limit=5`, {
       withCredentials: true
     })
       .then(response => {
