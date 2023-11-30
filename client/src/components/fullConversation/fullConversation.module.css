@@ -6,7 +6,7 @@
   background-color: var(--bg-main-color);
   border-radius: 6px;
   max-height: 500px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .message {
