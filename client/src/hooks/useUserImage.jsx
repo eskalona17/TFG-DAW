@@ -9,8 +9,8 @@ const useUserImage = (user, width = '100') => {
         return user.profilePic;
       } else {
         const initial = user ? user.name.charAt(0) : "";
-        let randomColor = localStorage.getItem(`user-color_${user._id}`);
-        if (!randomColor) {
+        let randomColor = user ? localStorage.getItem(`user-color_${user._id}`) : null;
+        if (user && !randomColor) {
           const colors = ["A7DBD8", "90EE90", "FFC0CB", "C4A1FF", "FFDB58"];
           randomColor = colors[Math.floor(Math.random() * colors.length)];
           localStorage.setItem(`user-color_${user._id}`, randomColor);

@@ -1,6 +1,7 @@
 .suggestions {
   grid-area: aside;
-  background-color: var(--white-color);
+  background-color: var(--bg-secondary-color);
+  color: var(--primary-font-color);
   border-radius: 6px;
   display: flex;
   flex-direction: column;

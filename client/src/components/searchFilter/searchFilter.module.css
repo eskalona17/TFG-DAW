@@ -1,17 +1,17 @@
 .searchFilter {
-    grid-area: main;
-    background-color: var(--white-color);
-    border-radius: 6px;
-    padding: 1rem;
-    
+  grid-area: main;
+  background-color: var(--bg-secondary-color);
+  color: var(--primary-font-color);
+  border-radius: 6px;
+  padding: 1rem;
 }
 
 .searchFilter_container {
-    background-color: var(--white-color);
-    display: flex;
-    width: 100%;
-    align-content: center;
-    justify-content: space-evenly;
-    gap: 1rem;
-    border-radius: 6px;
+  background-color: var(--white-color);
+  display: flex;
+  width: 100%;
+  align-content: center;
+  justify-content: space-evenly;
+  gap: 1rem;
+  border-radius: 6px;
 }

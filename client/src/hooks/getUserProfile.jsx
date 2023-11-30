@@ -10,7 +10,7 @@ const useGetUserProfile = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`${apiUrl}:1234/api/profile/${username}`);
+        const res = await fetch(`${apiUrl}/api/profile/${username}`);
         const data = await res.json();
         if (data.error) return
         setUser(data);

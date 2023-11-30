@@ -1,5 +1,6 @@
 .navitem {
   list-style: none;
+  color: var(--primary-font-color);
 }
 
 .navitem a {

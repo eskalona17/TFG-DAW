@@ -1,6 +1,7 @@
 .search_button {
   border: 1px solid var(--light-orange);
   background-color: var(--bg-main-color);
+  color: var(--primary-font-color);
   cursor: pointer;
   font-size: 1rem;
   border-radius: 6px;
@@ -10,13 +11,12 @@
 }
 
 .search_button.active {
-  color: var(--white-color);
+  color: var(--secondary-font-color);
   background-color: var(--orange-color);
-  
 }
 
 .search_button.active svg {
-  fill: var(--white-color)
+  fill: var(--secondary-font-color)
 }
 
 button {

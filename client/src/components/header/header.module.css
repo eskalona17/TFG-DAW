@@ -1,6 +1,7 @@
 .header {
   grid-area: header;
-  background-color: var(--white-color);
+  background-color: var(--bg-secondary-color);
+  color: var(--primary-font-color);
   border-radius: 6px;
   display: flex;
   justify-content: space-between;
@@ -41,7 +42,12 @@
   outline: none;
 }
 
+.search::placeholder {
+  color: var(--placeholder-color);
+}
+
 .search_button {
+  color: var(--primary-font-color);
   position: absolute;
   font-size: 1rem;
   background-color: inherit;

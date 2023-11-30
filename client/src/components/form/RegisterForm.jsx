@@ -32,7 +32,7 @@ export default function Form() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       // Enviar datos al backend
-      const response = await axios.post(apiUrl + ":1234/api/users/register", {
+      const response = await axios.post(apiUrl + "/api/users/register", {
         ...data,
         profile: profile,
       });
