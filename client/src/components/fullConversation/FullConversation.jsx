@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import axios from 'axios';
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 import Styles from './fullConversation.module.css'
+import { AuthContext } from '../../context/authContext';
 
 const FullConversation = ({ conversation }) => {
+  const { currentUser } = useContext(AuthContext);
   /* const [newMessage, setNewMessage] = useState('');
 
   const handleNewMessageChange = (event) => {
@@ -31,15 +33,15 @@ const FullConversation = ({ conversation }) => {
  */
 
   return (
-    <>
+    <div className={Styles.conversation_container}>
       {conversation.map((message) => (
-        <p key={message._id} className={Styles.message}>{message.text}</p>
-    ))}
+        <p key={message._id} className={`${Styles.message} ${message.sender === currentUser._id ? Styles.message_sent : Styles.message_received}`}>{message.text}</p>
+      ))}
       {/* <form onSubmit={handleNewMessageSubmit}>
         <input type="text" value={newMessage} onChange={handleNewMessageChange} />
         <button type="submit">Enviar</button>
       </form> */}
-    </>
+    </div>
   )
 }
 
