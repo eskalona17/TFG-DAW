@@ -24,7 +24,7 @@
 
 /* Estilos para el modo oscuro */
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --bg-main-color: #1E1E1E;
     --bg-secondary-color: #252525;
@@ -32,4 +32,4 @@
     --secondary-font-color: #000;
     --label-color: #f2f2f2;
   }
-}
+} */
