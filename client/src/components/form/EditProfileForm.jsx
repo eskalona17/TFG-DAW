@@ -1,11 +1,13 @@
-import { useState} from "react";
+import { useState, useContext} from "react";
+import { AuthContext } from "../../context/authContext";
 import { useForm } from "react-hook-form";
 import Styles from "./formEditProfile.module.css"; 
 import Button from "../button/Button";
 import { VscDeviceCamera } from "react-icons/vsc";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import url_image from "../../assets/img/media-1234.png";
+import useUserImage from './../../hooks/useUserImage';
+
 
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
@@ -30,8 +32,19 @@ const {
 
 export default function Formulario() {
   const navigate = useNavigate();
-  const localStoreData =localStorage.getItem('user');
-  const userData =  localStoreData ? JSON.parse(localStoreData) : null;
+  const authContext = useContext(AuthContext);
+  console.log(authContext);
+  const userData = authContext.currentUser;
+  console.log(userData);
+  const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false);
+  const [profile, setProfile] = useState(userData?.profile || "personal");
+  const [imageData, setImageData] = useState({
+    selectedImage: null,
+    imagePreview: null,
+  });
+  
+  const { selectedImage } = imageData;
+  const {userImage: profileImage} = useUserImage(userData);
   
   const {
     handleSubmit,
@@ -39,7 +52,6 @@ export default function Formulario() {
     register,
     formState: { errors },
     reset,
-    
   } = useForm({
     defaultValues:{
       name: userData?.name,
@@ -57,11 +69,7 @@ export default function Formulario() {
  
 
   
-  const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false);
-  const [profile, setProfile] = useState("personal");
-  const [selectedImage, setSelectedImage] = useState(null);
   
-
  
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -88,7 +96,8 @@ export default function Formulario() {
         const formDataWithImage = new FormData();
         Object.entries(commonData).forEach(([key, value]) => formDataWithImage.append(key, value));
         formDataWithImage.append('profilePic', selectedImage);
-
+        formDataWithImage.append('followers', userData.followers);
+        formDataWithImage.append('following', userData.following);
         
         response = await axios.patch(apiUrl + '/api/users/update/'  + userData._id, formDataWithImage, {
           withCredentials: true,
@@ -97,6 +106,8 @@ export default function Formulario() {
          response = await axios.patch(apiUrl + "/api/users/update/" + userData._id, {
           ...commonData,
           profile: profile,
+          followers: userData.followers,
+          following: userData.following,
         },{
           withCredentials:true,
         });
@@ -106,18 +117,9 @@ export default function Formulario() {
       if (response.status === 200) {
         console.log("Usuario actualizado exitosamente");
         alert("Usuario actualizado exitosamente");
-        const updatedUserData = {
-          ...userData,
-          name: data.name, 
-          username: data.username,
-          email: data.email,
-          addres: data.addres,
-          city: data.city,
-          zipCode: data.zipCode,
-          country: data.country,
-        };
+        const updatedUserData = response.data;
       
-        localStorage.setItem('user', JSON.stringify(updatedUserData));
+        authContext.setCurrentUser(updatedUserData);
         navigate("/");
         reset();
       } else {
@@ -132,14 +134,22 @@ export default function Formulario() {
   });
 
 
-  const handleImageChange = (e) => {
-    const files = e.target.files;
+  const handleImageChange = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = (e) => {
+      const file = e.target.files[0];
   
-    if (files && files.length > 0) {
-      const file = files[0];
-      setSelectedImage(file);
-    }
+      setImageData({
+        selectedImage: file,
+        imagePreview: URL.createObjectURL(file), // Crear la URL de la vista previa
+      });
+    };
+  
+    input.click();
   };
+
   
 
   const handleCambiarPassword = () => {
@@ -154,152 +164,168 @@ export default function Formulario() {
  
 
   return (
-    <div className={form}>
-      <form onSubmit={onSubmit}>
-        <div className={imageContainer}>
-          <img src={url_image} alt="User" className={userImage} />
-          <label className={editButton} htmlFor="profileImageInput">
-            <VscDeviceCamera style={{ fontSize: '24px' }} />
-          </label>
-        </div>
-        <input
-          type="file"
-          id="profileImageInput"
-          accept="image/*"
-          onChange={handleImageChange}
-          style={{ display: 'none' }} 
+    <form onSubmit={onSubmit} className={form}>
+      <div className={imageContainer}>
+        <img
+          src= {selectedImage ? URL.createObjectURL(selectedImage) : profileImage}
+          alt="User"
+          className={userImage}
         />
-        <div className={errors.name ? errors_display : ""}>
-            {errors.name && <span>{errors.name.message}</span>}
+        <div className={editButton} onClick={handleImageChange}>
+          <VscDeviceCamera style={{ fontSize: "24px" }} />
         </div>
-        <div className={inputContainer}>
-          <input
-            type="text"
-            name="Nombre"
-            className={input}
-            
-            {...register("name",{
-                minLength: {
-                  value: 2,
-                  message: "El nombre tiene que tener dos caracteres",
-                },
-                maxLength: {
-                  value: 20,
-                  message: "El nombre no puede tener más de 20 caracteres",
-                },
-            })}
-          />
-        </div>
-        <div className={errors.username ? errors_display : ""}>
-            {errors.username && <span>{errors.username.message}</span>}
-        </div>
-        <div className={inputContainer}>
-          <label className={label}>@</label>
-          <input
-            type="text"
-            name="Usuario"
-            className={input}
-            
-            {...register("username",{
-              minLength: {
-                value: 2,
-                message: "El usuario tiene que tener dos caracteres",
-              },
-              maxLength: {
-                value: 20,
-                message: "El usuario no puede tener más de 20 caracteres",
-              },
-            })}
-          />
-        </div>
-        <div className={errors_display}>
-          {errors.email && <span>{errors.email.message}</span>}
-        </div>
+      </div>
 
-        <div className={inputContainer}>
-          <input
-            type="email"
-            name="email"
-            className={input}
+      {/* name */}
+      <div className={inputContainer}>
+        <input
+          type="text"
+          name="Nombre"
+          className={input}
+          {...register("name", {
+            required: {
+              value: true,
+              message: "El nombre es requerido",
+            },
+            minLength: {
+              value: 2,
+              message: "El nombre tiene que tener dos caracteres",
+            },
+            maxLength: {
+              value: 20,
+              message: "El nombre no puede tener más de 20 caracteres",
+            },
+          })}
+          defaultValue={userData ? userData.name : ""}
+        />
+      </div>
+      <div className={errors.name ? errors_display : ""}>
+        {errors.name && <span>{errors.name.message}</span>}
+      </div>
+
+      {/* username */}
+      <div className={inputContainer}>
+        <label className={label}>@</label>
+        <input
+          type="text"
+          name="Usuario"
+          className={input}
+          style={{ borderLeft: 0, borderRadius: "0px 4px 4px 0px" }}
+          {...register("username", {
+            required: {
+              value: true,
+              message: "El usuario es requerido",
+            },
+            minLength: {
+              value: 2,
+              message: "El usuario tiene que tener dos caracteres",
+            },
+            maxLength: {
+              value: 20,
+              message: "El usuario no puede tener más de 20 caracteres",
+            },
+          })}
+          defaultValue={userData ? userData.username : ""}
+        />
+      </div>
+      <div className={errors.username ? errors_display : ""}>
+        {errors.username && <span>{errors.username.message}</span>}
+      </div>
+
+      {/* email */}
+      <div className={inputContainer}>
+        <input
+          type="email"
+          name="email"
+          className={input}
+          {...register("email", {
+            required: {
+              value: true,
+              message: "El email es requerido",
+            },
+            pattern: {
+              value: /^[a-z0-9._%+-]+@[a-z0-9·-]+\.[a-z]{2,4}$/,
+              message: "El email no es valido",
+            },
+          })}
+          defaultValue={userData ? userData.email : ""}
+        />
+      </div>
+
+      <div className={errors.email ? errors_display : ""}>
+        {errors.email && <span>{errors.email.message}</span>}
+      </div>
+
+      {/* password */}
+      <div className={inputContainer}>
+        <input
+          type="password"
+          name="password"
+          onClick={handleCambiarPassword}
+          className={input}
+          placeholder="Cambiar Contraseña"
+          {...register("password", {
             
-            {...register("email", {
-              pattern: {
-                value: /^[a-z0-9._%+-]+@[a-z0-9·-]+\.[a-z]{2,4}$/,
-                message: "El email no es valido",
-              },
-            })}
-          />
-        </div>
-      
-        <div className={errors.password ? errors_display : ""}>
-          {errors.password && <span>{errors.password.message}</span>}
-        </div>
-        <div className={inputContainer}>
-          <input
-            type="password"
-            name="password"
-            onClick={handleCambiarPassword}
-            className={input}
-            placeholder="Cambiar Contraseña"
-            {...register("password", {
-              minLength: {
-                value: 6,
-                message: "La contraseña debe tener al menos 6 caracteres",
-              },
-            })}
-          />
-        </div>
-          {mostrarConfirmarPassword && (
-            <>
-              <div className={errors.confirmPassword ? errors_display : ""}>
-                {errors.confirmPassword && (
-                  <span>{errors.confirmPassword.message}</span>
-                )}
-              </div>
-              <div className={inputConfirmContainer}>
-                <input
-                  type="password"
-                  name="confirma password"
-                  className={input}
-                  placeholder="Confirmar Contraseña"
-                  {...register("confirmPassword", {
-                    required: {
-                      value: true,
-                      message: "Confirmar contraseña es requerido",
-                    },
-                    validate: (value) =>
-                      value === watch("password") || "Las contraseñas no coinciden",
-                  })}
-                />
-              </div>
-              
-            </>
-          )}
-    
-        <div className={inputContainer}>
-          <div className={selectorContainer}>
-            <label className={label}>Perfil:</label>
-            <div 
-              className={`${perfilButton} ${profile === "personal" ? Styles.active : ""}`}
-              onClick={() => handleCambiarprofile("personal")}
-              
-            >
-              Personal
-            </div>
-            <div
-              className={`${perfilButton} ${profile === "profesional" ? Styles.active : ""}`}
-              onClick={() => handleCambiarprofile("profesional")}
-              
-            >
-              Profesional
-            </div>
+            minLength: {
+              value: 6,
+              message: "La contraseña debe tener al menos 6 caracteres",
+            },
+          })}
+        />
+      </div>
+      {mostrarConfirmarPassword && (
+        <>
+          <div className={inputConfirmContainer}>
+            <input
+              type="password"
+              name="confirma password"
+              className={input}
+              placeholder="Confirmar Contraseña"
+              {...register("confirmPassword", {
+                required: {
+                  value: true,
+                  message: "Confirmar contraseña es requerido",
+                },
+                validate: (value) =>
+                  value === watch("password") || "Las contraseñas no coinciden",
+              })}
+            />
+          </div>
+          <div className={errors.confirmPassword ? errors_display : ""}>
+            {errors.confirmPassword && (
+              <span>{errors.confirmPassword.message}</span>
+            )}
+          </div>
+        </>
+      )}
+
+      {/* choose profesional or personal */}
+      <div className={inputContainer}>
+        <div className={selectorContainer}>
+          <label className={label}>Perfil:</label>
+          <div
+            className={`${perfilButton} ${
+              profile === "personal" ? Styles.active : ""
+            }`}
+            style={{ borderRadius: "0px" }}
+            onClick={() => handleCambiarprofile("personal")}
+          >
+            Personal
+          </div>
+          <div
+            className={`${perfilButton} ${
+              profile === "profesional" ? Styles.active : ""
+            }`}
+            style={{ borderRadius: "0px 4px 4px 0px", borderLeft: 0 }}
+            onClick={() => handleCambiarprofile("profesional")}
+          >
+            Profesional
           </div>
         </div>
-        {profile ==="profesional" && (
-          <>
-          <div className={errors.direccion ? errors_display : ""}>
-            {errors.direccion && <span>{errors.direccion.message}</span>}
-          </div>
+      </div>
+      {profile === "profesional" && (
+        <>
+          {/* address */}
           <div className={inputContainer}>
             <input
               type="text"
@@ -312,12 +338,14 @@ export default function Formulario() {
                   message: "La dirección es requerida",
                 },
               })}
+              defaultValue={userData ? userData.address : ""}
             />
           </div>
-          
-          <div className={errors_display}>
-            {errors.ciudad && <span>{errors.ciudad.message}</span>}
+          <div className={errors.address ? errors_display : ""}>
+            {errors.address && <span>{errors.address.message}</span>}
           </div>
+
+          {/* ciudad */}
           <div className={inputContainer}>
             <input
               type="text"
@@ -330,20 +358,15 @@ export default function Formulario() {
                   message: "La ciudad es requerida",
                 },
               })}
+              defaultValue={userData ? userData.city : ""}
             />
           </div>
-              
-          <div className={errors.postal_code ? errors_display : ""}>
-            {errors.postal_code && (
-              <span>{errors.postal_code.message}</span>
-            )}
+          <div className={errors.city ? errors_display : ""}>
+            {errors.city && <span>{errors.city.message}</span>}
           </div>
-          <div className={errors.postal_code ? errors_display : ""}>
-            {errors.postal_code && (
-              <span>{errors.postal_code.message}</span>
-            )}
-          </div>
+
           <div className={inputContainer}>
+            {/* postal code */}
             <input
               type="text"
               name="codigo postal"
@@ -360,7 +383,15 @@ export default function Formulario() {
                     "El código postal debe tener como máximo 5 caracteres",
                 },
               })}
+              defaultValue={userData ? userData.zipCode : ""}
             />
+          </div>
+          <div className={errors.zipCode ? errors_display : ""}>
+            {errors.zipCode && <span>{errors.zipCode.message}</span>}
+          </div>
+
+          {/* country */}
+          <div className={inputContainer}>
             <input
               type="text"
               name="pais"
@@ -372,22 +403,24 @@ export default function Formulario() {
                   message: "El pais es requerido",
                 },
               })}
+              defaultValue={userData ? userData.country : ""}
             />
           </div>
-          
-          </>
-        )}
-        <div className={bottomButtonContainer}>
-          <Button
-            
-            text="Guardar"
-            className={button}
-            type="submit"
-            variant="primary"
-          />
-        </div>
-      </form>
-    </div>
+          <div className={errors.country ? errors_display : ""}>
+            {errors.country && <span>{errors.country.message}</span>}
+          </div>
+        </>
+      )}
+      <div className={bottomButtonContainer}>
+        <Button
+          text="Guardar"
+          className={button}
+          type="submit"
+          variant="primary"
+        />
+      </div>
+    </form>
+
   );
 }
 

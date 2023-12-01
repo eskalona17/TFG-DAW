@@ -57,7 +57,7 @@ export async function register (req, res) {
       password: hashedPwd,
       profile,
       address,
-      profilePic: req.file ? req.file.filename : null
+      profilePic: req.file ? req.file.filename : ''
     })
 
     await newUser.save()
