@@ -7,7 +7,6 @@
 }
 
 .searchFilter_container {
-  background-color: var(--white-color);
   display: flex;
   width: 100%;
   align-content: center;

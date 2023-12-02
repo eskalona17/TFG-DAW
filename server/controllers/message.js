@@ -83,7 +83,8 @@ export async function getConversations (req, res) {
     const conversations = await Conversation.find({ participants: userId }).populate({
       path: 'participants',
       select: 'name username profilePic'
-    })
+    }).sort({ updatedAt: -1 })
+
     if (conversations.length === 0) {
       return res.status(404).json({ error: 'Conversations not found' })
     }

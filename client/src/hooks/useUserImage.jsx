@@ -8,13 +8,21 @@ const useUserImage = (user, width = '100') => {
       if (user && user.profilePic) {
         return user.profilePic;
       } else {
-        const initial = user ? user.name.charAt(0) : "";
-        let randomColor = user ? localStorage.getItem(`user-color_${user._id}`) : null;
-        if (user && !randomColor) {
-          const colors = ["A7DBD8", "90EE90", "FFC0CB", "C4A1FF", "FFDB58"];
-          randomColor = colors[Math.floor(Math.random() * colors.length)];
-          localStorage.setItem(`user-color_${user._id}`, randomColor);
+        let userColors = sessionStorage.getItem('user-colors');
+        if (userColors) {
+          userColors = JSON.parse(userColors);
+        } else {
+          userColors = {};
         }
+        if (user && !userColors[user._id]) {
+          const colors = ["A7DBD8", "90EE90", "FFC0CB", "C4A1FF", "FFDB58"];
+          const randomColor = colors[Math.floor(Math.random() * colors.length)];
+          userColors[user._id] = randomColor;
+          sessionStorage.setItem('user-colors', JSON.stringify(userColors));
+        }
+
+        const randomColor = user ? userColors[user._id] : null;
+        const initial = user ? user.name.charAt(0) : "";
 
         const canvas = document.createElement('canvas');
         canvas.width = width;
@@ -24,10 +32,10 @@ const useUserImage = (user, width = '100') => {
         context.fillStyle = `#${randomColor}`;
         context.fillRect(0, 0, canvas.width, canvas.height);
 
+        context.font = `${width / 2}px Inter`;
         context.fillStyle = '#FFFFFF';
         context.textAlign = 'center';
         context.textBaseline = 'middle';
-        context.font = `${width / 2}px Inter`;
         context.fillText(initial, canvas.width / 2, canvas.height / 2);
 
         return canvas.toDataURL();

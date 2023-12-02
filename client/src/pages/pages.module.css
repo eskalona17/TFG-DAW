@@ -17,6 +17,11 @@
   background-color: var(--bg-main-color);
   color: var(--primary-font-color);
   border-radius: 6px;
-  max-height: 400px;
+  height: 400px;
   overflow-y: scroll;
+}
+
+.message_container::before {
+  content: "";
+  flex-grow: 1;
 }

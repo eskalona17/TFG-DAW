@@ -67,6 +67,7 @@ const Messages = () => {
       const response = await axios.post(`${apiUrl}/api/messages`, { recipientId, message }, { withCredentials: true });
       const newMessage = response.data.message;
       socket.emit('newMessage', newMessage);
+
       // Actualiza el estado `messages` para incluir el nuevo mensaje
       setMessages((prevMessages) => ({
         ...prevMessages,
@@ -77,7 +78,7 @@ const Messages = () => {
       setConversations((prevConversations) => (
         prevConversations.map((conversation) => (
           conversation._id === activeConversation
-            ? { ...conversation, lastMessage: newMessage }
+            ? { ...conversation, lastMessage: newMessage, updatedAt: new Date() }
             : conversation
         ))
       ));
