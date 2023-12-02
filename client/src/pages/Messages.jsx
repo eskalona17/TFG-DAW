@@ -12,7 +12,8 @@ const Messages = () => {
   const [activeConversation, setActiveConversation] = useState(null);
   const [conversations, setConversations] = useState([]);
   const [messages, setMessages] = useState({});
-  const [newMessage, setNewMessage] = useState('');
+  const [newMessageToSend, setNewMessageToSend] = useState('');
+  const [unread, setUnread] = useState(null);
   const [loading, setLoading] = useState(false);
   const { socket } = useContext(SocketContext);
   const endOfMessagesRef = useRef(null);
@@ -32,28 +33,17 @@ const Messages = () => {
     getConversations();
   }, [setConversations]);
 
-  useEffect(() => {
-    if (activeConversation) {
-      scrollToBottom();
-    }
-  }, [messages, activeConversation]);
-  
-  const scrollToBottom = () => {
-    if (endOfMessagesRef.current) {
-      const scrollHeight = endOfMessagesRef.current.scrollHeight;
-      endOfMessagesRef.current.scrollTop = scrollHeight;
-    }
-  };
-
   const handleConversationClick = async (_id) => {
     try {
       const response = await axios.get(`${apiUrl}/api/messages/${_id}`, { withCredentials: true })
       const messages = response.data.messages;
       const conversation = response.data.conversation;
+      socket.emit('markMessagesAsSeen', { conversationId: conversation._id });
       setMessages({
         [conversation._id]: messages
       });
       setActiveConversation(conversation._id);
+      setUnread(false)
       if (activeConversation) {
         scrollToBottom();
       }
@@ -61,6 +51,19 @@ const Messages = () => {
       console.error(error);
     }
   }
+
+  useEffect(() => {
+    if (activeConversation) {
+      scrollToBottom();
+    }
+  }, [messages, activeConversation]);
+
+  const scrollToBottom = () => {
+    if (endOfMessagesRef.current) {
+      const scrollHeight = endOfMessagesRef.current.scrollHeight;
+      endOfMessagesRef.current.scrollTop = scrollHeight;
+    }
+  };
 
   const handleSendMessage = async (recipientId, message) => {
     try {
@@ -78,44 +81,64 @@ const Messages = () => {
       setConversations((prevConversations) => (
         prevConversations.map((conversation) => (
           conversation._id === activeConversation
-            ? { ...conversation, lastMessage: newMessage, updatedAt: new Date() }
+            ? { ...conversation, lastMessage: { text: newMessage.text, sender: newMessage.sender, timestamp: newMessage.timestamp } }
             : conversation
         ))
       ));
-      setNewMessage('');
+      setNewMessageToSend('');
     } catch (error) {
       console.error(error);
     }
   }
 
   useEffect(() => {
-    if (socket) {
-      socket.on('newMessage', (newMessage) => {
-        if (newMessage.conversationId === activeConversation) {
-          setMessages(prevMessages => {
-            const conversationMessages = prevMessages[newMessage.conversationId] || [];
-            return {
-              ...prevMessages,
-              [newMessage.conversationId]: [...conversationMessages, newMessage],
-            };
-          });
-          scrollToBottom();
-        }
-        setConversations((prevConversations) => (
-          prevConversations.map((conversation) => (
-            conversation._id === newMessage.conversationId
-              ? { ...conversation, lastMessage: newMessage }
-              : conversation
-          ))
-        ));
-      });
-    }
+    socket?.on('newMessage', (newMessage) => {
+      if (newMessage.conversationId === activeConversation) {
+        setMessages(prevMessages => {
+          const conversationMessages = prevMessages[newMessage.conversationId] || [];
+          return {
+            ...prevMessages,
+            [newMessage.conversationId]: [...conversationMessages, newMessage],
+          };
+        });
+        scrollToBottom();
+      }
+      setConversations((prevConversations) => (
+        prevConversations.map((conversation) => (
+          conversation._id === newMessage.conversationId
+            ? { ...conversation, lastMessage: newMessage }
+            : conversation
+        ))
+      ));
+      setUnread(true)
+    });
     return () => {
       if (socket) {
         socket.off('newMessage');
       }
     };
   }, [socket, activeConversation]);
+
+  useEffect(() => {
+    socket?.on("messagesSeen", ({ conversationId }) => {
+      setConversations((prev) => {
+        const updatedConversations = prev.map((conversation) => {
+          if (conversation._id === conversationId) {
+            return {
+              ...conversation,
+              lastMessage: {
+                ...conversation.lastMessage,
+                seen: true,
+              },
+            };
+          }
+          return conversation;
+        });
+        return updatedConversations;
+      });
+      setUnread(false)
+    });
+  }, [socket, setConversations]);
 
   return (
     <main className="main">
@@ -132,8 +155,8 @@ const Messages = () => {
           }
           {
             conversations.map((conversation) => (
-              <section key={conversation._id} className={Styles.message}>
-                <Conversation conversation={conversation} onClick={handleConversationClick} />
+              <section key={conversation._id} className={`${Styles.message} ${unread ? Styles.unread : ''}`}>
+                <Conversation conversation={conversation} onClick={handleConversationClick}/>
                 {activeConversation === conversation._id &&
                   <div className={Styles.message_container} ref={endOfMessagesRef}>
                     {messages[conversation._id] && (
@@ -143,10 +166,10 @@ const Messages = () => {
                     )}
                     <Input
                       type="text"
-                      value={newMessage}
+                      value={newMessageToSend}
                       placeholder="Escribe un mensaje..."
-                      onClick={() => handleSendMessage(conversation.participants[0]._id, newMessage)}
-                      onChange={(e) => setNewMessage(e.target.value)}
+                      onClick={() => handleSendMessage(conversation.participants[0]._id, newMessageToSend)}
+                      onChange={(e) => setNewMessageToSend(e.target.value)}
                     />
                   </div>
                 }

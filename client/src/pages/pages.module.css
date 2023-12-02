@@ -25,3 +25,7 @@
   content: "";
   flex-grow: 1;
 }
+
+.unread {
+  border: 1px solid var(--orange-color);
+}

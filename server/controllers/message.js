@@ -16,7 +16,8 @@ export async function sendMessage (req, res) {
         participants: [senderId, recipientId],
         lastMessage: {
           text: message,
-          sender: senderId
+          sender: senderId,
+          timestamp: Date.now()
         }
       })
 
@@ -26,7 +27,8 @@ export async function sendMessage (req, res) {
     const newMessage = new Message({
       conversationId: conversation._id,
       sender: senderId,
-      text: message
+      text: message,
+      timestamp: Date.now()
     })
 
     await Promise.all([
@@ -34,7 +36,8 @@ export async function sendMessage (req, res) {
       conversation.updateOne({
         lastMessage: {
           text: message,
-          sender: senderId
+          sender: senderId,
+          timestamp: Date.now()
         }
       })
     ])
