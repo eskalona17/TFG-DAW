@@ -24,44 +24,6 @@
   z-index: 10;
 }
 
-.newPost_form {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  position: relative;
-}
-
-.newPost_input {
-  background-color: var(--bg-main-color);
-  box-sizing: border-box;
-  width: 100%;
-  border: 1.5px solid transparent;
-  border-radius: 3px;
-  outline: none;
-  font-size: 1rem;
-  padding: 1rem 3.2rem;
-}
-
-.newPost_input:focus {
-  border: 1.5px solid var(--orange-color);
-}
-
-.newPost_button {
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  align-self: center;
-  margin: 1rem;
-  padding: 0;
-  position: absolute;
-  right: 0;
-  z-index: 10;
-}
-
-.icon {
-  fill: var(--orange-color);
-}
-
 .multimedia_Container {
   background-color: var(--white-color);
   display: flex;
