@@ -3,7 +3,7 @@ import io from "socket.io-client"
 import { AuthContext } from "./authContext"
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
-const SocketContext = createContext()
+export const SocketContext = createContext()
 
 export const useSocket = () => {
   return useContext(SocketContext);

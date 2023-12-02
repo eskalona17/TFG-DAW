@@ -3,6 +3,7 @@ import useUserImage from "../../hooks/useUserImage";
 import Styles from "./newPost.module.css";
 import { VscSend, VscVmRunning, VscLocation, VscBookmark  } from "react-icons/vsc";
 import { AuthContext } from "../../context/authContext";
+import Input from "../input/Input";
 
 const NewPost = () => {
   const { currentUser } = useContext(AuthContext);
@@ -33,16 +34,7 @@ const NewPost = () => {
     <div className={newPost}>
       <div className={newPost_container}>
         <img src={userImage} alt="" className={user_img} />
-        <form className={newPost_form}>
-          <input
-            type="text"
-            placeholder="¿Qué estás pensando?"
-            className={newPost_input}
-          />
-          <button className={newPost_button}>
-            <VscSend className={icon} />
-          </button>
-        </form>
+        <Input type="text" placeholder="¿Qué estás pensando?" newPost="newPost" onClick="click"/>
       </div>
       <div className={multimedia_Container}>
             <button className={multimedia_button} onClick={handleMultimediaClick}>

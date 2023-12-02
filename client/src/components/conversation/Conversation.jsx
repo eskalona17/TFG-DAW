@@ -1,16 +1,27 @@
+import useUserImage from "../../hooks/useUserImage";
+import { formatDistanceToNow } from 'date-fns';
 import Styles from './conversation.module.css'
-import url_image from "../../assets/img/media-1234.png";
-const Conversation = ({ onClick, name, username, lastSender, lastMessage }) => {
+import { es } from 'date-fns/locale';
+
+const Conversation = ({ conversation, onClick }) => {
+  const { lastMessage, participants, updatedAt } = conversation
+  const { sender, text } = lastMessage
+  const { _id, name, username } = participants[0]
+  const { userImage } = useUserImage(participants[0], '75');
+  const timeAgo = formatDistanceToNow(new Date(updatedAt), { addSuffix: true, locale: es });
+  
+  /* if (!participant) return null */
+
   return (
-    <div className={Styles.conversation} onClick={onClick}>
-      <img src={url_image} alt="" className={Styles.image} />
+    <div className={Styles.conversation} onClick={() => onClick(_id)} >
+      <img src={userImage} alt="" className={Styles.image} />
       <div className={Styles.info_container}>
         <div className={Styles.info}>
           <p className={Styles.name}>{name}</p>
           <p className={Styles.username}>@{username}</p>
-          {/* <p className={Styles.date}>{date}</p> */}
+          <p className={Styles.date}>{timeAgo}</p>
         </div>
-        <p className={Styles.last_message}>{lastSender}: {lastMessage}</p>
+        <p className={Styles.last_message}>{sender === _id ? name.split(' ')[0] : 'Tú'}: {text}</p>
       </div>
     </div>
   )
