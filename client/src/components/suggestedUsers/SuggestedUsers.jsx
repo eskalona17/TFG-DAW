@@ -3,8 +3,7 @@ import SuggestedUser from '../suggestedUser/SuggestedUser';
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 import axios from 'axios';
 import Button from '../button/Button';
-import 'ldrs/bouncy'
-import Styles from './suggestedUsers.module.css';
+import Loader from '../loader/Loader';
 
 const SuggestedUsers = () => {
   const [users, setUsers] = useState([]);
@@ -51,9 +50,7 @@ const SuggestedUsers = () => {
   return (
     <>
       {loading ? (
-        <div className={Styles.loader}>
-        <l-bouncy size="45" speed="1.75" color="#ffa07a" />
-      </div>
+        <Loader />
       ) : (
         <>
           {users.map(user => (
