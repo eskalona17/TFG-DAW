@@ -6,6 +6,7 @@ import { AuthContext } from "../context/authContext";
 import Message from "../components/message/Message";
 import Loader from "../components/loader/Loader";
 import Input from "../components/input/Input";
+import { useParams } from 'react-router-dom';
 import Styles from './pages.module.css'
 import axios from "axios";
 
@@ -19,24 +20,19 @@ const Messages = () => {
   const { socket } = useContext(SocketContext);
   const [unread, setUnread] = useState({});
   const endOfMessagesRef = useRef(null);
+  const { userId } = useParams();
+
+  /* if(userId) {
+    setActiveConversation(userId);
+  } */
 
   useEffect(() => {
     const getConversations = async () => {
       setLoading(true);
       try {
         const response = await axios.get(`${apiUrl}/api/messages/conversations`, { withCredentials: true });
-        const res = response.data;
-
+        const res = await response.data;
         setConversations(res.conversations);
-
-        const unreadConversations = {};
-        res.conversationsWithUnseenMessages.forEach((conversation) => {
-          if (conversation.unreadMessages && conversation.lastMessage.sender !== currentUser._id) {
-            unreadConversations[conversation._id] = conversation.unreadMessages;
-          }
-        });
-
-        setUnread(unreadConversations);
       } catch (error) {
         console.error(error);
       } finally {
@@ -44,13 +40,45 @@ const Messages = () => {
       }
     }
     getConversations();
-  }, [setConversations, currentUser._id]);
+  }, []);
+
+  useEffect(() => {
+    const handleUserId = async () => {
+      setLoading(true);
+      if (userId && conversations) {
+        const conversationWithUser = conversations.find(conversation =>
+          conversation.participants.some(participant => participant._id === userId)
+        );
+        console.log(conversationWithUser);
+        if (conversationWithUser) {
+          try {
+            const response = await axios.get(`${apiUrl}/api/messages/${conversationWithUser.participants[0]._id}`, { withCredentials: true })
+            const messages = await response.data.messages;
+            const conversation = await response.data.conversation;
+            socket.emit('markMessagesAsSeen', { conversationId: conversation._id });
+            setMessages({
+              [conversation._id]: messages
+            });
+            setActiveConversation(conversation._id);
+            setUnread(prev => ({ ...prev, [conversation._id]: false }));
+            if (activeConversation) {
+              scrollToBottom();
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      }
+      setLoading(false);
+    }
+    handleUserId()
+  }, [userId, conversations, socket, activeConversation]);
 
   const handleConversationClick = async (_id) => {
     try {
       const response = await axios.get(`${apiUrl}/api/messages/${_id}`, { withCredentials: true })
-      const messages = response.data.messages;
-      const conversation = response.data.conversation;
+      const messages = await response.data.messages;
+      const conversation = await response.data.conversation;
       socket.emit('markMessagesAsSeen', { conversationId: conversation._id });
 
       setMessages({

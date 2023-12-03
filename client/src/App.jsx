@@ -27,6 +27,7 @@ export default function App () {
               <Route index element={<Home />} />
               <Route path='/explora' element={<Explore />} />
               <Route path='/mensajes' element={<Messages />} />
+              <Route path='/mensajes/:userId' element={<Messages  />} />
               <Route path='/editar-perfil' element={<EditProfile />} />
               <Route path='/ajustes' element={<Settings />} />
               {/* <Route path='/:username' element={<UserProfile />} /> */}
