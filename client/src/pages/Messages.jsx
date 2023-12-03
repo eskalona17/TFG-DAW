@@ -1,7 +1,8 @@
 import Conversation from "../components/conversation/Conversation"
-import { SocketContext } from "../context/SocketContext";
 import { useContext, useEffect, useRef, useState } from "react";
+import { SocketContext } from "../context/SocketContext";
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+import { AuthContext } from "../context/authContext";
 import Message from "../components/message/Message";
 import Loader from "../components/loader/Loader";
 import Input from "../components/input/Input";
@@ -10,11 +11,13 @@ import axios from "axios";
 
 const Messages = () => {
   const [activeConversation, setActiveConversation] = useState(null);
+  const [newMessageToSend, setNewMessageToSend] = useState('');
   const [conversations, setConversations] = useState([]);
-  const [messages, setMessages] = useState({});
-  const [newMessage, setNewMessage] = useState('');
+  const { currentUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
+  const [messages, setMessages] = useState({});
   const { socket } = useContext(SocketContext);
+  const [unread, setUnread] = useState({});
   const endOfMessagesRef = useRef(null);
 
   useEffect(() => {
@@ -22,7 +25,18 @@ const Messages = () => {
       setLoading(true);
       try {
         const response = await axios.get(`${apiUrl}/api/messages/conversations`, { withCredentials: true });
-        setConversations(response.data);
+        const res = response.data;
+
+        setConversations(res.conversations);
+
+        const unreadConversations = {};
+        res.conversationsWithUnseenMessages.forEach((conversation) => {
+          if (conversation.unreadMessages && conversation.lastMessage.sender !== currentUser._id) {
+            unreadConversations[conversation._id] = conversation.unreadMessages;
+          }
+        });
+
+        setUnread(unreadConversations);
       } catch (error) {
         console.error(error);
       } finally {
@@ -30,30 +44,23 @@ const Messages = () => {
       }
     }
     getConversations();
-  }, [setConversations]);
-
-  useEffect(() => {
-    if (activeConversation) {
-      scrollToBottom();
-    }
-  }, [messages, activeConversation]);
-  
-  const scrollToBottom = () => {
-    if (endOfMessagesRef.current) {
-      const scrollHeight = endOfMessagesRef.current.scrollHeight;
-      endOfMessagesRef.current.scrollTop = scrollHeight;
-    }
-  };
+  }, [setConversations, currentUser._id]);
 
   const handleConversationClick = async (_id) => {
     try {
       const response = await axios.get(`${apiUrl}/api/messages/${_id}`, { withCredentials: true })
       const messages = response.data.messages;
       const conversation = response.data.conversation;
+      socket.emit('markMessagesAsSeen', { conversationId: conversation._id });
+
       setMessages({
         [conversation._id]: messages
       });
+
       setActiveConversation(conversation._id);
+
+      setUnread(prev => ({ ...prev, [conversation._id]: false }));
+
       if (activeConversation) {
         scrollToBottom();
       }
@@ -62,60 +69,100 @@ const Messages = () => {
     }
   }
 
+  useEffect(() => {
+    if (activeConversation) {
+      scrollToBottom();
+    }
+  }, [unread, messages, activeConversation]);
+
+  const scrollToBottom = () => {
+    if (endOfMessagesRef.current) {
+      const scrollHeight = endOfMessagesRef.current.scrollHeight;
+      endOfMessagesRef.current.scrollTop = scrollHeight;
+    }
+  };
+
   const handleSendMessage = async (recipientId, message) => {
+    if (message.trim() === '') return;
     try {
       const response = await axios.post(`${apiUrl}/api/messages`, { recipientId, message }, { withCredentials: true });
       const newMessage = response.data.message;
       socket.emit('newMessage', newMessage);
 
-      // Actualiza el estado `messages` para incluir el nuevo mensaje
-      setMessages((prevMessages) => ({
-        ...prevMessages,
-        [activeConversation]: [...prevMessages[activeConversation], newMessage],
-      }));
+      setMessages((prevMessages) => {
+        const conversationMessages = prevMessages[activeConversation] || [];
+        const updatedMessages = conversationMessages.map(message => ({ ...message, seen: true }));
+        return {
+          ...prevMessages,
+          [activeConversation]: [...updatedMessages, newMessage],
+        };
+      });
 
-      // Actualiza el estado `conversations` para incluir el nuevo mensaje como el último mensaje de la conversación activa
       setConversations((prevConversations) => (
         prevConversations.map((conversation) => (
           conversation._id === activeConversation
-            ? { ...conversation, lastMessage: newMessage, updatedAt: new Date() }
+            ? { ...conversation, lastMessage: { text: newMessage.text, sender: newMessage.sender, timestamp: newMessage.timestamp } }
             : conversation
         ))
       ));
-      setNewMessage('');
+
+      setNewMessageToSend('');
     } catch (error) {
       console.error(error);
     }
   }
 
   useEffect(() => {
-    if (socket) {
-      socket.on('newMessage', (newMessage) => {
-        if (newMessage.conversationId === activeConversation) {
-          setMessages(prevMessages => {
-            const conversationMessages = prevMessages[newMessage.conversationId] || [];
-            return {
-              ...prevMessages,
-              [newMessage.conversationId]: [...conversationMessages, newMessage],
-            };
-          });
-          scrollToBottom();
-        }
-        setConversations((prevConversations) => (
-          prevConversations.map((conversation) => (
-            conversation._id === newMessage.conversationId
-              ? { ...conversation, lastMessage: newMessage }
-              : conversation
-          ))
-        ));
+    socket?.on('newMessage', (newMessage) => {
+      if (newMessage.conversationId === activeConversation) {
+        setMessages(prevMessages => {
+          const conversationMessages = prevMessages[newMessage.conversationId] || [];
+          return {
+            ...prevMessages,
+            [newMessage.conversationId]: [...conversationMessages, newMessage],
+          };
+        });
+
+        scrollToBottom();
+      } else {
+        setUnread(prev => ({ ...prev, [newMessage.conversationId]: true }));
+      }
+      setConversations((prevConversations) => {
+        const updatedConversations = prevConversations.map((conversation) => (
+          conversation._id === newMessage.conversationId
+            ? { ...conversation, lastMessage: newMessage }
+            : conversation
+        ))
+        return [updatedConversations.find(conversation => conversation._id === newMessage.conversationId), ...updatedConversations.filter(conversation => conversation._id !== newMessage.conversationId)];
       });
-    }
+    });
     return () => {
       if (socket) {
         socket.off('newMessage');
       }
     };
   }, [socket, activeConversation]);
+
+  useEffect(() => {
+    socket?.on("messagesSeen", ({ conversationId }) => {
+      setConversations((prev) => {
+        const updatedConversations = prev.map((conversation) => {
+          if (conversation._id === conversationId) {
+            return {
+              ...conversation,
+              lastMessage: {
+                ...conversation.lastMessage,
+                seen: true,
+              },
+            };
+          }
+          return conversation;
+        });
+        return updatedConversations;
+      });
+      setUnread(prev => ({ ...prev, [conversationId]: false }));
+    });
+  }, [socket, setConversations]);
 
   return (
     <main className="main">
@@ -132,21 +179,20 @@ const Messages = () => {
           }
           {
             conversations.map((conversation) => (
-              <section key={conversation._id} className={Styles.message}>
+              <section key={conversation._id} className={`${Styles.message} ${unread[conversation._id] ? Styles.unread : ''}`}>
                 <Conversation conversation={conversation} onClick={handleConversationClick} />
                 {activeConversation === conversation._id &&
                   <div className={Styles.message_container} ref={endOfMessagesRef}>
-                    {messages[conversation._id] && (
-                      messages[conversation._id].map(message => (
-                        <Message key={message._id} message={message} />
-                      ))
+                    {messages[activeConversation]?.map(message => (
+                      <Message key={message._id} message={message} />
+                    )
                     )}
                     <Input
                       type="text"
-                      value={newMessage}
+                      value={newMessageToSend}
                       placeholder="Escribe un mensaje..."
-                      onClick={() => handleSendMessage(conversation.participants[0]._id, newMessage)}
-                      onChange={(e) => setNewMessage(e.target.value)}
+                      onClick={() => handleSendMessage(conversation.participants[0]._id, newMessageToSend)}
+                      onChange={(e) => setNewMessageToSend(e.target.value)}
                     />
                   </div>
                 }

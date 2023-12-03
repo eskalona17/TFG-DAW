@@ -24,3 +24,13 @@
   margin-left: .5rem;
   color: var(--placeholder-color);
 }
+
+.unread::after {
+  content: '';
+  display: inline-block;
+  margin-left: 5px;
+  width: 6px;
+  height: 6px;
+  background-color: var(--orange-color);
+  border-radius: 50%;
+}

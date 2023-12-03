@@ -4,13 +4,11 @@ import Styles from './conversation.module.css'
 import { es } from 'date-fns/locale';
 
 const Conversation = ({ conversation, onClick }) => {
-  const { lastMessage, participants, updatedAt } = conversation
-  const { sender, text } = lastMessage
+  const { lastMessage, participants } = conversation
+  const { sender, text, timestamp } = lastMessage
   const { _id, name, username } = participants[0]
   const { userImage } = useUserImage(participants[0], '75');
-  const timeAgo = formatDistanceToNow(new Date(updatedAt), { addSuffix: true, locale: es });
-  
-  /* if (!participant) return null */
+  const timeAgo = formatDistanceToNow(new Date(timestamp), { addSuffix: true, locale: es });
 
   return (
     <div className={Styles.conversation} onClick={() => onClick(_id)} >
