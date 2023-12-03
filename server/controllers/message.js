@@ -88,6 +88,12 @@ export async function getConversations (req, res) {
       select: 'name username profilePic'
     }).sort({ updatedAt: -1 })
 
+    const conversationsWithUnseenMessages = await Promise.all(conversations.map(async (conversation) => {
+      const unreadMessages = await Message.countDocuments({ conversationId: conversation._id, seen: false })
+      return { ...conversation._doc, unreadMessages }
+    }))
+
+    console.log(conversationsWithUnseenMessages)
     if (conversations.length === 0) {
       return res.status(404).json({ error: 'Conversations not found' })
     }
@@ -96,7 +102,7 @@ export async function getConversations (req, res) {
         (participant) => participant._id.toString() !== userId.toString()
       )
     })
-    res.status(200).json(conversations)
+    res.status(200).json({ conversations, conversationsWithUnseenMessages })
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })
