@@ -8,7 +8,19 @@ const Message = ({ message }) => {
   const timestamp = new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   return (
-    <p className={`${Styles.message} ${sender === currentUser._id ? Styles.message_sent : Styles.message_received} ${!seen && sender !== currentUser._id ? Styles.unread : ''}`}>{text}<span className={Styles.timestamp}>{timestamp}</span></p>
+    <p
+      className={`
+        ${Styles.message} 
+        ${sender === currentUser._id
+          ? Styles.message_sent
+          : Styles.message_received} 
+        ${!seen && sender !== currentUser._id
+          ? Styles.unread
+          : ''}
+      `}>
+      {text}
+      <span className={Styles.timestamp}>{timestamp}</span>
+    </p>
   )
 }
 
