@@ -1,24 +1,24 @@
 import Conversation from "../components/conversation/Conversation"
-import { SocketContext } from "../context/SocketContext";
 import { useContext, useEffect, useRef, useState } from "react";
+import { SocketContext } from "../context/SocketContext";
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+import { AuthContext } from "../context/authContext";
 import Message from "../components/message/Message";
 import Loader from "../components/loader/Loader";
 import Input from "../components/input/Input";
 import Styles from './pages.module.css'
 import axios from "axios";
-import { AuthContext } from "../context/authContext";
 
 const Messages = () => {
   const [activeConversation, setActiveConversation] = useState(null);
-  const [conversations, setConversations] = useState([]);
-  const [messages, setMessages] = useState({});
   const [newMessageToSend, setNewMessageToSend] = useState('');
-  const [unread, setUnread] = useState({});
-  const [loading, setLoading] = useState(false);
-  const { socket } = useContext(SocketContext);
-  const endOfMessagesRef = useRef(null);
+  const [conversations, setConversations] = useState([]);
   const { currentUser } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
+  const [messages, setMessages] = useState({});
+  const { socket } = useContext(SocketContext);
+  const [unread, setUnread] = useState({});
+  const endOfMessagesRef = useRef(null);
 
   useEffect(() => {
     const getConversations = async () => {
@@ -26,13 +26,16 @@ const Messages = () => {
       try {
         const response = await axios.get(`${apiUrl}/api/messages/conversations`, { withCredentials: true });
         const res = response.data;
+
         setConversations(res.conversations);
+
         const unreadConversations = {};
         res.conversationsWithUnseenMessages.forEach((conversation) => {
           if (conversation.unreadMessages && conversation.lastMessage.sender !== currentUser._id) {
             unreadConversations[conversation._id] = conversation.unreadMessages;
           }
         });
+
         setUnread(unreadConversations);
       } catch (error) {
         console.error(error);
@@ -49,11 +52,15 @@ const Messages = () => {
       const messages = response.data.messages;
       const conversation = response.data.conversation;
       socket.emit('markMessagesAsSeen', { conversationId: conversation._id });
+
       setMessages({
         [conversation._id]: messages
       });
+
       setActiveConversation(conversation._id);
+
       setUnread(prev => ({ ...prev, [conversation._id]: false }));
+
       if (activeConversation) {
         scrollToBottom();
       }
@@ -82,7 +89,6 @@ const Messages = () => {
       const newMessage = response.data.message;
       socket.emit('newMessage', newMessage);
 
-      // Actualiza el estado `messages` para incluir el nuevo mensaje
       setMessages((prevMessages) => {
         const conversationMessages = prevMessages[activeConversation] || [];
         const updatedMessages = conversationMessages.map(message => ({ ...message, seen: true }));
@@ -92,7 +98,6 @@ const Messages = () => {
         };
       });
 
-      // Actualiza el estado `conversations` para incluir el nuevo mensaje como el último mensaje de la conversación activa
       setConversations((prevConversations) => (
         prevConversations.map((conversation) => (
           conversation._id === activeConversation
@@ -100,6 +105,7 @@ const Messages = () => {
             : conversation
         ))
       ));
+
       setNewMessageToSend('');
     } catch (error) {
       console.error(error);
@@ -116,6 +122,7 @@ const Messages = () => {
             [newMessage.conversationId]: [...conversationMessages, newMessage],
           };
         });
+
         scrollToBottom();
       } else {
         setUnread(prev => ({ ...prev, [newMessage.conversationId]: true }));
