@@ -12,3 +12,14 @@ GET http://localhost:1234/api/messages/6531074b97863b7b6b1476a8
 
 ###
 GET http://localhost:1234/api/messages/conversations
+
+###
+GET http://localhost:1234/api/messages/conversation/6567ad6c90307d2a4955713a
+
+###
+POST http://localhost:1234/api/messages/new
+content-type: application/json
+
+{
+  "recipientId": "65633be0cdbbec4fad2383ef"
+}
