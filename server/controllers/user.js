@@ -13,6 +13,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import multer from 'multer'
 import { profilePicUpload } from '../config/multerConfig.js'
+import { getRecipientSocketId, io } from '../socket/socket.js'
 
 export async function register (req, res) {
   const { name, username, email, password, confirmPassword, profile, address } = req.body
@@ -227,14 +228,22 @@ export async function followUnfollow (req, res) {
     if (isFollowing) {
       // Unfollow User
       await User.findByIdAndUpdate(req.user._id, { $pull: { following: id } })
-      await User.findByIdAndUpdate(id, { $pull: { followers: req.user._id } })
+      const otherUser = await User.findByIdAndUpdate(id, { $pull: { followers: req.user._id } })
+      const recipientSocketId = getRecipientSocketId(otherUser._id)
+      if (recipientSocketId) {
+        io.to(recipientSocketId).emit('userUnfollow', otherUser._id)
+      }
       res
         .status(200)
         .json({ success: true, message: 'User unfollowed successfully' })
     } else {
       // Follow user
       await User.findByIdAndUpdate(req.user._id, { $push: { following: id } })
-      await User.findByIdAndUpdate(id, { $push: { followers: req.user._id } })
+      const otherUser = await User.findByIdAndUpdate(id, { $push: { followers: req.user._id } })
+      const recipientSocketId = getRecipientSocketId(otherUser._id)
+      if (recipientSocketId) {
+        io.to(recipientSocketId).emit('userFollow', otherUser._id)
+      }
       res
         .status(200)
         .json({ success: true, message: 'User followed successfully' })
