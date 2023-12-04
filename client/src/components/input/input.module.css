@@ -1,0 +1,43 @@
+.form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  border-radius: 6px;
+}
+
+.input {
+  background-color: var(--bg-secondary-color);
+  box-sizing: border-box;
+  width: 100%;
+  border: 1.5px solid transparent;
+  border-radius: 3px;
+  outline: none;
+  font-size: 1rem;
+  padding: 1rem;
+}
+
+.input:focus {
+  border: 1.5px solid var(--orange-color);
+}
+
+.newPost {
+  padding: 1rem 3.2rem;
+  background-color: var(--bg-main-color);
+}
+
+.button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  align-self: center;
+  margin: 1rem;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  z-index: 10;
+}
+
+.icon {
+  fill: var(--orange-color);
+}

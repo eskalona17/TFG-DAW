@@ -8,3 +8,24 @@
   cursor: pointer;
   border-radius: 6px;
 }
+
+.message_container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--bg-main-color);
+  color: var(--primary-font-color);
+  border-radius: 6px;
+  height: 400px;
+  overflow-y: scroll;
+}
+
+.message_container::before {
+  content: "";
+  flex-grow: 1;
+}
+
+.unread {
+  border: 1px solid var(--orange-color);
+}

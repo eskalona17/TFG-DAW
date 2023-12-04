@@ -1,5 +1,6 @@
 import Conversation from '../models/Conversations.js'
 import Message from '../models/Message.js'
+import { getRecipientSocketId, io } from '../socket/socket.js'
 
 export async function sendMessage (req, res) {
   const { recipientId, message } = req.body
@@ -15,7 +16,8 @@ export async function sendMessage (req, res) {
         participants: [senderId, recipientId],
         lastMessage: {
           text: message,
-          sender: senderId
+          sender: senderId,
+          timestamp: Date.now()
         }
       })
 
@@ -25,7 +27,8 @@ export async function sendMessage (req, res) {
     const newMessage = new Message({
       conversationId: conversation._id,
       sender: senderId,
-      text: message
+      text: message,
+      timestamp: Date.now()
     })
 
     await Promise.all([
@@ -33,10 +36,15 @@ export async function sendMessage (req, res) {
       conversation.updateOne({
         lastMessage: {
           text: message,
-          sender: senderId
+          sender: senderId,
+          timestamp: Date.now()
         }
       })
     ])
+    const recipientSocketId = getRecipientSocketId(recipientId)
+    if (recipientSocketId) {
+      io.to(recipientSocketId).emit('newMessage', newMessage)
+    }
     res.status(201).json({ message: newMessage })
   } catch (error) {
     console.error('Error:', error.message)
@@ -61,7 +69,11 @@ export async function getMessages (req, res) {
       conversationId: conversation._id
     }).sort({ createdAt: 1 })
 
-    res.status(200).json(messages)
+    conversation.participants = conversation.participants.filter(
+      (participant) => participant._id.toString() !== userId.toString()
+    )
+
+    res.status(200).json({ messages, conversation })
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })
@@ -74,11 +86,22 @@ export async function getConversations (req, res) {
     const conversations = await Conversation.find({ participants: userId }).populate({
       path: 'participants',
       select: 'name username profilePic'
-    })
+    }).sort({ updatedAt: -1 })
+
+    const conversationsWithUnseenMessages = await Promise.all(conversations.map(async (conversation) => {
+      const unreadMessages = await Message.countDocuments({ conversationId: conversation._id, seen: false })
+      return { ...conversation._doc, unreadMessages }
+    }))
+
     if (conversations.length === 0) {
       return res.status(404).json({ error: 'Conversations not found' })
     }
-    res.status(200).json(conversations)
+    conversations.forEach((conversation) => {
+      conversation.participants = conversation.participants.filter(
+        (participant) => participant._id.toString() !== userId.toString()
+      )
+    })
+    res.status(200).json({ conversations, conversationsWithUnseenMessages })
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })

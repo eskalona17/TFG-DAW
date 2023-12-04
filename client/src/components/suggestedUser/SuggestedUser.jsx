@@ -1,48 +1,68 @@
+import useFollowUnfollow from "./../../hooks/useFollowUnfollow";
+import useUserImage from "../../hooks/useUserImage";
 import Styles from "./suggestedUser.module.css";
 import Button from "../button/Button";
-import useUserImage from "../../hooks/useUserImage";
-import useFollowUnfollow from './../../hooks/useFollowUnfollow';
 
-const SuggestedUser = ({ user }) => {
+const SuggestedUser = ({ user, version }) => {
+  const { currentUser, followUnfollow } = useFollowUnfollow();
   const { userImage } = useUserImage(user, '75');
   const { _id, name, username } = user;
-  const { currentUser, followUnfollow } = useFollowUnfollow();
 
-  const isFollowing = currentUser.following.includes(user._id);
+  const isFollowing = currentUser.following.includes(_id);
   const buttonText = isFollowing ? 'Eliminar' : 'Seguir';
-  const buttonVariant = isFollowing ? 'secondary' : 'primary';
+  const followBtnVariant = version === 'full' 
+    ? (isFollowing ? 'secondary' : 'primary') 
+    : (isFollowing ? 'secondary-small' : 'primary-small');
+  const messageBtnVariant = version === 'full' ? 'secondary' : 'secondary-small';
 
-  const {
-    user_container,
-    user_img,
-    user_info_container,
-    user_info,
-    button_container,
-  } = Styles;
-
-  return (
-    <div className={Styles.user}>
-      <div className={user_container}>
-        <img src={userImage} alt="" className={user_img} />
-        <div className={user_info_container}>
-          <p className={user_info}>{name}</p>
-          <p className={user_info}>@{username}</p>
+  if (version === 'full') {
+    return (
+      <div className={Styles.user}>
+        <div className={Styles.user_container}>
+          <img src={userImage} alt="" className={Styles.user_img} />
+          <div className={Styles.user_info_container}>
+            <p className={Styles.user_info}>{name}</p>
+            <p className={Styles.user_info}>@{username}</p>
+          </div>
+        </div>
+        <div className={Styles.button_container}>
+          <Button
+            text={buttonText}
+            onClick={() => followUnfollow(_id)}
+            variant={followBtnVariant}
+          />
+          <Button
+            text="Mensaje"
+            onClick={() => console.log("mensaje")}
+            variant={messageBtnVariant}
+          />
         </div>
       </div>
-      <div className={button_container}>
-        <Button
-          text={buttonText}
-          onClick={() => followUnfollow(_id)}
-          variant={buttonVariant}
-        />
-        <Button
-          text="Mensaje"
-          onClick={() => console.log("mensaje")}
-          variant="secondary"
-        />
+    );
+  } else {
+    return (
+      <div className={Styles.user_small}>
+        <div className={Styles.user_container_small}>
+          <img src={userImage} alt="" className={Styles.user_img_small} />
+          <div className={Styles.user_info_container_small}>
+            <p className={Styles.user_info_small}>@{username}</p>
+            <div className={Styles.button_container_small}>
+              <Button
+                text={buttonText}
+                onClick={() => followUnfollow(_id)}
+                variant={followBtnVariant}
+              />
+              <Button
+                text="Mensaje"
+                onClick={() => console.log("click")}
+                variant={messageBtnVariant}
+              />
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default SuggestedUser;

@@ -43,3 +43,42 @@
   gap: 1rem;
   width: 45%;
 }
+
+.user_small {
+  margin: 0;
+  color: var(--primary-font-color);
+}
+
+.user_container_small {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user_img_small {
+  width: 75px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.user_info_container_small {
+  display: flex;
+  flex-direction: column;
+}
+
+.user_info_small {
+  margin: .5rem 0;
+  text-align: start;
+  width: 50%;
+}
+
+.button_container_small {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: .5rem 0;
+}

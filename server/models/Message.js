@@ -10,7 +10,15 @@ const MessageSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
     },
-    text: String
+    text: String,
+    seen: {
+      type: Boolean,
+      default: false
+    },
+    timestamp: {
+      type: Date,
+      default: Date.now()
+    }
   },
   {
     timestamps: true
