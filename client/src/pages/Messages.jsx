@@ -43,13 +43,19 @@ const Messages = () => {
     getConversations();
   }, [setConversations, currentUser._id]);
 
+  const scrollToBottom = () => {
+    if (endOfMessagesRef.current) {
+      const scrollHeight = endOfMessagesRef.current.scrollHeight;
+      endOfMessagesRef.current.scrollTop = scrollHeight;
+    }
+  };
+
   const loadMessages = async (conversation) => {
     const otherUserId = conversation.participants.find(participant => participant._id !== currentUser._id)._id;
     try {
       const response = await axios.get(`${apiUrl}/api/messages/${otherUserId}`, { withCredentials: true });
       const messages = response.data.messages;
       const conversation = response.data.conversation;
-      console.log(messages);
       socket.emit('markMessagesAsSeen', { conversationId: conversation._id });
       setMessages({
         [conversation._id]: messages
@@ -65,14 +71,16 @@ const Messages = () => {
     if (activeConversation) {
       loadMessages(activeConversation);
     }
+    if (endOfMessagesRef.current) {
+      scrollToBottom();
+    }
   }, [activeConversation]);
 
-  const scrollToBottom = () => {
+  useEffect(() => {
     if (endOfMessagesRef.current) {
-      const scrollHeight = endOfMessagesRef.current.scrollHeight;
-      endOfMessagesRef.current.scrollTop = scrollHeight;
+      scrollToBottom();
     }
-  };
+  }, [messages]);
 
   const handleSendMessage = async (recipientId, message) => {
     if (message.trim() === '') return;
@@ -97,7 +105,6 @@ const Messages = () => {
             : conversation
         ))
       ));
-
       setNewMessageToSend('');
     } catch (error) {
       console.error(error);
@@ -106,15 +113,15 @@ const Messages = () => {
 
   useEffect(() => {
     socket?.on('newMessage', (newMessage) => {
-      if (newMessage.conversationId === activeConversation) {
-        setMessages(prevMessages => {
-          const conversationMessages = prevMessages[newMessage.conversationId] || [];
-          return {
-            ...prevMessages,
-            [newMessage.conversationId]: [...conversationMessages, newMessage],
-          };
-        });
+      setMessages(prevMessages => {
+        const conversationMessages = prevMessages[newMessage.conversationId] || [];
+        return {
+          ...prevMessages,
+          [newMessage.conversationId]: [...conversationMessages, newMessage],
+        };
+      });
 
+      if (activeConversation && newMessage.conversationId === activeConversation._id) {
         scrollToBottom();
       } else {
         setUnread(prev => ({ ...prev, [newMessage.conversationId]: true }));
@@ -173,7 +180,7 @@ const Messages = () => {
             conversations.map((conversation) => (
               <section key={conversation._id} className={`${Styles.message} ${unread[conversation._id] ? Styles.unread : ''}`}>
                 <Conversation conversation={conversation} onClick={() => setActiveConversation(conversation)} />
-                {activeConversation === conversation &&
+                {activeConversation && activeConversation._id === conversation._id &&
                   <div className={Styles.message_container} ref={endOfMessagesRef}>
                     {messages[activeConversation._id]?.map(message => (
                       <Message key={message._id} message={message} />
