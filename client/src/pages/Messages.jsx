@@ -8,7 +8,7 @@ import Loader from "../components/loader/Loader";
 import Input from "../components/input/Input";
 import Styles from './pages.module.css'
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Messages = () => {
   const location = useLocation();
@@ -22,6 +22,7 @@ const Messages = () => {
   const { socket } = useContext(SocketContext);
   const [unread, setUnread] = useState({});
   const endOfMessagesRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getConversations = async () => {
@@ -41,11 +42,13 @@ const Messages = () => {
         console.error(error);
       } finally {
         setLoading(false);
+        scrollToBottom();
       }
     }
     getConversations();
     if (locationConversation) {
       setActiveConversation(locationConversation);
+      navigate('.', { state: {} });
     }
   }, [setConversations, currentUser._id, locationConversation]);
 
@@ -67,15 +70,15 @@ const Messages = () => {
       scrollToBottom();
     }
   }, [messages]);
-  
+
   const loadMessages = async (activeConversation) => {
     if (!activeConversation.participants || !Array.isArray(activeConversation.participants) || activeConversation.participants.length === 0) {
       console.error('Invalid participants array in activeConversation:', activeConversation.participants);
       return;
     }
-  
+
     const otherUserId = activeConversation.participants.find(participant => participant._id !== currentUser._id)._id;
-  
+
     if (!otherUserId) {
       console.error('Unable to find other user in participants:', activeConversation.participants);
       return;
@@ -89,7 +92,6 @@ const Messages = () => {
         [activeConversation._id]: messages
       });
       setUnread(prev => ({ ...prev, [activeConversation._id]: false }));
-      scrollToBottom();
     } catch (error) {
       console.error(error);
     }
@@ -111,13 +113,14 @@ const Messages = () => {
         };
       });
 
-      setConversations((prevConversations) => (
-        prevConversations.map((conversation) => (
+      setConversations((prevConversations) => {
+        const updatedConversations = prevConversations.map((conversation) => (
           conversation._id === activeConversation._id
             ? { ...conversation, lastMessage: { text: newMessage.text, sender: newMessage.sender, timestamp: newMessage.timestamp } }
             : conversation
         ))
-      ));
+        return updatedConversations.sort((a, b) => new Date(b.lastMessage.timestamp) - new Date(a.lastMessage.timestamp));
+      });
       setNewMessageToSend('');
     } catch (error) {
       console.error(error);
@@ -154,7 +157,7 @@ const Messages = () => {
         socket.off('newMessage');
       }
     };
-  }, [socket, activeConversation]);
+  }, [socket, activeConversation, messages]);
 
   useEffect(() => {
     socket?.on("messagesSeen", ({ conversationId }) => {
