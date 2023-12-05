@@ -35,7 +35,7 @@ POST http://localhost:1234/api/users/login
 content-type: application/json
 
 {
-  "input": "laurashauny",
+  "input": "nacho",
   "password": "123456"
 }
 
