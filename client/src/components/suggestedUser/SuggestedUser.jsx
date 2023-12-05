@@ -2,41 +2,34 @@ import useFollowUnfollow from "./../../hooks/useFollowUnfollow";
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 import useUserImage from "../../hooks/useUserImage";
 import Styles from "./suggestedUser.module.css";
+import { useNavigate } from 'react-router-dom';
 import Button from "../button/Button";
-import { useState } from "react";
 import axios from "axios";
 
 const SuggestedUser = ({ user, version }) => {
   const { currentUser, followUnfollow } = useFollowUnfollow();
   const { userImage } = useUserImage(user, '75');
   const { _id, name, username } = user;
-  const { activeConversation, setActiveConversation} = useState(null);
+  const navigate = useNavigate();
 
   const isFollowing = currentUser.following.includes(_id);
   const buttonText = isFollowing ? 'Eliminar' : 'Seguir';
-  const followBtnVariant = version === 'full' 
-    ? (isFollowing ? 'secondary' : 'primary') 
+  const followBtnVariant = version === 'full'
+    ? (isFollowing ? 'secondary' : 'primary')
     : (isFollowing ? 'secondary-small' : 'primary-small');
   const messageBtnVariant = version === 'full' ? 'secondary' : 'secondary-small';
 
-  const handleClick = async (_id) => {
+  const sendMessage = async (recipientId) => {
     try {
-      const response = await axios.get(`${apiUrl}/api/messages/conversation/${_id}`, { withCredentials: true });
-      
-      const conversation = response.data;
-
-      if(conversation) {
-        setActiveConversation(conversation);
+      const response = await axios.post(`${apiUrl}/api/messages/conversation/`, { recipientId}, { withCredentials: true });
+      const conversation = response.data.conversation;
+      if (!conversation) {
+        return
       }
-
-      if(!conversation) {
-        const newConversation = await axios.post(`${apiUrl}/api/messages/new`, { _id }, { withCredentials: true });
-        setActiveConversation(newConversation);
-      }
+      navigate('/mensajes', { state: { conversation } });
     } catch (error) {
       console.error(error);
     }
-    return activeConversation;
   };
 
   if (version === 'full') {
@@ -57,7 +50,7 @@ const SuggestedUser = ({ user, version }) => {
           />
           <Button
             text="Mensaje"
-            onClick={() => handleClick(_id)}
+            onClick={() => sendMessage(_id)}
             variant={messageBtnVariant}
           />
         </div>
@@ -78,7 +71,7 @@ const SuggestedUser = ({ user, version }) => {
               />
               <Button
                 text="Mensaje"
-                onClick={() => console.log("click")}
+                onClick={() => sendMessage(_id)}
                 variant={messageBtnVariant}
               />
             </div>

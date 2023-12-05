@@ -9,8 +9,11 @@ import Input from "../components/input/Input";
 import { useParams } from 'react-router-dom';
 import Styles from './pages.module.css'
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const Messages = () => {
+  const location = useLocation();
+  const locationConversation = location.state ? location.state.conversation : null;
   const [activeConversation, setActiveConversation] = useState(null);
   const [newMessageToSend, setNewMessageToSend] = useState('');
   const [conversations, setConversations] = useState([]);
@@ -47,7 +50,10 @@ const Messages = () => {
       }
     }
     getConversations();
-  }, [setConversations, currentUser._id]);
+    if (locationConversation) {
+      setActiveConversation(locationConversation);
+    }
+  }, [setConversations, currentUser._id, locationConversation]);
 
   const scrollToBottom = () => {
     if (endOfMessagesRef.current) {
@@ -56,29 +62,9 @@ const Messages = () => {
     }
   };
 
-  const loadMessages = async (conversation) => {
-    const otherUserId = conversation.participants.find(participant => participant._id !== currentUser._id)._id;
-    try {
-      const response = await axios.get(`${apiUrl}/api/messages/${otherUserId}`, { withCredentials: true });
-      const messages = response.data.messages;
-      const conversation = response.data.conversation;
-      socket.emit('markMessagesAsSeen', { conversationId: conversation._id });
-      setMessages({
-        [conversation._id]: messages
-      });
-      setUnread(prev => ({ ...prev, [conversation._id]: false }));
-      scrollToBottom();
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   useEffect(() => {
     if (activeConversation) {
       loadMessages(activeConversation);
-    }
-    if (endOfMessagesRef.current) {
-      scrollToBottom();
     }
   }, [activeConversation]);
 
@@ -87,6 +73,33 @@ const Messages = () => {
       scrollToBottom();
     }
   }, [messages]);
+  
+  const loadMessages = async (activeConversation) => {
+    if (!activeConversation.participants || !Array.isArray(activeConversation.participants) || activeConversation.participants.length === 0) {
+      console.error('Invalid participants array in activeConversation:', activeConversation.participants);
+      return;
+    }
+  
+    const otherUserId = activeConversation.participants.find(participant => participant._id !== currentUser._id)._id;
+  
+    if (!otherUserId) {
+      console.error('Unable to find other user in participants:', activeConversation.participants);
+      return;
+    }
+
+    try {
+      const response = await axios.get(`${apiUrl}/api/messages/${otherUserId}`, { withCredentials: true });
+      const messages = response.data.messages;
+      socket.emit('markMessagesAsSeen', { conversationId: activeConversation._id });
+      setMessages({
+        [activeConversation._id]: messages
+      });
+      setUnread(prev => ({ ...prev, [activeConversation._id]: false }));
+      scrollToBottom();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const handleSendMessage = async (recipientId, message) => {
     if (message.trim() === '') return;
@@ -132,6 +145,7 @@ const Messages = () => {
       } else {
         setUnread(prev => ({ ...prev, [newMessage.conversationId]: true }));
       }
+
       setConversations((prevConversations) => {
         const updatedConversations = prevConversations.map((conversation) => (
           conversation._id === newMessage.conversationId

@@ -81,19 +81,25 @@ export async function getMessages (req, res) {
 }
 
 export async function getConversation (req, res) {
-  const userId = req.user._id
-  const { id } = req.params
+  const { recipientId } = req.body
+  const senderId = req.user._id
 
   try {
-    const conversation = await Conversation.findOne({
-      participants: { $all: [userId, id] }
-    })
+    let conversation = await Conversation.findOne({
+      participants: { $all: [senderId, recipientId] }
+    }).populate('participants')
 
     if (!conversation) {
-      return res.status(404).json({ error: 'Conversation not found' })
-    }
+      conversation = new Conversation({
+        participants: [senderId, recipientId]
+      })
 
-    res.status(200).json({ conversation })
+      const newConversation = await conversation.save()
+
+      return res.status(201).json({ message: 'Conversation created', newConversation })
+    } else {
+      return res.status(200).json({ conversation })
+    }
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' })
   }
@@ -124,30 +130,5 @@ export async function getConversations (req, res) {
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })
-  }
-}
-
-export async function createConversation (req, res) {
-  const { recipientId } = req.body
-  const senderId = req.user._id
-
-  try {
-    let conversation = await Conversation.findOne({
-      participants: { $all: [senderId, recipientId] }
-    })
-
-    if (!conversation) {
-      conversation = new Conversation({
-        participants: [senderId, recipientId]
-      })
-
-      await conversation.save()
-
-      res.status(200).json({ message: 'Conversation created', conversation })
-    } else {
-      res.status(400).json({ message: 'Conversation already exists' })
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Error creating conversation', error })
   }
 }
