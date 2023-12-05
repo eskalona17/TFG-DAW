@@ -3,6 +3,7 @@ import Styles from "./post.module.css";
 import { VscStarEmpty, VscStarFull, VscComment, VscSend } from "react-icons/vsc";
 import url_image from "../../assets/img/media-1234.png";
 
+
 const Post = () => {
   const [showComments, setShowComments] = useState(false);
   const [comment, setComment] = useState("");

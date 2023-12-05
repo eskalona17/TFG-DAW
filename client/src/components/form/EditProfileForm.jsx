@@ -8,11 +8,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useUserImage from './../../hooks/useUserImage';
 
-
-
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-
-
 
 const {
   form,
@@ -32,19 +28,17 @@ const {
 
 export default function Formulario() {
   const navigate = useNavigate();
-  const authContext = useContext(AuthContext);
-  console.log(authContext);
-  const userData = authContext.currentUser;
-  console.log(userData);
+  const { currentUser, setCurrentUser } = useContext(AuthContext);  // Destructuración directa aquí
+  console.log(currentUser);
   const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false);
-  const [profile, setProfile] = useState(userData?.profile || "personal");
+  const [profile, setProfile] = useState(currentUser.profile || "personal");
   const [imageData, setImageData] = useState({
     selectedImage: null,
     imagePreview: null,
   });
   
   const { selectedImage } = imageData;
-  const {userImage: profileImage} = useUserImage(userData);
+  const {userImage: profileImage} = useUserImage(currentUser);
   
   const {
     handleSubmit,
@@ -53,36 +47,31 @@ export default function Formulario() {
     formState: { errors },
     reset,
   } = useForm({
-    defaultValues:{
-      name: userData?.name,
-      username: userData?.username,
-      email:userData?.email,
-      profile: userData?.profile,
-      address: userData?.address,
-      city: userData?.city,
-      zipCode: userData?.zipCode,
-      country: userData?.country,
-
+    defaultValues: {
+      name: currentUser?.name,
+      username: currentUser?.username,
+      email: currentUser?.email,
+      profile: currentUser?.profile,
+      address: currentUser?.address,
+      city: currentUser?.city,
+      zipCode: currentUser?.zipCode,
+      country: currentUser?.country,
     }
   });
 
- 
-
-  
-  
- 
   const onSubmit = handleSubmit(async (data) => {
     try {
       
       console.log(data);
-      console.log('ID de userData:', userData._id);
+      
 
       const commonData = {
         name: data.name,
         username: data.username,
         email: data.email,
         password: data.password,
-        confirmPassword: data.confirmPassword,
+        newPassword: data.newPassword,
+        confirmNewPassword: data.confirmNewPassword,
         profile: data.profile,
         address: data.address,
         city: data.city,
@@ -96,18 +85,18 @@ export default function Formulario() {
         const formDataWithImage = new FormData();
         Object.entries(commonData).forEach(([key, value]) => formDataWithImage.append(key, value));
         formDataWithImage.append('profilePic', selectedImage);
-        formDataWithImage.append('followers', userData.followers);
-        formDataWithImage.append('following', userData.following);
+        formDataWithImage.append('followers', currentUser.followers);
+        formDataWithImage.append('following', currentUser.following);
         
-        response = await axios.patch(apiUrl + '/api/users/update/'  + userData._id, formDataWithImage, {
+        response = await axios.patch(apiUrl + '/api/users/update/'  + currentUser._id, formDataWithImage, {
           withCredentials: true,
         });
       }else{
-         response = await axios.patch(apiUrl + "/api/users/update/" + userData._id, {
+         response = await axios.patch(apiUrl + "/api/users/update/" + currentUser._id, {
           ...commonData,
           profile: profile,
-          followers: userData.followers,
-          following: userData.following,
+          followers: currentUser.followers,
+          following: currentUser.following,
         },{
           withCredentials:true,
         });
@@ -117,9 +106,9 @@ export default function Formulario() {
       if (response.status === 200) {
         console.log("Usuario actualizado exitosamente");
         alert("Usuario actualizado exitosamente");
-        const updatedUserData = response.data;
-      
-        authContext.setCurrentUser(updatedUserData);
+        const updatedUserData = response.data.user;
+        console.log("Respuesta de la API:", response.data.user);
+        await setCurrentUser(updatedUserData); 
         navigate("/");
         reset();
       } else {
@@ -132,7 +121,6 @@ export default function Formulario() {
     }
     reset();
   });
-
 
   const handleImageChange = () => {
     const input = document.createElement("input");
@@ -196,7 +184,7 @@ export default function Formulario() {
               message: "El nombre no puede tener más de 20 caracteres",
             },
           })}
-          defaultValue={userData ? userData.name : ""}
+          defaultValue={currentUser ? currentUser.name : ""}
         />
       </div>
       <div className={errors.name ? errors_display : ""}>
@@ -225,7 +213,7 @@ export default function Formulario() {
               message: "El usuario no puede tener más de 20 caracteres",
             },
           })}
-          defaultValue={userData ? userData.username : ""}
+          defaultValue={currentUser ? currentUser.username : ""}
         />
       </div>
       <div className={errors.username ? errors_display : ""}>
@@ -248,7 +236,7 @@ export default function Formulario() {
               message: "El email no es valido",
             },
           })}
-          defaultValue={userData ? userData.email : ""}
+          defaultValue={currentUser ? currentUser.email : ""}
         />
       </div>
 
@@ -263,7 +251,7 @@ export default function Formulario() {
           name="password"
           onClick={handleCambiarPassword}
           className={input}
-          placeholder="Cambiar Contraseña"
+          placeholder="Contraseña Actual"
           {...register("password", {
             
             minLength: {
@@ -275,19 +263,33 @@ export default function Formulario() {
       </div>
       {mostrarConfirmarPassword && (
         <>
+          <div className={inputContainer}>
+            <input
+              type="password"
+              name="newPassword"
+              className={input}
+              placeholder="Nueva Contraseña"
+              {...register("newPassword", {
+                minLength: {
+                  value: 6,
+                  message: "La nueva contraseña debe tener al menos 6 caracteres",
+                },
+              })}
+            />
+          </div>
           <div className={inputConfirmContainer}>
             <input
               type="password"
               name="confirma password"
               className={input}
               placeholder="Confirmar Contraseña"
-              {...register("confirmPassword", {
+              {...register("confirmNewPassword", {
                 required: {
                   value: true,
                   message: "Confirmar contraseña es requerido",
                 },
                 validate: (value) =>
-                  value === watch("password") || "Las contraseñas no coinciden",
+                  value === watch("newPassword") || "Las contraseñas no coinciden",
               })}
             />
           </div>
@@ -338,7 +340,7 @@ export default function Formulario() {
                   message: "La dirección es requerida",
                 },
               })}
-              defaultValue={userData ? userData.address : ""}
+              defaultValue={currentUser ? currentUser.address : ""}
             />
           </div>
           <div className={errors.address ? errors_display : ""}>
@@ -358,7 +360,7 @@ export default function Formulario() {
                   message: "La ciudad es requerida",
                 },
               })}
-              defaultValue={userData ? userData.city : ""}
+              defaultValue={currentUser ? currentUser.city : ""}
             />
           </div>
           <div className={errors.city ? errors_display : ""}>
@@ -383,7 +385,7 @@ export default function Formulario() {
                     "El código postal debe tener como máximo 5 caracteres",
                 },
               })}
-              defaultValue={userData ? userData.zipCode : ""}
+              defaultValue={currentUser ? currentUser.zipCode : ""}
             />
           </div>
           <div className={errors.zipCode ? errors_display : ""}>
@@ -403,7 +405,7 @@ export default function Formulario() {
                   message: "El pais es requerido",
                 },
               })}
-              defaultValue={userData ? userData.country : ""}
+              defaultValue={currentUser ? currentUser.country : ""}
             />
           </div>
           <div className={errors.country ? errors_display : ""}>

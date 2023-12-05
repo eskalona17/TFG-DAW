@@ -302,34 +302,44 @@ export async function updateProfile (req, res) {
       user.password = hashedPwd
     }
 
-    if (profile === 'profesional' && !address) {
-      return res
-        .status(400)
-        .json({ message: 'Address is required for professional profiles' })
-    }
-
-    user.name = name ?? user.name
-    user.username = username ?? user.username
-    user.email = email ?? user.email
-    user.profile = profile ?? user.profile
-    user.address = address ?? user.address
-
+    // Manejar la carga de la imagen de perfil antes de continuar
     profilePicUpload.single('profilePic')(req, res, async function (err) {
-      if (err instanceof multer.MulterError) {
-        return res.status(400).json({ message: 'Error en la carga de la imagen de perfil' })
-      } else if (err) {
-        return res.status(500).json({ message: 'Error interno del servidor' })
+      try {
+        if (err instanceof multer.MulterError) {
+          return res
+            .status(400)
+            .json({ message: 'Error en la carga de la imagen de perfil' })
+        } else if (err) {
+          return res.status(500).json({ message: 'Error interno del servidor' })
+        }
+
+        // Si la carga de la imagen es exitosa, actualiza la propiedad de la imagen de perfil
+        user.profilePic = req.file ? req.file.filename : user.profilePic
+
+        // Continuar con la lógica de actualización del perfil del usuario
+        if (profile === 'profesional' && !address) {
+          return res
+            .status(400)
+            .json({ message: 'Address is required for professional profiles' })
+        }
+
+        user.name = name ?? user.name
+        user.username = username ?? user.username
+        user.email = email ?? user.email
+        user.profile = profile ?? user.profile
+        user.address = address ?? user.address
+
+        user = await user.save()
+
+        res.status(200).json({
+          success: true,
+          message: 'User profile updated successfully',
+          user
+        })
+      } catch (error) {
+        console.error('Error:', error.message)
+        res.status(500).json({ error: 'Internal server error' })
       }
-      // Si la carga de la imagen es exitosa, actualiza la propiedad de la imagen de perfil
-      user.profilePic = req.file ? req.file.filename : user.profilePic
-    })
-
-    user = await user.save()
-    res.status(200).json({
-      success: true,
-      message: 'User profile updated successfully',
-      user
-
     })
   } catch (error) {
     console.error('Error:', error.message)

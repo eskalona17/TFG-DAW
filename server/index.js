@@ -33,6 +33,7 @@ app.use(cookieParser())
 
 // Routes
 app.use('/', express.static(path.join(__dirname, 'public')))
+app.use('/public', express.static(path.join(__dirname, 'public')))
 app.use('/', rootRouter)
 app.use('/api/users', userRouter)
 app.use('/api/posts', postRouter)
