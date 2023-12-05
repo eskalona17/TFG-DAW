@@ -111,7 +111,7 @@ export async function getConversations (req, res) {
     const conversations = await Conversation.find({ participants: userId }).populate({
       path: 'participants',
       select: 'name username profilePic'
-    }).sort({ updatedAt: -1 })
+    }).sort({ 'lastMessage.timestamp': -1 })
 
     const conversationsWithUnseenMessages = await Promise.all(conversations.map(async (conversation) => {
       const unreadMessages = await Message.countDocuments({ conversationId: conversation._id, seen: false })
