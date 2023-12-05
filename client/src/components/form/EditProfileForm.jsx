@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useContext} from "react";
+import { AuthContext } from "../../context/authContext";
 import { useForm } from "react-hook-form";
 import Styles from "./formEditProfile.module.css";
 import Button from "../button/Button";
 import { VscDeviceCamera } from "react-icons/vsc";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import url_image from "../../assets/img/media-1234.png";
+import useUserImage from './../../hooks/useUserImage';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -26,127 +27,118 @@ const {
 } = Styles;
 
 export default function Formulario() {
+  const navigate = useNavigate();
+  const { currentUser, setCurrentUser } = useContext(AuthContext);  // Destructuración directa aquí
+  console.log(currentUser);
+  const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false);
+  const [profile, setProfile] = useState(currentUser.profile || "personal");
+  const [imageData, setImageData] = useState({
+    selectedImage: null,
+    imagePreview: null,
+  });
+  
+  const { selectedImage } = imageData;
+  const {userImage: profileImage} = useUserImage(currentUser);
+  
   const {
     handleSubmit,
     watch,
     register,
     formState: { errors },
     reset,
-    setValue,
-  } = useForm();
-
-  const navigate = useNavigate();
-
-  const [profilePic, setProfilePic] = useState(null); // New state to track the selected profile picture
-
-  const [imagePreview, setImagePreview] = useState(null);
-  const [formData, setFormData] = useState({
-    id: "",
-    name: "",
-    username: "",
-    email: "",
-    address: "",
-    city: "",
-    zipCode: "",
-    country: "",
-    profilePic: null,
-  });
-
-  const localStoreData = localStorage.getItem("user");
-  const userData = JSON.parse(localStoreData);
-  const [mostrarConfirmarPassword, setMostrarConfirmarPassword] =
-    useState(false);
-  const [profile, setProfile] = useState("personal");
-
-  useEffect(() => {
-    if (userData && userData.name !== formData.name) {
-      setFormData({
-        id: userData._id,
-        name: userData.name,
-        username: userData.username,
-        email: userData.email,
-        address: userData.address || "",
-        city: userData.city || "",
-        zipCode: userData.zipCode || "",
-        country: userData.country || "",
-        profilePic: profilePic || userData.profilePic || null,
-      });
-      setValue("userId", userData._id);
-      setValue("name", userData.name);
-      setValue("username", userData.username);
-      setValue("email", userData.email);
-      setValue("address", userData.address);
-      setValue("city", userData.city);
-      setValue("zipCode", userData.zipCode);
-      setValue("country", userData.country);
+  } = useForm({
+    defaultValues: {
+      name: currentUser?.name,
+      username: currentUser?.username,
+      email: currentUser?.email,
+      profile: currentUser?.profile,
+      address: currentUser?.address,
+      city: currentUser?.city,
+      zipCode: currentUser?.zipCode,
+      country: currentUser?.country,
     }
-  }, [userData, setValue, formData.name]);
+  });
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const formData = new FormData();
-      formData.append("image", data.profilePic[0]); // Assuming your file input is named "profilePic"
+      
+      console.log(data);
+      
 
-      // Additional data
-      formData.append("name", data.name);
-      formData.append("username", data.username);
-      formData.append("email", data.email);
-      formData.append("password", data.password);
-      formData.append("confirmPassword", data.confirmPassword);
-      formData.append("profile", profile);
-      formData.append("address", data.address);
-      formData.append("city", data.city);
-      formData.append("zipCode", data.zipCode);
-      formData.append("country", data.country);
+      const commonData = {
+        name: data.name,
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        newPassword: data.newPassword,
+        confirmNewPassword: data.confirmNewPassword,
+        profile: data.profile,
+        address: data.address,
+        city: data.city,
+        zipCode: data.zipCode,
+        country: data.country,
+      };
 
-      const response = await axios.patch(
-        `${apiUrl}/api/users/update/${userData._id}`,
-        formData,
-        {
+      let response = null;
+      if(selectedImage){
+
+        const formDataWithImage = new FormData();
+        Object.entries(commonData).forEach(([key, value]) => formDataWithImage.append(key, value));
+        formDataWithImage.append('profilePic', selectedImage);
+        formDataWithImage.append('followers', currentUser.followers);
+        formDataWithImage.append('following', currentUser.following);
+        
+        response = await axios.patch(apiUrl + '/api/users/update/'  + currentUser._id, formDataWithImage, {
           withCredentials: true,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+        });
+      }else{
+         response = await axios.patch(apiUrl + "/api/users/update/" + currentUser._id, {
+          ...commonData,
+          profile: profile,
+          followers: currentUser.followers,
+          following: currentUser.following,
+        },{
+          withCredentials:true,
+        });
+      }
+     
 
       if (response.status === 200) {
         console.log("Usuario actualizado exitosamente");
         alert("Usuario actualizado exitosamente");
+        const updatedUserData = response.data.user;
+        console.log("Respuesta de la API:", response.data.user);
+        await setCurrentUser(updatedUserData); 
         navigate("/");
         reset();
       } else {
-        console.error("Error al actualizar usuario:", response.statusText);
-        alert("Error al registrar usuario");
+        console.error("Error al actualizrr usuario:", response.statusText);
+        alert("Error al actulizar usuario");
       }
     } catch (error) {
       console.error("Error:", error.message);
-      alert("Error al registrar usuario");
+      alert("Error al actualizar  usuario");
     }
     reset();
   });
 
-  const handleEditarImagen = () => {
+  const handleImageChange = () => {
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
     input.onchange = (e) => {
       const file = e.target.files[0];
-      setValue("profilePic", file); // Set the selected file to the "profilePic" field
-
-      // Use FileReader to preview the image
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      if (file) {
-        reader.readAsDataURL(file);
-      } else {
-        setImagePreview(null);
-      }
+  
+      setImageData({
+        selectedImage: file,
+        imagePreview: URL.createObjectURL(file), // Crear la URL de la vista previa
+      });
     };
+  
     input.click();
   };
+
+  
 
   const handleCambiarPassword = () => {
     setMostrarConfirmarPassword(true);
@@ -160,16 +152,11 @@ export default function Formulario() {
     <form onSubmit={onSubmit} className={form}>
       <div className={imageContainer}>
         <img
-          src={
-            imagePreview ||
-            (formData.profilePic
-              ? URL.createObjectURL(formData.profilePic)
-              : url_image)
-          }
+          src= {selectedImage ? URL.createObjectURL(selectedImage) : profileImage}
           alt="User"
           className={userImage}
         />
-        <div className={editButton} onClick={handleEditarImagen}>
+        <div className={editButton} onClick={handleImageChange}>
           <VscDeviceCamera style={{ fontSize: "24px" }} />
         </div>
       </div>
@@ -194,7 +181,7 @@ export default function Formulario() {
               message: "El nombre no puede tener más de 20 caracteres",
             },
           })}
-          defaultValue={userData ? userData.name : ""}
+          defaultValue={currentUser ? currentUser.name : ""}
         />
       </div>
       <div className={errors.name ? errors_display : ""}>
@@ -223,7 +210,7 @@ export default function Formulario() {
               message: "El usuario no puede tener más de 20 caracteres",
             },
           })}
-          defaultValue={userData ? userData.username : ""}
+          defaultValue={currentUser ? currentUser.username : ""}
         />
       </div>
       <div className={errors.username ? errors_display : ""}>
@@ -246,7 +233,7 @@ export default function Formulario() {
               message: "El email no es valido",
             },
           })}
-          defaultValue={userData ? userData.email : ""}
+          defaultValue={currentUser ? currentUser.email : ""}
         />
       </div>
 
@@ -261,12 +248,9 @@ export default function Formulario() {
           name="password"
           onClick={handleCambiarPassword}
           className={input}
-          placeholder="Cambiar Contraseña"
+          placeholder="Contraseña Actual"
           {...register("password", {
-            required: {
-              value: true,
-              message: "La contraseña es requerida",
-            },
+            
             minLength: {
               value: 6,
               message: "La contraseña debe tener al menos 6 caracteres",
@@ -276,19 +260,33 @@ export default function Formulario() {
       </div>
       {mostrarConfirmarPassword && (
         <>
+          <div className={inputContainer}>
+            <input
+              type="password"
+              name="newPassword"
+              className={input}
+              placeholder="Nueva Contraseña"
+              {...register("newPassword", {
+                minLength: {
+                  value: 6,
+                  message: "La nueva contraseña debe tener al menos 6 caracteres",
+                },
+              })}
+            />
+          </div>
           <div className={inputConfirmContainer}>
             <input
               type="password"
               name="confirma password"
               className={input}
               placeholder="Confirmar Contraseña"
-              {...register("confirmPassword", {
+              {...register("confirmNewPassword", {
                 required: {
                   value: true,
                   message: "Confirmar contraseña es requerido",
                 },
                 validate: (value) =>
-                  value === watch("password") || "Las contraseñas no coinciden",
+                  value === watch("newPassword") || "Las contraseñas no coinciden",
               })}
             />
           </div>
@@ -339,7 +337,7 @@ export default function Formulario() {
                   message: "La dirección es requerida",
                 },
               })}
-              defaultValue={userData ? userData.address : ""}
+              defaultValue={currentUser ? currentUser.address : ""}
             />
           </div>
           <div className={errors.address ? errors_display : ""}>
@@ -359,7 +357,7 @@ export default function Formulario() {
                   message: "La ciudad es requerida",
                 },
               })}
-              defaultValue={userData ? userData.city : ""}
+              defaultValue={currentUser ? currentUser.city : ""}
             />
           </div>
           <div className={errors.city ? errors_display : ""}>
@@ -384,7 +382,7 @@ export default function Formulario() {
                     "El código postal debe tener como máximo 5 caracteres",
                 },
               })}
-              defaultValue={userData ? userData.zipCode : ""}
+              defaultValue={currentUser ? currentUser.zipCode : ""}
             />
           </div>
           <div className={errors.zipCode ? errors_display : ""}>
@@ -404,7 +402,7 @@ export default function Formulario() {
                   message: "El pais es requerido",
                 },
               })}
-              defaultValue={userData ? userData.country : ""}
+              defaultValue={currentUser ? currentUser.country : ""}
             />
           </div>
           <div className={errors.country ? errors_display : ""}>
@@ -421,5 +419,6 @@ export default function Formulario() {
         />
       </div>
     </form>
+
   );
 }
