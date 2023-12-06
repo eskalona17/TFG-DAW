@@ -5,6 +5,9 @@ import Styles from "./form.module.css";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import Button from "../button/Button";
 import { AuthContext } from "../../context/authContext";
+import axios from "axios";
+
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const {
   input_container,
@@ -30,19 +33,30 @@ export default function LoginForm() {
   const [originalState, setOriginalState] = useState(true); // Nuevo estado para manejar el estado original
 
   const onSubmit = handleSubmit(async (data) => {
-    try {
-      // Use the login function from the context and await its completion
-      await authContext.login(data);
+    // try {
+    //   // Use the login function from the context and await its completion
+    //   await authContext.login(data);
 
-      // Now that the login is complete, you can proceed with other actions
-      alert("Bienvenido");
-      navigate("/");
+    //   // Now that the login is complete, you can proceed with other actions
+    //   alert("Bienvenido");
+    //   navigate("/");
+    // } catch (error) {
+    //   console.error("Error:", error.message);
+    //   alert("Error al iniciar sesión");
+    // }
+    // reset();
+    console.log(data);
+    try {
+      const response = await axios.post(apiUrl + '/api/users/forget-password', data);
+      console.log(response.data);
+      alert("Mail enviado");
+
     } catch (error) {
-      console.error("Error:", error.message);
-      alert("Error al iniciar sesión");
+      console.error('Error:', error.response.data.error || 'Internal server error');
     }
-    reset();
-  });
+  }
+)
+  
 
   const [recoverPassword, setRecoverPassword] = useState(false);
 
@@ -68,7 +82,6 @@ export default function LoginForm() {
             <div className={input_container}>
               <input
                 type="email"
-                label="email"
                 name="email"
                 {...register("email", {
                   required: {

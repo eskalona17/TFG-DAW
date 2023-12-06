@@ -106,6 +106,7 @@ export async function login (req, res) {
 export async function forgetPassword (req, res) {
   const BASEURL = process.env.BASEURL
   const PORT = process.env.PORT
+  const PORT_CLIENT = process.env.PORT_CLIENT
   const { email } = req.body
 
   try {
@@ -135,7 +136,8 @@ export async function forgetPassword (req, res) {
       to: user.email,
       subject: '¿Has olvidado tu contraseña?',
       text: `Restablecer contraseña: ${BASEURL}:${PORT}/reset-password/${token}`,
-      html: emailTemplate({ link: `${BASEURL}:${PORT}/reset-password/${token}` })
+      html: emailTemplate(`${BASEURL}:${PORT_CLIENT}/reset-password`)
+
     }
 
     await transporter.sendMail(info)

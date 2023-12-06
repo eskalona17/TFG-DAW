@@ -1,5 +1,10 @@
 import { useForm } from "react-hook-form";
 import Styles from "./form.module.css";
+import Button from "../button/Button";
+import axios from "axios";
+
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
 
 const { input_container, form_container, errors_display } = Styles;
 
@@ -10,13 +15,18 @@ export default function RecoverPassword() {
     watch,
     formState: { errors },
     reset,
-    button
+    button,
   } = useForm();
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     // event.preventDefault()
-    console.log(data);
-    alert("enviando datos...");
+    try {
+      const response = await axios.post(apiUrl + '/api/users/reset-password', data);
+      console.log(response.data);
+
+    } catch (error) {
+      console.error('Error:', error.response.data.error || 'Internal server error');
+    }
     reset();
   });
 
@@ -69,10 +79,12 @@ export default function RecoverPassword() {
             <span>{errors.confirm_password.message}</span>
           )}
         </div>
-
-        <button className={button} type="submit" width="large">
-          Enviar
-        </button>
+        <Button
+          text="Enviar"
+          className={button}
+          type="submit"
+          variant="primary-large"
+        />
       </form>
     </div>
   );
