@@ -30,7 +30,14 @@ const Messages = () => {
       try {
         const response = await axios.get(`${apiUrl}/api/messages/conversations`, { withCredentials: true });
         const res = response.data;
-        setConversations(res.conversations);
+
+        const sortedConversations = res.conversations.sort((a, b) => {
+          const aDate = a.lastMessage.text ? new Date(a.lastMessage.timestamp) : new Date(a.createdAt);
+          const bDate = b.lastMessage.text ? new Date(b.lastMessage.timestamp) : new Date(b.createdAt);
+          return bDate - aDate;
+        });
+
+        setConversations(sortedConversations);
         let unreadConversations = {};
         res.conversationsWithUnseenMessages.forEach((conversation) => {
           if (conversation.unreadMessages && conversation.lastMessage.sender !== currentUser._id) {
@@ -73,14 +80,12 @@ const Messages = () => {
 
   const loadMessages = async (activeConversation) => {
     if (!activeConversation.participants || !Array.isArray(activeConversation.participants) || activeConversation.participants.length === 0) {
-      console.error('Invalid participants array in activeConversation:', activeConversation.participants);
       return;
     }
 
     const otherUserId = activeConversation.participants.find(participant => participant._id !== currentUser._id)._id;
 
     if (!otherUserId) {
-      console.error('Unable to find other user in participants:', activeConversation.participants);
       return;
     }
 
