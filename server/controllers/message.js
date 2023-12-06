@@ -96,7 +96,7 @@ export async function getConversation (req, res) {
 
       const newConversation = await conversation.save()
 
-      return res.status(201).json({ message: 'Conversation created', newConversation })
+      return res.status(201).json({ message: 'Conversation created', conversation: newConversation })
     } else {
       return res.status(200).json({ conversation })
     }
@@ -109,8 +109,7 @@ export async function getConversations (req, res) {
   const userId = req.user._id
   try {
     const conversations = await Conversation.find({ participants: userId }).populate({
-      path: 'participants',
-      select: 'name username profilePic'
+      path: 'participants'
     }).sort({ 'lastMessage.timestamp': -1 })
 
     const conversationsWithUnseenMessages = await Promise.all(conversations.map(async (conversation) => {

@@ -21,12 +21,14 @@ const SuggestedUser = ({ user, version }) => {
 
   const sendMessage = async (recipientId) => {
     try {
-      const response = await axios.post(`${apiUrl}/api/messages/conversation/`, { recipientId}, { withCredentials: true });
+      const response = await axios.post(`${apiUrl}/api/messages/conversation/`, { recipientId }, { withCredentials: true });
       const conversation = response.data.conversation;
       if (!conversation) {
         return
       }
-      navigate('/mensajes', { state: { conversation } });
+      if (conversation && conversation._id) {
+        navigate('/mensajes', { state: { conversation } });
+      }
     } catch (error) {
       console.error(error);
     }
