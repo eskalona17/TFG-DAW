@@ -16,7 +16,6 @@ const Messages = () => {
   const [activeConversation, setActiveConversation] = useState(null);
   const [newMessageToSend, setNewMessageToSend] = useState('');
   const [conversations, setConversations] = useState([]);
-  const [newConversation, setNewConversation] = useState({});
   const { currentUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState({});
@@ -135,8 +134,6 @@ const Messages = () => {
 
   useEffect(() => {
     socket?.on('newMessage', (newMessage, messageConversation) => {
-      console.log(messageConversation);
-      console.log(newMessage);
       setMessages(prevMessages => {
         const conversationMessages = prevMessages[newMessage.conversationId] || [];
         return {
