@@ -6,7 +6,6 @@ import { AuthContext } from "../context/authContext";
 import Message from "../components/message/Message";
 import Loader from "../components/loader/Loader";
 import Input from "../components/input/Input";
-import { useParams } from 'react-router-dom';
 import Styles from './pages.module.css'
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
