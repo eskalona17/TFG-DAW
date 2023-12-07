@@ -9,7 +9,7 @@ export async function sendMessage (req, res) {
   try {
     let conversation = await Conversation.findOne({
       participants: { $all: [senderId, recipientId] }
-    })
+    }).populate('participants')
 
     if (!conversation) {
       conversation = new Conversation({
@@ -43,7 +43,7 @@ export async function sendMessage (req, res) {
     ])
     const recipientSocketId = getRecipientSocketId(recipientId)
     if (recipientSocketId) {
-      io.to(recipientSocketId).emit('newMessage', newMessage)
+      io.to(recipientSocketId).emit('newMessage', newMessage, conversation)
     }
     res.status(201).json({ message: newMessage })
   } catch (error) {
