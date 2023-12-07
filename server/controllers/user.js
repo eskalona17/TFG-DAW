@@ -173,6 +173,8 @@ export async function resetPassword (req, res) {
 
     const user = await User.findOne({ resetToken: token })
 
+    console.log(user)
+
     if (!user) {
       return res.status(404).send({ message: 'User not found' })
     }
