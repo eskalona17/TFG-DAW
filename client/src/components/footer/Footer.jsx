@@ -1,10 +1,10 @@
 import Styles from "./footer.module.css";
 
 const Footer = () => {
-  const { footer, list, collaborators, rights } = Styles;
+  const { footer, collaborators, rights } = Styles;
   return (
     <footer className={footer}>
-      <div className={list}>
+      <div>
         <ul className={collaborators}>
           <li>Fernando Escalona Alonso</li>
           <li>Ignacio Menéndez López</li>

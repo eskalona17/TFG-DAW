@@ -49,12 +49,9 @@ h3 {
   padding: 20px;
   border-radius: 0.3rem;
   width: calc(400px - 1rem); /* Ancho del 100% menos 2 veces el margen */
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  justify-self: center;
+  margin: 150px 0 !important;
+  grid-column: 2 / span 2;
 }
 
 .errors_display {
@@ -113,7 +110,7 @@ h3 {
 
 .tabs .active {
   background-color: var(--orange-color);
-  color: var(--secondary-font-color)
+  color: var(--secondary-font-color);
 }
 
 .tabs > li {
@@ -147,3 +144,8 @@ h3 {
   cursor: pointer;
   margin: 20px 0;
 }
+
+.input_LOPD {
+  margin: 25px 0;
+}
+

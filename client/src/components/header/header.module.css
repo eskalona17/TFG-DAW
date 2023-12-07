@@ -19,12 +19,12 @@
 
 .search_container {
   position: relative;
-  padding: 0.5rem 2rem;
   flex: 2;
 }
 
 .search_form {
   display: flex;
+  justify-content: flex-end;
 }
 
 .search {
@@ -49,7 +49,6 @@
 .search_button {
   color: var(--primary-font-color);
   position: absolute;
-  right: 2rem;
   font-size: 1rem;
   background-color: inherit;
   border: none;

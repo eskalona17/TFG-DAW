@@ -1,7 +1,7 @@
 import { useState, useContext} from "react";
 import { AuthContext } from "../../context/authContext";
 import { useForm } from "react-hook-form";
-import Styles from "./formEditProfile.module.css"; 
+import Styles from "./formEditProfile.module.css";
 import Button from "../button/Button";
 import { VscDeviceCamera } from "react-icons/vsc";
 import axios from "axios";
@@ -141,15 +141,12 @@ export default function Formulario() {
   
 
   const handleCambiarPassword = () => {
-   
-      setMostrarConfirmarPassword(true);
-    
+    setMostrarConfirmarPassword(true);
   };
 
   const handleCambiarprofile = (selectedprofile) => {
     setProfile(selectedprofile);
   };
- 
 
   return (
     <form onSubmit={onSubmit} className={form}>
@@ -425,4 +422,3 @@ export default function Formulario() {
 
   );
 }
-

@@ -3,12 +3,10 @@
   background-color: var(--bg-secondary-color);
   color: var(--primary-font-color);
   padding: 20px;
-}
-
-.list {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
+
 

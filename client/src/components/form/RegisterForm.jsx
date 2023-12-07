@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Styles from "./form.module.css";
 import axios from "axios";
 import Button from "../button/Button";
+import PrivacyModal from "../privacymodal/PrivacyModal"; // Importa el componente PrivacyModal
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -16,6 +17,7 @@ const {
   addedInputs,
   inputs_errors,
   button,
+  input_LOPD,
 } = Styles;
 
 export default function Form() {
@@ -31,13 +33,16 @@ export default function Form() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      // Aquí podrías realizar validaciones adicionales si es necesario
-      console.log(data);
       // Enviar datos al backend
       const response = await axios.post(apiUrl + "/api/users/register", {
         ...data,
         profile: profile,
       });
+
+      if (!isPrivacyChecked) {
+        alert("Debes aceptar la política de privacidad");
+        return;
+      }
 
       if (response.status === 201) {
         console.log("Usuario registrado exitosamente");
@@ -58,11 +63,23 @@ export default function Form() {
   //personal profile as a default
   const [profile, setProfile] = useState("personal");
 
+  // check if ckeckbox is accepted
+  const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
+
+  // Estado para controlar la apertura y cierre del modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Función para abrir el modal
+  const openModal = () => setIsModalOpen(true);
+
+  // Función para cerrar el modal
+  const closeModal = () => setIsModalOpen(false);
+
   return (
     <div className={form_container}>
       <h3>Crea tu perfil</h3>
       <form onSubmit={onSubmit}>
-        {/* Nombre */}
+        {/* name */}
         <div className={input_container}>
           <input
             type="text"
@@ -135,7 +152,7 @@ export default function Form() {
           />
           <label htmlFor="email">Email</label>
         </div>
-        <div className={errors_display}>
+        <div className={errors.email ? errors_display : ""}>
           {errors.email && <span>{errors.email.message}</span>}
         </div>
 
@@ -207,7 +224,7 @@ export default function Form() {
 
         {profile === "profesional" && (
           <>
-            {/* dirección */}
+            {/* address */}
             <div className={input_container}>
               <input
                 type="text"
@@ -222,8 +239,8 @@ export default function Form() {
               />
               <label htmlFor="direccion">Dirección</label>
             </div>
-            <div className={errors.direccion ? errors_display : ""}>
-              {errors.direccion && <span>{errors.direccion.message}</span>}
+            <div className={errors.address ? errors_display : ""}>
+              {errors.address && <span>{errors.address.message}</span>}
             </div>
 
             {/* ciudad */}
@@ -241,8 +258,8 @@ export default function Form() {
               />
               <label htmlFor="ciudad">Ciudad</label>
             </div>
-            <div className={errors_display}>
-              {errors.ciudad && <span>{errors.ciudad.message}</span>}
+            <div className={errors.city ? errors_display : ""}>
+              {errors.city && <span>{errors.city.message}</span>}
             </div>
 
             <div className={addedInputs}>
@@ -267,10 +284,8 @@ export default function Form() {
                   />
                   <label htmlFor="postal">Código postal</label>
                 </div>
-                <div className={errors.postal_code ? errors_display : ""}>
-                  {errors.postal_code && (
-                    <span>{errors.postal_code.message}</span>
-                  )}
+                <div className={errors.zipCode ? errors_display : ""}>
+                  {errors.zipCode && <span>{errors.zipCode.message}</span>}
                 </div>
               </div>
               <div className={inputs_errors}>
@@ -289,21 +304,54 @@ export default function Form() {
                   />
                   <label htmlFor="pais">Pais</label>
                 </div>
-                <div className={errors.postal_code ? errors_display : ""}>
-                  {errors.postal_code && (
-                    <span>{errors.postal_code.message}</span>
-                  )}
+                <div className={errors.country ? errors_display : ""}>
+                  {errors.country && <span>{errors.country.message}</span>}
                 </div>
               </div>
             </div>
           </>
         )}
 
+        {/* Política de privacidad */}
+        <div className={input_LOPD}>
+          <input
+            type="checkbox"
+            id="privacyCheckbox"
+            {...register("privacyCheckbox", {
+              required: {
+                value: true,
+                message: "Debes aceptar la política de privacidad",
+              },
+            })}
+          />
+          <label htmlFor="privacyCheckbox">
+            Aceptar
+            <span
+              onClick={openModal}
+              style={{
+                cursor: "pointer",
+                textDecoration: "underline",
+                marginLeft: "5px",
+              }}
+            >
+              Política de privacidad
+            </span>
+          </label>
+          {/* Componente PrivacyModal */}
+          <PrivacyModal isOpen={isModalOpen} closeModal={closeModal} />
+        </div>
+        <div className={errors.privacyCheckbox ? errors_display : ""}>
+          {errors.privacyCheckbox && (
+            <span>{errors.privacyCheckbox.message}</span>
+          )}
+        </div>
+
         <Button
           text="Enviar"
           className={button}
           type="submit"
           variant="primary-large"
+          disabled={!isPrivacyChecked}
         />
       </form>
       <div className={register_container}>
