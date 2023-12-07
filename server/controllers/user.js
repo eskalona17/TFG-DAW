@@ -92,7 +92,7 @@ export async function login (req, res) {
       user !== null && bcrypt.compareSync(password, user.password)
 
     if (!user || !isPasswordCorrect) {
-      return res.status(400).json({ error: 'invalid username or password' })
+      return res.status(400).json({ error: 'Invalid username or password' })
     }
 
     generateTokenAndSetCookie(user._id, res)
@@ -351,7 +351,6 @@ export async function getUserProfile (req, res) {
   try {
     const user = await User.findOne({ username })
       .select('-password')
-      .select('-updatedAt')
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
