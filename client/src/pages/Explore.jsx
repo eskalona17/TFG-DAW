@@ -2,13 +2,15 @@ import SuggestedUser from "../components/suggestedUser/SuggestedUser";
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 import Button from '../components/button/Button';
 import Loader from '../components/loader/Loader';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from "../context/authContext";
 
 const Explore = () => {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     setLoading(true);
@@ -16,7 +18,8 @@ const Explore = () => {
       withCredentials: true
     })
       .then(response => {
-        setUsers(response.data);
+        const otherUsers = response.data.filter(user => user._id !== currentUser._id);
+        setUsers(otherUsers);
         setLoading(false);
       })
       .catch(error => {

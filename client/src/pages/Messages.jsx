@@ -8,17 +8,22 @@ import Loader from "../components/loader/Loader";
 import Input from "../components/input/Input";
 import Styles from './pages.module.css'
 import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Messages = () => {
+  const location = useLocation();
+  const locationConversation = location.state ? location.state.conversation : null;
   const [activeConversation, setActiveConversation] = useState(null);
   const [newMessageToSend, setNewMessageToSend] = useState('');
   const [conversations, setConversations] = useState([]);
+  const [newConversation, setNewConversation] = useState({});
   const { currentUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState({});
   const { socket } = useContext(SocketContext);
   const [unread, setUnread] = useState({});
   const endOfMessagesRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getConversations = async () => {
@@ -27,53 +32,33 @@ const Messages = () => {
         const response = await axios.get(`${apiUrl}/api/messages/conversations`, { withCredentials: true });
         const res = response.data;
 
-        setConversations(res.conversations);
+        const sortedConversations = res.conversations.sort((a, b) => {
+          const aDate = a.lastMessage.text ? new Date(a.lastMessage.timestamp) : new Date(a.createdAt);
+          const bDate = b.lastMessage.text ? new Date(b.lastMessage.timestamp) : new Date(b.createdAt);
+          return bDate - aDate;
+        });
 
-        const unreadConversations = {};
+        setConversations(sortedConversations);
+        let unreadConversations = {};
         res.conversationsWithUnseenMessages.forEach((conversation) => {
           if (conversation.unreadMessages && conversation.lastMessage.sender !== currentUser._id) {
             unreadConversations[conversation._id] = conversation.unreadMessages;
           }
         });
-
         setUnread(unreadConversations);
       } catch (error) {
         console.error(error);
       } finally {
         setLoading(false);
+        scrollToBottom();
       }
     }
     getConversations();
-  }, [setConversations, currentUser._id]);
-
-  const handleConversationClick = async (_id) => {
-    try {
-      const response = await axios.get(`${apiUrl}/api/messages/${_id}`, { withCredentials: true })
-      const messages = response.data.messages;
-      const conversation = response.data.conversation;
-      socket.emit('markMessagesAsSeen', { conversationId: conversation._id });
-
-      setMessages({
-        [conversation._id]: messages
-      });
-
-      setActiveConversation(conversation._id);
-
-      setUnread(prev => ({ ...prev, [conversation._id]: false }));
-
-      if (activeConversation) {
-        scrollToBottom();
-      }
-    } catch (error) {
-      console.error(error);
+    if (locationConversation) {
+      setActiveConversation(locationConversation);
+      navigate('.', { state: {} });
     }
-  }
-
-  useEffect(() => {
-    if (activeConversation) {
-      scrollToBottom();
-    }
-  }, [unread, messages, activeConversation]);
+  }, [setConversations, currentUser._id, locationConversation]);
 
   const scrollToBottom = () => {
     if (endOfMessagesRef.current) {
@@ -81,6 +66,42 @@ const Messages = () => {
       endOfMessagesRef.current.scrollTop = scrollHeight;
     }
   };
+
+  useEffect(() => {
+    if (activeConversation) {
+      loadMessages(activeConversation);
+    }
+  }, [activeConversation]);
+
+  useEffect(() => {
+    if (endOfMessagesRef.current) {
+      scrollToBottom();
+    }
+  }, [messages]);
+
+  const loadMessages = async (activeConversation) => {
+    if (!activeConversation.participants || !Array.isArray(activeConversation.participants) || activeConversation.participants.length === 0) {
+      return;
+    }
+
+    const otherUserId = activeConversation.participants.find(participant => participant._id !== currentUser._id)._id;
+
+    if (!otherUserId) {
+      return;
+    }
+
+    try {
+      const response = await axios.get(`${apiUrl}/api/messages/${otherUserId}`, { withCredentials: true });
+      const messages = response.data.messages;
+      socket.emit('markMessagesAsSeen', { conversationId: activeConversation._id });
+      setMessages({
+        [activeConversation._id]: messages
+      });
+      setUnread(prev => ({ ...prev, [activeConversation._id]: false }));
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const handleSendMessage = async (recipientId, message) => {
     if (message.trim() === '') return;
@@ -90,22 +111,22 @@ const Messages = () => {
       socket.emit('newMessage', newMessage);
 
       setMessages((prevMessages) => {
-        const conversationMessages = prevMessages[activeConversation] || [];
+        const conversationMessages = prevMessages[activeConversation._id] || [];
         const updatedMessages = conversationMessages.map(message => ({ ...message, seen: true }));
         return {
           ...prevMessages,
-          [activeConversation]: [...updatedMessages, newMessage],
+          [activeConversation._id]: [...updatedMessages, newMessage],
         };
       });
 
-      setConversations((prevConversations) => (
-        prevConversations.map((conversation) => (
-          conversation._id === activeConversation
+      setConversations((prevConversations) => {
+        const updatedConversations = prevConversations.map((conversation) => (
+          conversation._id === activeConversation._id
             ? { ...conversation, lastMessage: { text: newMessage.text, sender: newMessage.sender, timestamp: newMessage.timestamp } }
             : conversation
         ))
-      ));
-
+        return updatedConversations.sort((a, b) => new Date(b.lastMessage.timestamp) - new Date(a.lastMessage.timestamp));
+      });
       setNewMessageToSend('');
     } catch (error) {
       console.error(error);
@@ -113,27 +134,44 @@ const Messages = () => {
   }
 
   useEffect(() => {
-    socket?.on('newMessage', (newMessage) => {
-      if (newMessage.conversationId === activeConversation) {
-        setMessages(prevMessages => {
-          const conversationMessages = prevMessages[newMessage.conversationId] || [];
-          return {
-            ...prevMessages,
-            [newMessage.conversationId]: [...conversationMessages, newMessage],
-          };
-        });
+    socket?.on('newMessage', (newMessage, messageConversation) => {
+      setMessages(prevMessages => {
+        const conversationMessages = prevMessages[newMessage.conversationId] || [];
+        return {
+          ...prevMessages,
+          [newMessage.conversationId]: [...conversationMessages, newMessage],
+        };
+      });
 
+      if (activeConversation && newMessage.conversationId === activeConversation._id) {
         scrollToBottom();
       } else {
         setUnread(prev => ({ ...prev, [newMessage.conversationId]: true }));
       }
+
       setConversations((prevConversations) => {
-        const updatedConversations = prevConversations.map((conversation) => (
-          conversation._id === newMessage.conversationId
-            ? { ...conversation, lastMessage: newMessage }
-            : conversation
-        ))
-        return [updatedConversations.find(conversation => conversation._id === newMessage.conversationId), ...updatedConversations.filter(conversation => conversation._id !== newMessage.conversationId)];
+        const existingConversation = prevConversations.find(conversation => conversation._id === newMessage.conversationId);
+
+        if (existingConversation) {
+          const updatedConversations = prevConversations.map((conversation) => (
+            conversation._id === newMessage.conversationId
+              ? { ...conversation, lastMessage: newMessage }
+              : conversation
+          ));
+          return [updatedConversations.find(conversation => conversation._id === newMessage.conversationId), ...updatedConversations.filter(conversation => conversation._id !== newMessage.conversationId)];
+        } else {
+          return [
+            {
+              ...messageConversation,
+              lastMessage: {
+                ...messageConversation.lastMessage,
+                text: newMessage.text,
+                sender: newMessage.sender
+              }
+            },
+            ...prevConversations
+          ];
+        }
       });
     });
     return () => {
@@ -141,7 +179,7 @@ const Messages = () => {
         socket.off('newMessage');
       }
     };
-  }, [socket, activeConversation]);
+  }, [socket, activeConversation, messages]);
 
   useEffect(() => {
     socket?.on("messagesSeen", ({ conversationId }) => {
@@ -180,10 +218,10 @@ const Messages = () => {
           {
             conversations.map((conversation) => (
               <section key={conversation._id} className={`${Styles.message} ${unread[conversation._id] ? Styles.unread : ''}`}>
-                <Conversation conversation={conversation} onClick={handleConversationClick} />
-                {activeConversation === conversation._id &&
+                <Conversation conversation={conversation} onClick={() => setActiveConversation(conversation)} />
+                {activeConversation && activeConversation._id === conversation._id &&
                   <div className={Styles.message_container} ref={endOfMessagesRef}>
-                    {messages[activeConversation]?.map(message => (
+                    {messages[activeConversation._id]?.map(message => (
                       <Message key={message._id} message={message} />
                     )
                     )}

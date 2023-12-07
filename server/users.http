@@ -35,8 +35,8 @@ POST http://localhost:1234/api/users/login
 content-type: application/json
 
 {
-  "input": "laurashauny",
-  "password": "123456"
+  "input": "Shauny",
+  "password": "1234567"
 }
 
 ### Login user with 'profesional' profile
