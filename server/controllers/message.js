@@ -117,9 +117,6 @@ export async function getConversations (req, res) {
       return { ...conversation._doc, unreadMessages }
     }))
 
-    if (conversations.length === 0) {
-      return res.status(404).json({ error: 'Conversations not found' })
-    }
     conversations.forEach((conversation) => {
       conversation.participants = conversation.participants.filter(
         (participant) => participant._id.toString() !== userId.toString()
