@@ -23,7 +23,7 @@ export default function App () {
           <Routes>
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/reset-password" element={<GetPassword />} />
+            <Route path="/reset-password/:token" element={<GetPassword />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />
