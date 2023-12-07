@@ -49,7 +49,9 @@ export const AuthContextProvider = ({ children }) => {
         setCurrentUser(user);
         localStorage.setItem("user", JSON.stringify(user));
       } catch (error) {
-        console.error(error);
+        if (error.response && error.response.status !== 401) {
+          console.error(error);
+        }
       } finally {
         setLoading(false);
       }
@@ -57,10 +59,8 @@ export const AuthContextProvider = ({ children }) => {
     fetchUser();
   }, []);
 
-  const isAuthenticated = () => currentUser !== null;
-
   return (
-    <AuthContext.Provider value={{ loading, currentUser, setCurrentUser, login, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ loading, currentUser, setCurrentUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

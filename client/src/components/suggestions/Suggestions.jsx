@@ -1,25 +1,30 @@
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 import { useNavigate } from "react-router-dom";
 import Styles from "./Suggestions.module.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button from "../button/Button";
 import axios from 'axios';
 import SuggestedUser from "../suggestedUser/SuggestedUser";
+import { AuthContext } from "../../context/authContext";
 
 const Suggestions = () => {
   const navigate = useNavigate();
+  const { currentUser} = useContext(AuthContext);
 
   const { suggestions, title } = Styles;
 
   const [users, setUsers] = useState([]);
   
   useEffect(() => {
-    axios.get(`${apiUrl}/api/users/suggested-users?limit=3`, {
+    axios.get(`${apiUrl}/api/users/suggested-users?limit=4`, {
       withCredentials: true
     })
-      .then(response => setUsers(response.data))
+      .then(response => {
+        const otherUsers = response.data.filter(user => user._id !== currentUser._id);
+        setUsers(otherUsers.slice(0, 3));
+      })
       .catch(error => console.error(error));
-  }, []);
+  }, [currentUser._id]);
 
   return (
     <div className={suggestions}>

@@ -9,7 +9,7 @@ export async function sendMessage (req, res) {
   try {
     let conversation = await Conversation.findOne({
       participants: { $all: [senderId, recipientId] }
-    })
+    }).populate('participants')
 
     if (!conversation) {
       conversation = new Conversation({
@@ -43,7 +43,7 @@ export async function sendMessage (req, res) {
     ])
     const recipientSocketId = getRecipientSocketId(recipientId)
     if (recipientSocketId) {
-      io.to(recipientSocketId).emit('newMessage', newMessage)
+      io.to(recipientSocketId).emit('newMessage', newMessage, conversation)
     }
     res.status(201).json({ message: newMessage })
   } catch (error) {
@@ -80,22 +80,43 @@ export async function getMessages (req, res) {
   }
 }
 
+export async function getConversation (req, res) {
+  const { recipientId } = req.body
+  const senderId = req.user._id
+
+  try {
+    let conversation = await Conversation.findOne({
+      participants: { $all: [senderId, recipientId] }
+    }).populate('participants')
+
+    if (!conversation) {
+      conversation = new Conversation({
+        participants: [senderId, recipientId]
+      })
+
+      const newConversation = await conversation.save()
+
+      return res.status(201).json({ message: 'Conversation created', conversation: newConversation })
+    } else {
+      return res.status(200).json({ conversation })
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' })
+  }
+}
+
 export async function getConversations (req, res) {
   const userId = req.user._id
   try {
     const conversations = await Conversation.find({ participants: userId }).populate({
-      path: 'participants',
-      select: 'name username profilePic'
-    }).sort({ updatedAt: -1 })
+      path: 'participants'
+    }).sort({ 'lastMessage.timestamp': -1 })
 
     const conversationsWithUnseenMessages = await Promise.all(conversations.map(async (conversation) => {
       const unreadMessages = await Message.countDocuments({ conversationId: conversation._id, seen: false })
       return { ...conversation._doc, unreadMessages }
     }))
 
-    if (conversations.length === 0) {
-      return res.status(404).json({ error: 'Conversations not found' })
-    }
     conversations.forEach((conversation) => {
       conversation.participants = conversation.participants.filter(
         (participant) => participant._id.toString() !== userId.toString()

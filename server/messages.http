@@ -3,7 +3,7 @@ POST http://localhost:1234/api/messages
 content-type: application/json
 
 {
-  "recipientId": "65303e9f97378e1fe910b74c",
+  "recipientId": "65633be0cdbbec4fad2383ef",
   "message": "Mensaje desde el otro lado"
 }
 
@@ -12,3 +12,11 @@ GET http://localhost:1234/api/messages/6531074b97863b7b6b1476a8
 
 ###
 GET http://localhost:1234/api/messages/conversations
+
+###
+POST http://localhost:1234/api/messages/conversation
+content-type: application/json
+
+{
+  "recipientId": "65633be0cdbbec4fad2383ef"
+}

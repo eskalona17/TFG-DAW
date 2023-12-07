@@ -1,19 +1,38 @@
 import useFollowUnfollow from "./../../hooks/useFollowUnfollow";
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 import useUserImage from "../../hooks/useUserImage";
 import Styles from "./suggestedUser.module.css";
+import { useNavigate } from 'react-router-dom';
 import Button from "../button/Button";
+import axios from "axios";
 
 const SuggestedUser = ({ user, version }) => {
   const { currentUser, followUnfollow } = useFollowUnfollow();
   const { userImage } = useUserImage(user, '75');
   const { _id, name, username } = user;
+  const navigate = useNavigate();
 
   const isFollowing = currentUser.following.includes(_id);
   const buttonText = isFollowing ? 'Eliminar' : 'Seguir';
-  const followBtnVariant = version === 'full' 
-    ? (isFollowing ? 'secondary' : 'primary') 
+  const followBtnVariant = version === 'full'
+    ? (isFollowing ? 'secondary' : 'primary')
     : (isFollowing ? 'secondary-small' : 'primary-small');
   const messageBtnVariant = version === 'full' ? 'secondary' : 'secondary-small';
+
+  const sendMessage = async (recipientId) => {
+    try {
+      const response = await axios.post(`${apiUrl}/api/messages/conversation/`, { recipientId }, { withCredentials: true });
+      const conversation = response.data.conversation;
+      if (!conversation) {
+        return
+      }
+      if (conversation && conversation._id) {
+        navigate('/mensajes', { state: { conversation } });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   if (version === 'full') {
     return (
@@ -33,7 +52,7 @@ const SuggestedUser = ({ user, version }) => {
           />
           <Button
             text="Mensaje"
-            onClick={() => console.log("mensaje")}
+            onClick={() => sendMessage(_id)}
             variant={messageBtnVariant}
           />
         </div>
@@ -54,7 +73,7 @@ const SuggestedUser = ({ user, version }) => {
               />
               <Button
                 text="Mensaje"
-                onClick={() => console.log("click")}
+                onClick={() => sendMessage(_id)}
                 variant={messageBtnVariant}
               />
             </div>
