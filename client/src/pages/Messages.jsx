@@ -135,8 +135,6 @@ const Messages = () => {
 
   useEffect(() => {
     socket?.on('newMessage', (newMessage, messageConversation) => {
-      console.log(messageConversation);
-      console.log(newMessage);
       setMessages(prevMessages => {
         const conversationMessages = prevMessages[newMessage.conversationId] || [];
         return {
