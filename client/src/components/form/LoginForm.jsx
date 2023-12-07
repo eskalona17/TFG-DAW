@@ -32,31 +32,35 @@ export default function LoginForm() {
 
   const [originalState, setOriginalState] = useState(true); // Nuevo estado para manejar el estado original
 
-  const onSubmit = handleSubmit(async (data) => {
-    // try {
-    //   // Use the login function from the context and await its completion
-    //   await authContext.login(data);
-
-    //   // Now that the login is complete, you can proceed with other actions
-    //   alert("Bienvenido");
-    //   navigate("/");
-    // } catch (error) {
-    //   console.error("Error:", error.message);
-    //   alert("Error al iniciar sesión");
-    // }
-    // reset();
-    console.log(data);
+  const onSubmitLogin = handleSubmit(async (data) => {
     try {
-      const response = await axios.post(apiUrl + '/api/users/forget-password', data);
-      console.log(response.data);
-      alert("Mail enviado");
+      // Use the login function from the context and await its completion
+      await authContext.login(data);
 
+      // Now that the login is complete, you can proceed with other actions
+      alert("Bienvenido");
+      navigate("/");
     } catch (error) {
-      console.error('Error:', error.response.data.error || 'Internal server error');
+      console.error("Error:", error.message);
+      alert("Error al iniciar sesión");
     }
-  }
-)
-  
+    reset();
+  });
+
+  const onSubmitForgotPassword = handleSubmit(async (data) => {
+    try {
+      await axios.post(
+        apiUrl + "/api/users/forget-password",
+        data
+      );
+      alert("Mail enviado");
+    } catch (error) {
+      console.error(
+        "Error:",
+        error.response.data.error || "Internal server error"
+      );
+    }
+  });
 
   const [recoverPassword, setRecoverPassword] = useState(false);
 
@@ -77,7 +81,7 @@ export default function LoginForm() {
       {recoverPassword ? (
         <>
           <h3>Introduce tu email</h3>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={onSubmitForgotPassword}>
             {/* Email */}
             <div className={input_container}>
               <input
@@ -116,7 +120,7 @@ export default function LoginForm() {
       ) : (
         <>
           <h3>LOGIN</h3>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={onSubmitLogin}>
             {/* username */}
             <div className={input_container}>
               <input
