@@ -92,7 +92,7 @@ export async function newPost (req, res) {
       }
     })
 
-    const newPost = new Post({ author, content, media: req.file ? req.file.filename : null })
+    const newPost = new Post({ author, content, media: req.file ? req.file.filename : '' })
     await newPost.save()
     res.status(201).json({ message: 'Post created successfully', newPost })
   } catch (error) {
@@ -102,7 +102,7 @@ export async function newPost (req, res) {
 }
 
 export async function updatePost (req, res) {
-  const { content, media } = req.body
+  const { content } = req.body
   const userId = req.user._id
   const { id } = req.params
 
@@ -132,7 +132,7 @@ export async function updatePost (req, res) {
       }
     })
 
-    await Post.findByIdAndUpdate(id, { content, media: req.file ? req.file.filename : null })
+    await Post.findByIdAndUpdate(id, { content, media: req.file ? req.file.filename : '' })
     const updatedPost = await Post.findById(id)
 
     res.status(201).json({ message: 'Post updated successfully', updatedPost })
