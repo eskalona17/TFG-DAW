@@ -61,10 +61,6 @@ export default function Formulario() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      
-      console.log(data);
-      
-
       const commonData = {
         name: data.name,
         username: data.username,
@@ -260,6 +256,8 @@ export default function Formulario() {
       </div>
       {mostrarConfirmarPassword && (
         <>
+
+        {/* new password */}
           <div className={inputContainer}>
             <input
               type="password"
@@ -274,6 +272,8 @@ export default function Formulario() {
               })}
             />
           </div>
+
+          {/* confirm new password */}
           <div className={inputConfirmContainer}>
             <input
               type="password"

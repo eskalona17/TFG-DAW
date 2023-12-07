@@ -137,8 +137,7 @@ export async function forgetPassword (req, res) {
       to: user.email,
       subject: '¿Has olvidado tu contraseña?',
       text: `Restablecer contraseña: ${BASEURL}:${PORT}/reset-password/${token}`,
-      html: emailTemplate(`${BASEURL}:${PORT_CLIENT}/reset-password`)
-
+      html: emailTemplate(`${BASEURL}:${PORT_CLIENT}/reset-password/${token}`)
     }
 
     await transporter.sendMail(info)
@@ -173,6 +172,8 @@ export async function resetPassword (req, res) {
     }
 
     const user = await User.findOne({ resetToken: token })
+
+    console.log(user)
 
     if (!user) {
       return res.status(404).send({ message: 'User not found' })
