@@ -4,6 +4,9 @@ import Styles from './conversation.module.css'
 import { es } from 'date-fns/locale';
 
 const Conversation = ({ conversation, onClick }) => {
+  if (!conversation) {
+    return
+  }
   const { lastMessage, participants, createdAt } = conversation
   const { sender, text, timestamp } = lastMessage
   const { _id, name, username } = participants[0]
