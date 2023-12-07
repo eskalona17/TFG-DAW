@@ -44,7 +44,7 @@ POST http://localhost:1234/api/posts/create
 Content-Type: application/json
 
 {
-    "author": "6544c81c90831c86769c355d",
+    "author": "65633be0cdbbec4fad2383ef",
     "content": "Post de prueba 1"
 }
 

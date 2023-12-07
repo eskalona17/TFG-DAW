@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 
 const useUserImage = (user, width = '100') => {
   const [userImage, setUserImage] = useState("");
+  const serverImagePath = import.meta.env.VITE_REACT_APP_API_URL + '/public/profilePic';
 
   useEffect(() => {
     const getUserImage = () => {
-      if (user && user.profilePic) {
-        return user.profilePic;
+      if (user.profilePic && user.profilePic !== '') {
+        return `${serverImagePath}/${user.profilePic}`;
       } else {
         let userColors = sessionStorage.getItem('user-colors');
         if (userColors) {
@@ -42,7 +43,7 @@ const useUserImage = (user, width = '100') => {
       }
     };
     setUserImage(getUserImage());
-  }, [user, width]);
+  }, [serverImagePath, user, width]);
 
   return { userImage };
 };
