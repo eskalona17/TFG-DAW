@@ -16,6 +16,7 @@ const Messages = () => {
   const [activeConversation, setActiveConversation] = useState(null);
   const [newMessageToSend, setNewMessageToSend] = useState('');
   const [conversations, setConversations] = useState([]);
+  const [newConversation, setNewConversation] = useState({});
   const { currentUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState({});
