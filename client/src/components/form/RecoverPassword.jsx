@@ -1,5 +1,10 @@
 import { useForm } from "react-hook-form";
 import Styles from "./form.module.css";
+import Button from "../button/Button";
+import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
+
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const { input_container, form_container, errors_display } = Styles;
 
@@ -10,13 +15,24 @@ export default function RecoverPassword() {
     watch,
     formState: { errors },
     reset,
-    button
+    button,
   } = useForm();
 
-  const onSubmit = handleSubmit((data) => {
-    // event.preventDefault()
+  const { token } = useParams();
+  const navigate = useNavigate();
+
+  const onSubmit = handleSubmit(async (data) => {
     console.log(data);
-    alert("enviando datos...");
+    try {
+      await axios.post(apiUrl + `/api/users/reset-password/${token}`, data);
+      alert("contraseña cambiada");
+      navigate("/login");
+    } catch (error) {
+      console.error(
+        "Error:",
+        error.response.data.error || "Internal server error"
+      );
+    }
     reset();
   });
 
@@ -52,8 +68,8 @@ export default function RecoverPassword() {
           <input
             type="password"
             label="Confirmar contraseña"
-            name="confirm_password"
-            {...register("confirm_password", {
+            name="confirmPassword"
+            {...register("confirmPassword", {
               required: {
                 value: true,
                 message: "Repetir contraseña es requerido",
@@ -65,14 +81,16 @@ export default function RecoverPassword() {
           <label htmlFor="confirm_contraseña">Repite contraseña</label>
         </div>
         <div className={errors_display}>
-          {errors.confirm_password && (
-            <span>{errors.confirm_password.message}</span>
+          {errors.confirmPassword && (
+            <span>{errors.confirmPassword.message}</span>
           )}
         </div>
-
-        <button className={button} type="submit" width="large">
-          Enviar
-        </button>
+        <Button
+          text="Enviar"
+          className={button}
+          type="submit"
+          variant="primary-large"
+        />
       </form>
     </div>
   );

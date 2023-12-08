@@ -18,6 +18,7 @@ body {
     "aside"
     "footer";
   grid-gap: 1rem;
+  min-height: 100dvh;
 }
 
 .main {
@@ -52,6 +53,10 @@ body {
   }
 }
 
+ul {
+  padding: 0;
+}
+
 ul > li {
   list-style: none;
   text-decoration: none;
@@ -67,6 +72,11 @@ svg {
   cursor: pointer;
   width: 1.5rem;
   height: 1.5rem;
+}
+
+input {
+  font-size: 1rem;
+  font-family: var(--main-font);
 }
 
 input {
