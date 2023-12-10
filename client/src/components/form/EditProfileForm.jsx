@@ -28,8 +28,8 @@ const {
 
 export default function Formulario() {
   const navigate = useNavigate();
-  const { currentUser, setCurrentUser } = useContext(AuthContext);  // Destructuración directa aquí
-  console.log(currentUser);
+  const { currentUser, setCurrentUser } = useContext(AuthContext);  
+  
   const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false);
   const [profile, setProfile] = useState(currentUser.profile || "personal");
   const [imageData, setImageData] = useState({

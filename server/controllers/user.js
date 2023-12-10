@@ -454,3 +454,19 @@ export async function getSuggestedUsers (req, res) {
     return res.status(500).json({ error: 'Internal server error' })
   }
 }
+
+export async function getUserById (req, res) {
+  const userId = req.params.userId
+
+  try {
+    const user = await User.findById(userId).select('-password')
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+
+    res.status(200).json(user)
+  } catch (error) {
+    console.error('Error:', error.message)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+}
