@@ -10,14 +10,17 @@ const Post = ({ searchType, searchParam }) => {
   const { loading, posts } = usePosts(searchType, searchParam);
   const [showComments, setShowComments] = useState(false);
   const [comment, setComment] = useState("");
-  const [commentsList, setCommentsList] = useState([]);
+  const [postComments, setPostComments] = useState({});
   const [favoritedPosts, setFavoritedPosts] = useState([]);
   const serverImagePath = import.meta.env.VITE_REACT_APP_API_URL + '/public/profilePic';
   
   useEffect(() => {
     if (!loading && posts.length > 0) {
-      const post = posts[0];
-      setCommentsList(post.replies);
+      const commentsObj = {};
+      posts.forEach((post) => {
+        commentsObj[post._id] = post.replies;
+      });
+    setPostComments(commentsObj);
       setFavoritedPosts(posts.map(post => ({
         postId: post._id,
         isFavorited: post.favorites.includes(currentUser._id),
@@ -51,8 +54,11 @@ const Post = ({ searchType, searchParam }) => {
       console.error('error al actualizar fav: ', error.message )
     }
   };
-  const handleCommentClick = () => {
-    setShowComments(!showComments);
+  const handleCommentClick = (postId) => {
+    setShowComments((prevShowComments) => ({
+      ...prevShowComments,
+      [postId]: !prevShowComments[postId],
+    }));
   };
   const handleCommentSubmit = async (postId) => {
     try {
@@ -69,7 +75,11 @@ const Post = ({ searchType, searchParam }) => {
       );
 
       
-      setCommentsList([...commentsList, response.data.post.replies.pop()]);
+      setPostComments((prevComments) => ({
+        ...prevComments,
+        [postId]: [...(prevComments[postId] || []), response.data.post.replies.pop()],
+      }));
+
       setComment("");
     } catch (error) {
       console.error('Error al enviar la respuesta: ', error.message);
@@ -141,16 +151,16 @@ const Post = ({ searchType, searchParam }) => {
                   <VscStarEmpty color={orange_color} />
                 )}
               {favoritedPosts.find(item => item.postId === post._id)?.favoritesLength || 0} favoritos              </span>
-              <span className={comments} onClick={handleCommentClick}>
+              <span className={comments} onClick={() => handleCommentClick(post._id)}>
                 <VscComment color={orange_color} />
-                {post.replies.length} comentarios
+                {postComments[post._id]?.length || 0} comentarios
               </span>
             </div>
             {/* Mostrar comentarios */}
-            {showComments && (
+            {showComments[post._id] && (
               <div className={comments_container}>
                 {/* Mapear comentarios desde el objeto post */}
-                {commentsList.map((comment, index) => (
+                {postComments[post._id]?.map((comment, index) => (
                   <div key={index} className={Styles.comment}>
                     <div className={comment_user_img_container}>
                       <img src={`${serverImagePath}/${comment.userProfilePic}`} alt="" className={comment_user_img} />
