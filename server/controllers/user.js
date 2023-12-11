@@ -417,8 +417,7 @@ export async function searchUsers (req, res) {
       users.map(async (user) => {
         const posts = await Post.find({ author: user._id })
         // Assuming profilePic is a field in your User model
-        const { _id, username, name, profilePic } = user
-        return { user: { _id, username, name, profilePic }, posts }
+        return { user, posts }
       })
     )
 

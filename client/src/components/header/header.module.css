@@ -70,12 +70,12 @@
 
 .search_results {
   position: absolute;
-  width: 35rem;
+  width: 100%;
   z-index: 11;
   background-color: var(--bg-secondary-color);
 }
 
-.search_results li {
+.search_results li a{
   margin-inline: 1rem;
   display: flex;
   align-items: center;

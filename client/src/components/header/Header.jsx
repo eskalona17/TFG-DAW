@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react"
 import { Link } from "react-router-dom"
-import useUserImage from "../../hooks/useUserImage"
 import Styles from "./header.module.css"
 import { IoSearch } from "react-icons/io5"
 import { IoExitOutline } from "react-icons/io5"
@@ -9,7 +8,7 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios"
 
 const serverImagePath =
-  import.meta.env.VITE_REACT_APP_API_URL + "/public/profilePic"
+  import.meta.env.VITE_REACT_APP_API_URL + "/public/profilePic/"
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL
 
@@ -27,9 +26,6 @@ const Header = () => {
     notifications,
     search_results,
   } = Styles
-
-  const { currentUser } = useContext(AuthContext)
-  const { userImage } = useUserImage(currentUser)
 
   const [searchQuery, setSearchQuery] = useState("")
   const [searchResults, setSearchResults] = useState([])
@@ -57,11 +53,11 @@ const Header = () => {
       }
     }
 
-    // Solo realiza la búsqueda si hay una consulta
+    // if there's a query
     if (searchQuery.trim() !== "") {
       fetchSearchResults()
     } else {
-      // Si la consulta está vacía, limpia los resultados
+      // if the query's empty, clean the results
       setSearchResults([])
     }
   }, [searchQuery])
@@ -100,12 +96,14 @@ const Header = () => {
           {searchResults.map((result) => (
             <ul key={result.user._id}>
               <li>
+              <Link to={`/profile/${result.user.username}`}>
                 <img
-                  src={serverImagePath + "/" + result.user.profilePic}
+                  src={serverImagePath + result.user.profilePic}
                   alt=""
                   className={user_img}
                 />
                 <span>{result.user.username}</span>
+                </Link>
               </li>
             </ul>
           ))}
