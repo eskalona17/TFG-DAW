@@ -399,31 +399,34 @@ export async function removeUser (req, res) {
 
 export async function searchUsers (req, res) {
   const query = req.query.q
+
   try {
     const users = await User.find({
       $or: [
-        { username: { $regex: query, $options: 'i' } }, // search for username
-        { name: { $regex: query, $options: 'i' } } // search for name
+        { username: { $regex: new RegExp(query, 'i') } },
+        { name: { $regex: new RegExp(query, 'i') } }
       ]
     })
 
-    if (!users) {
+    if (!users || users.length === 0) {
       return res.status(404).json({ message: 'User not found' })
     }
 
     // get all the posts for that specific user
-    const usersWithPosts = await Promise.all(
+    const usersWithPostsAndImage = await Promise.all(
       users.map(async (user) => {
         const posts = await Post.find({ author: user._id })
-        return { user, posts }
+        // Assuming profilePic is a field in your User model
+        const { _id, username, name, profilePic } = user
+        return { user: { _id, username, name, profilePic }, posts }
       })
     )
 
-    if (!usersWithPosts) {
+    if (!usersWithPostsAndImage) {
       return res.status(404).json({ error: 'Post not found' })
     }
 
-    res.status(200).json(usersWithPosts)
+    res.status(200).json(usersWithPostsAndImage)
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })

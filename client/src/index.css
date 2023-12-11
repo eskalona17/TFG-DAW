@@ -82,3 +82,7 @@ input {
 input {
   color: var(--primary-font-color);
 }
+
+img {
+  object-fit: cover;
+}
