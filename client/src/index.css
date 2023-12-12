@@ -8,7 +8,7 @@ body {
 #root {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto;
+  grid-template-rows: 70px auto; 
   grid-template-areas:
     "header"
     "user"
@@ -18,7 +18,7 @@ body {
     "aside"
     "footer";
   grid-gap: 1rem;
-  min-height: 100dvh;
+  height: 100dvh;
 }
 
 .main {

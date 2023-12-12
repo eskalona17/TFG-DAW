@@ -66,6 +66,7 @@
 
 .logo {
   width: 3rem;
+  cursor: pointer;
 }
 
 .search_results {
@@ -75,7 +76,7 @@
   background-color: var(--bg-secondary-color);
 }
 
-.search_results li a{
+.search_results li {
   margin-inline: 1rem;
   display: flex;
   align-items: center;
