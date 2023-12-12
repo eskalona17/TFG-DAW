@@ -1,14 +1,14 @@
-import { useState, useContext} from "react";
-import { AuthContext } from "../../context/authContext";
-import { useForm } from "react-hook-form";
-import Styles from "./formEditProfile.module.css";
-import Button from "../button/Button";
-import { VscDeviceCamera } from "react-icons/vsc";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import useUserImage from './../../hooks/useUserImage';
+import { useState, useContext} from "react"
+import { AuthContext } from "../../context/authContext"
+import { useForm } from "react-hook-form"
+import Styles from "./formEditProfile.module.css"
+import Button from "../button/Button"
+import { VscDeviceCamera } from "react-icons/vsc"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
+import useUserImage from './../../hooks/useUserImage'
 
-const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL
 
 const {
   form,
@@ -24,21 +24,21 @@ const {
   imageContainer,
   inputConfirmContainer,
   editButton,
-} = Styles;
+} = Styles
 
 export default function Formulario() {
-  const navigate = useNavigate();
-  const { currentUser, setCurrentUser } = useContext(AuthContext);  // Destructuración directa aquí
-  console.log(currentUser);
-  const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false);
-  const [profile, setProfile] = useState(currentUser.profile || "personal");
+  const navigate = useNavigate()
+  const { currentUser, setCurrentUser } = useContext(AuthContext)  // Destructuración directa aquí
+  console.log(currentUser)
+  const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false)
+  const [profile, setProfile] = useState(currentUser.profile || "personal")
   const [imageData, setImageData] = useState({
     selectedImage: null,
     imagePreview: null,
-  });
+  })
   
-  const { selectedImage } = imageData;
-  const {userImage: profileImage} = useUserImage(currentUser);
+  const { selectedImage } = imageData
+  const {userImage: profileImage} = useUserImage(currentUser)
   
   const {
     handleSubmit,
@@ -57,7 +57,7 @@ export default function Formulario() {
       zipCode: currentUser?.zipCode,
       country: currentUser?.country,
     }
-  });
+  })
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -73,20 +73,20 @@ export default function Formulario() {
         city: data.city,
         zipCode: data.zipCode,
         country: data.country,
-      };
+      }
 
-      let response = null;
+      let response = null
       if(selectedImage){
 
-        const formDataWithImage = new FormData();
-        Object.entries(commonData).forEach(([key, value]) => formDataWithImage.append(key, value));
-        formDataWithImage.append('profilePic', selectedImage);
-        formDataWithImage.append('followers', currentUser.followers);
-        formDataWithImage.append('following', currentUser.following);
+        const formDataWithImage = new FormData()
+        Object.entries(commonData).forEach(([key, value]) => formDataWithImage.append(key, value))
+        formDataWithImage.append('profilePic', selectedImage)
+        formDataWithImage.append('followers', currentUser.followers)
+        formDataWithImage.append('following', currentUser.following)
         
         response = await axios.patch(apiUrl + '/api/users/update/'  + currentUser._id, formDataWithImage, {
           withCredentials: true,
-        });
+        })
       }else{
          response = await axios.patch(apiUrl + "/api/users/update/" + currentUser._id, {
           ...commonData,
@@ -95,54 +95,54 @@ export default function Formulario() {
           following: currentUser.following,
         },{
           withCredentials:true,
-        });
+        })
       }
      
 
       if (response.status === 200) {
-        console.log("Usuario actualizado exitosamente");
-        alert("Usuario actualizado exitosamente");
-        const updatedUserData = response.data.user;
-        console.log("Respuesta de la API:", response.data.user);
-        await setCurrentUser(updatedUserData); 
-        navigate("/");
-        reset();
+        console.log("Usuario actualizado exitosamente")
+        alert("Usuario actualizado exitosamente")
+        const updatedUserData = response.data.user
+        console.log("Respuesta de la API:", response.data.user)
+        await setCurrentUser(updatedUserData) 
+        navigate("/")
+        reset()
       } else {
-        console.error("Error al actualizrr usuario:", response.statusText);
-        alert("Error al actulizar usuario");
+        console.error("Error al actualizrr usuario:", response.statusText)
+        alert("Error al actulizar usuario")
       }
     } catch (error) {
-      console.error("Error:", error.message);
-      alert("Error al actualizar  usuario");
+      console.error("Error:", error.message)
+      alert("Error al actualizar  usuario")
     }
-    reset();
-  });
+    reset()
+  })
 
   const handleImageChange = () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
+    const input = document.createElement("input")
+    input.type = "file"
+    input.accept = "image/*"
     input.onchange = (e) => {
-      const file = e.target.files[0];
+      const file = e.target.files[0]
   
       setImageData({
         selectedImage: file,
         imagePreview: URL.createObjectURL(file), // Crear la URL de la vista previa
-      });
-    };
+      })
+    }
   
-    input.click();
-  };
+    input.click()
+  }
 
   
 
   const handleCambiarPassword = () => {
-    setMostrarConfirmarPassword(true);
-  };
+    setMostrarConfirmarPassword(true)
+  }
 
   const handleCambiarprofile = (selectedprofile) => {
-    setProfile(selectedprofile);
-  };
+    setProfile(selectedprofile)
+  }
 
   return (
     <form onSubmit={onSubmit} className={form}>
@@ -420,5 +420,5 @@ export default function Formulario() {
       </div>
     </form>
 
-  );
+  )
 }
