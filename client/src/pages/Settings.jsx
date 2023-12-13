@@ -12,7 +12,13 @@ const Settings = () => {
   const navigate = useNavigate();
   const { logout, currentUser } = useContext(AuthContext);
 
-  const { settings_container, settings_info, modal, modal_buttons } = Styles;
+  const {
+    settings_container,
+    settings_info,
+    modal,
+    modal_buttons,
+    toggle_icon,
+  } = Styles;
 
   // show modal
   const [showModal, setShowModal] = useState(false);
@@ -38,6 +44,21 @@ const Settings = () => {
     </div>
   );
 
+  const ToggleButton = ({ toggled}) => {
+    const [isToggled, setIsToggled] = useState(toggled);
+
+    const callback = () => {
+      setIsToggled(!isToggled);
+      onclick(!isToggled);
+    };
+    return (
+      <label>
+        <input type="checkbox" defaultChecked={isToggled} onClick={callback} />
+        <span className={toggle_icon}></span>
+      </label>
+    );
+  };
+
   const deteleUser = async () => {
     try {
       const response = await axios.delete(
@@ -50,7 +71,6 @@ const Settings = () => {
       if (response.status === 200) {
         alert("Usuario eliminado exitosamente");
         navigate("/login");
-
       } else {
         console.error("Error al eliminar el usuario:", response.data.message);
         alert("Error al eliminar el usuario");
@@ -87,7 +107,7 @@ const Settings = () => {
           </p>
           <span>Activa el modo oscuro en toda la web</span>
         </div>
-        <button></button>
+        {<ToggleButton />}
       </div>
       <div className={settings_container}>
         <div className={settings_info}>
