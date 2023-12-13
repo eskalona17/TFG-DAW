@@ -31,7 +31,7 @@
   background-color: inherit;
   width: 100%;
   border: none;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   font-size: 1rem;
   border: 1.5px solid transparent;
   border-bottom: 1px solid var(--orange-color);
@@ -53,7 +53,7 @@
   background-color: inherit;
   border: none;
   border-radius: 0.5rem;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
 }
 
@@ -66,4 +66,26 @@
 
 .logo {
   width: 3rem;
+  cursor: pointer;
+}
+
+.search_results {
+  position: absolute;
+  width: 100%;
+  z-index: 11;
+  background-color: var(--bg-secondary-color);
+}
+
+.search_results li {
+  margin-inline: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.search_results img {
+  width: calc(50.5px - 1rem);
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: var(--light-orange);
+  margin-right: 1rem;
 }

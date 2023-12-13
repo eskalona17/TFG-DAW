@@ -20,8 +20,8 @@
 .primary-large,
 .secondary,
 .secondary-small,
-.alternative {
-  font-size: .9rem;
+.alternative, .delete {
+  font-size: 0.9rem;
   border-radius: 6px;
 }
 
@@ -72,4 +72,10 @@
   background-color: var(--orange-color);
   color: var(--secondary-font-color);
   border-color: var(--orange-color);
+}
+
+.delete {
+  background-color: var(--dark-orange-color);
+  color: var(--secondary-font-color);
+  border-color: var(--dark-orange-color);
 }

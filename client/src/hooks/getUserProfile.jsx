@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
@@ -10,12 +11,19 @@ const useGetUserProfile = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`${apiUrl}/api/profile/${username}`);
-        const data = await res.json();
-        if (data.error) return
+        const res = await axios.get(`${apiUrl}/api/users/profile/${username}`, { withCredentials: true });
+        const data = res.data
+        if (data.error) {
+          console.error(data.error);
+          return;
+        }
         setUser(data);
       } catch (error) {
-        console.error("Error", error.message, "error");
+        if (error.response && error.response.status === 404) {
+          console.error('El usuario no existe');
+        } else {
+          console.error(error);
+        }
       } finally {
         setLoading(false);
       }

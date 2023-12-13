@@ -6,7 +6,7 @@ const useUserImage = (user, width = '100') => {
 
   useEffect(() => {
     const getUserImage = () => {
-      if (user.profilePic && user.profilePic !== '') {
+      if (user && user.profilePic && user.profilePic !== '') {
         return `${serverImagePath}/${user.profilePic}`;
       } else {
         let userColors = sessionStorage.getItem('user-colors');
@@ -23,7 +23,7 @@ const useUserImage = (user, width = '100') => {
         }
 
         const randomColor = user ? userColors[user._id] : null;
-        const initial = user ? user.name.charAt(0) : "";
+        const initial = user && user.name ? user.name.charAt(0) : "";
 
         const canvas = document.createElement('canvas');
         canvas.width = width;

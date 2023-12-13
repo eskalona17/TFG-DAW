@@ -6,6 +6,7 @@ export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
+  const [profilePic, setProfilePic] = useState(null);
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user")) ?? null
   );
@@ -47,6 +48,7 @@ export const AuthContextProvider = ({ children }) => {
         const { password, ...userData } = res.data;
         const user = { ...userData };
         setCurrentUser(user);
+        setProfilePic(user.profilePic)
         localStorage.setItem("user", JSON.stringify(user));
       } catch (error) {
         if (error.response && error.response.status !== 401) {
@@ -60,7 +62,7 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ loading, currentUser, setCurrentUser, login, logout }}>
+    <AuthContext.Provider value={{ loading, currentUser, profilePic, setCurrentUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
