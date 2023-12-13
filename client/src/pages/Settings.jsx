@@ -4,14 +4,17 @@ import Styles from "./pages.module.css";
 import { AuthContext } from "../context/authContext";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const Settings = () => {
   const navigate = useNavigate();
-  const { logout } = useContext(AuthContext);
+  const { logout, currentUser } = useContext(AuthContext);
 
   const { settings_container, settings_info, modal, modal_buttons } = Styles;
 
+  // show modal
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState(null);
 
@@ -29,12 +32,36 @@ const Settings = () => {
     <div className={modal}>
       <span>¿Estás seguro de que deseas eliminar el perfil?</span>
       <div className={modal_buttons}>
-        <Button onClick={onClose} text="Aceptar" variant="secondary" />
+        <Button onClick={deteleUser} text="Aceptar" variant="secondary" />
         <Button onClick={onClose} text="Cerrar" variant="primary" />
       </div>
     </div>
   );
 
+  const deteleUser = async () => {
+    try {
+      const response = await axios.delete(
+        apiUrl + "/api/users/delete/" + currentUser._id,
+        {
+          withCredentials: true,
+        }
+      );
+      // Verifica el estado de la respuesta y actualiza según sea necesario
+      if (response.status === 200) {
+        alert("Usuario eliminado exitosamente");
+        navigate("/login");
+
+      } else {
+        console.error("Error al eliminar el usuario:", response.data.message);
+        alert("Error al eliminar el usuario");
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+      alert("Error al eliminar el usuario");
+    }
+  };
+
+  // when the user clicks on accept
   const handleLogout = async () => {
     await logout();
     navigate("/login");
@@ -49,7 +76,6 @@ const Settings = () => {
     setShowModal(false);
     setModalType(null);
   };
-
 
   return (
     <main className="main">

@@ -113,7 +113,7 @@ export default function Formulario() {
       }
     } catch (error) {
       console.error("Error:", error.message)
-      alert("Error al actualizar  usuario")
+      alert("Error al actualizar el usuario")
     }
     reset()
   })

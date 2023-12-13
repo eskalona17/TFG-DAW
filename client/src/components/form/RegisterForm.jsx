@@ -39,10 +39,10 @@ export default function Form() {
         profile: profile,
       });
 
-      if (!isPrivacyChecked) {
-        alert("Debes aceptar la política de privacidad");
-        return;
-      }
+      // if (!isPrivacyChecked) {
+      //   alert("Debes aceptar la política de privacidad");
+      //   return;
+      // }
 
       if (response.status === 201) {
         console.log("Usuario registrado exitosamente");
