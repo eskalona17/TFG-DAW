@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Styles from "./form.module.css";
 import axios from "axios";
 import Button from "../button/Button";
-import PrivacyModal from "../privacymodal/PrivacyModal"; // Importa el componente PrivacyModal
+import PrivacyModal from "../privacymodal/PrivacyModal";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -39,10 +39,10 @@ export default function Form() {
         profile: profile,
       });
 
-      if (!isPrivacyChecked) {
-        alert("Debes aceptar la política de privacidad");
-        return;
-      }
+      // if (!isPrivacyChecked) {
+      //   alert("Debes aceptar la política de privacidad");
+      //   return;
+      // }
 
       if (response.status === 201) {
         console.log("Usuario registrado exitosamente");
