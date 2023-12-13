@@ -29,3 +29,31 @@
 .unread {
   border: 1px solid var(--orange-color);
 }
+
+.settings_container {
+  background-color: var(--bg-secondary-color);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings_info {
+  border-left: 2px solid var(--orange-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.settings_info p {
+  margin-left: 1rem;
+}
+
+.settings_info span {
+  margin: 1rem;
+}
+
+@media (min-width: 768px) {
+  .settings_container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
