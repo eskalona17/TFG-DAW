@@ -18,6 +18,7 @@ const Settings = () => {
     modal,
     modal_buttons,
     toggle_icon,
+    toggle_container
   } = Styles;
 
   // show modal
@@ -52,10 +53,10 @@ const Settings = () => {
       onclick(!isToggled);
     };
     return (
-      <label>
+      <div className={toggle_container}>
         <input type="checkbox" defaultChecked={isToggled} onClick={callback} />
         <span className={toggle_icon}></span>
-      </label>
+      </div>
     );
   };
 
