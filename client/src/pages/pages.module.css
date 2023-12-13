@@ -35,6 +35,7 @@
   padding: 2rem;
   display: flex;
   flex-direction: column;
+  border-radius: 6px;
 }
 
 .settings_info {
@@ -56,4 +57,24 @@
     flex-direction: row;
     justify-content: space-between;
   }
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--bg-secondary-color);
+  padding: 1rem;
+  border: 2px solid var(--bg-main-color);
+  z-index: 1000;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal_buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 1rem;
 }
