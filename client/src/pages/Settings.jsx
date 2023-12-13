@@ -27,20 +27,22 @@ const Settings = () => {
 
   const ModalSession = ({ onClose }) => (
     <div className={modal}>
-      <span>¿Estás seguro de que deseas cerrar la sesión?</span>
+      <span><strong>¿Estás seguro de que deseas cerrar la sesión?</strong></span>
+      <small>Esta opción no se puede deshacer</small>
       <div className={modal_buttons}>
         <Button onClick={handleLogout} text="Aceptar" variant="secondary" />
-        <Button onClick={onClose} text="Cerrar" variant="primary" />
+        <Button onClick={onClose} text="Volver" variant="primary" />
       </div>
     </div>
   );
 
   const ModalProfile = ({ onClose }) => (
     <div className={modal}>
-      <span>¿Estás seguro de que deseas eliminar el perfil?</span>
+      <span><strong>¿Estás seguro de que deseas eliminar el perfil?</strong></span>
+      <small>Esta opción no se puede deshacer y perderás todos tus datos almacenados</small>
       <div className={modal_buttons}>
-        <Button onClick={deteleUser} text="Aceptar" variant="secondary" />
-        <Button onClick={onClose} text="Cerrar" variant="primary" />
+        <Button onClick={deteleUser} text="Eliminar" variant="secondary" />
+        <Button onClick={onClose} text="Volver" variant="primary" />
       </div>
     </div>
   );
