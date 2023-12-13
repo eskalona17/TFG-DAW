@@ -82,14 +82,14 @@
 
 
 /* styles for toggle */
-label {
+.toggle_container {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 30px;
 }
 
-input {
+.toggle_container input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -119,10 +119,10 @@ input {
   transition: 0.3s;
 }
 
-input:checked + .toggle_icon {
+.toggle_container input:checked + .toggle_icon {
   background-color: #00c853;
 }
 
-input:checked + .toggle_icon:before {
+.toggle_container input:checked + .toggle_icon:before {
   transform: translateX(29px);
 }
