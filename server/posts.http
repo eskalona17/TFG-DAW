@@ -31,7 +31,7 @@ Content-Type: application/json
 ### Get user 'profesional' feed
 GET http://localhost:1234/api/posts/feed
 Content-Type: application/json
-
+ 
 {
     "profileType": "profesional"
 }

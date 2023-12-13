@@ -22,7 +22,7 @@ export async function getPost (req, res) {
 
 export async function getFeedPosts (req, res) {
   const userId = req.user._id
-  const profileType = req.body.profileType
+  const profileType = req.body.profileType || req.query.profileType
 
   try {
     const user = await User.findById(userId)
@@ -65,7 +65,7 @@ export async function getUserPosts (req, res) {
 export async function newPost (req, res) {
   const { author, content } = req.body
   const userId = req.user._id
-
+  console.log(req.body)
   try {
     if (!author || !content) {
       return res.status(400).json({ error: 'Author and content are required' })
@@ -86,13 +86,14 @@ export async function newPost (req, res) {
     }
     mediaUpload.single('media')(req, res, async function (err) {
       if (err instanceof multer.MulterError) {
+        console.log(req.file)
         return res.status(400).json({ message: 'Error en la carga de archivos de medios' })
       } else if (err) {
         return res.status(500).json({ message: 'Error interno del servidor' })
       }
     })
 
-    const newPost = new Post({ author, content, media: req.file ? req.file.filename : '' })
+    const newPost = new Post({ author, content, media: req.file ? req.file.filename : null })
     await newPost.save()
     res.status(201).json({ message: 'Post created successfully', newPost })
   } catch (error) {

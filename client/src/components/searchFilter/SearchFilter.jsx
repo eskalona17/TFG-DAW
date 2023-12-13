@@ -1,6 +1,7 @@
 import Styles from "./searchFilter.module.css";
 import { useState } from "react";
 import FilterButton from "../FilterButton/FilterButton";
+
 const SearchFilter = () => {
     const {
         searchFilter,
@@ -24,7 +25,7 @@ const SearchFilter = () => {
                         key={filter}
                         filter={filter}
                         activeFilter={activeFilter}
-                        handleSearchClick={handleSearchClick}
+                        handleSearchClick={() => handleSearchClick(filter)}
                     />
                 ))}
             </div>
