@@ -1,6 +1,7 @@
 import Styles from "./searchFilter.module.css";
 import { useState } from "react";
 import FilterButton from "../FilterButton/FilterButton";
+import usePosts from "../../hooks/getPost";
 
 const SearchFilter = () => {
     const {
@@ -10,13 +11,14 @@ const SearchFilter = () => {
 
     const [activeFilter, setActiveFilter] = useState('Todo');
     const filters = ['Todo', 'Personal', 'Profesional'];
+    
 
     const handleSearchClick = (filter) => {
         if (filter !== activeFilter) {
           setActiveFilter(filter);
         }
       };
-
+    usePosts(activeFilter);
     return (
         <div className={searchFilter}>
             <div className={searchFilter_container}>

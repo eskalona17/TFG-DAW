@@ -5,9 +5,9 @@ import usePosts from './../../hooks/getPost';
 import { AuthContext } from "../../context/authContext";
 import axios from "axios";
 
-const Post = ({ searchType, searchParam }) => {
+const Post = ({ activeFilter }) => {
   const { currentUser } = useContext(AuthContext);
-  const { loading, posts } = usePosts(searchType, searchParam);
+  const { loading, posts } = usePosts(activeFilter);
   const [showComments, setShowComments] = useState(false);
   const [comment, setComment] = useState("");
   const [postComments, setPostComments] = useState({});
@@ -15,19 +15,20 @@ const Post = ({ searchType, searchParam }) => {
   const serverImagePath = import.meta.env.VITE_REACT_APP_API_URL + '/public/profilePic';
   
   useEffect(() => {
-    if (!loading && posts.length > 0) {
+    
+    if (!loading && (posts.length > 0)) {
       const commentsObj = {};
       posts.forEach((post) => {
         commentsObj[post._id] = post.replies;
       });
-    setPostComments(commentsObj);
+      setPostComments(commentsObj);
       setFavoritedPosts(posts.map(post => ({
         postId: post._id,
         isFavorited: post.favorites.includes(currentUser._id),
         favoritesLength: post.favorites.length,
       })));
     }
-  }, [currentUser._id, loading, posts]);
+  }, [currentUser._id, loading, posts, activeFilter]);
 
   const handleFavoriteClick = async (postId) => {
     try {
@@ -43,7 +44,7 @@ const Post = ({ searchType, searchParam }) => {
         if (item.postId === postId) {
           return {
             ...item,
-            isFavorited: !item.isFavorited, // Cambiar el estado actual
+            isFavorited: !item.isFavorited, 
             favoritesLength: item.isFavorited ? item.favoritesLength - 1 : item.favoritesLength + 1,
           };
         }

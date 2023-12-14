@@ -1,9 +1,9 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/authContext";
-
+import axios from "axios";
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
-const usePosts = (searchType, searchParam) => {
+const usePosts = (activeFilter) => {
   const { currentUser } = useContext(AuthContext);
 
   const [posts, setPosts] = useState([]);
@@ -27,29 +27,24 @@ const usePosts = (searchType, searchParam) => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        let endpoint = "";
+        let endpoint = "/api/posts/feed";
+        const params = {};
 
-        // Determinar el endpoint de la API según el tipo de búsqueda
-        switch (searchType) {
-          case "user":
-            endpoint = `/api/user/${searchParam}`;
-            break;
-          case "post":
-            endpoint = `/api/post/${searchParam}`;
-            break;
-          default:
-            searchType = "feed";
-            endpoint = "/api/posts/feed";
+        if(activeFilter && activeFilter != "Todo"){
+          
+          let filtro = activeFilter.toLowerCase();
+          console.log(filtro);
+          params.profileType = filtro;
         }
-
-        const res = await fetch(`${apiUrl}${endpoint}`, {
-          credentials: "include",
+        const response = await axios.get(`${apiUrl}${endpoint}`, {
+          withCredentials: true,
           headers: {
-            Authorization: `Bearer ${currentUser?.token}`, 
+            Authorization: `Bearer ${currentUser?.token}`,
           },
+          params, // Se añaden los parámetros a la URL automáticamente
         });
-        const data = await res.json();
-        console.log(data);
+        const data = response.data;
+        console.log(response);
 
         if (data.error) {
           console.error(data.error);
@@ -74,7 +69,7 @@ const usePosts = (searchType, searchParam) => {
     };
 
     fetchPosts();
-  }, [currentUser?.token, searchType, searchParam]);
+  }, [currentUser?.token, activeFilter]);
 
   return { loading, posts };
 };
