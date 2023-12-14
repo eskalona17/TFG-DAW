@@ -15,8 +15,26 @@ import Settings from "./pages/Settings";
 import Error404 from "./pages/Error404";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import UserProfile from "./components/userProfile/UserProfile";
+import { useEffect, useState } from "react";
 
 export default function App () {
+
+  // the theme is saved in the local storage in order to change it in the settings page
+  const [theme, setTheme] = useState(
+    localStorage.getItem('theme') || 'light'
+  );
+  const toggleTheme = () => {
+    if (theme === 'light') {
+      setTheme('dark');
+    } else {
+      setTheme('light');
+    }
+  };
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+    document.body.className = theme;
+  }, [theme]);
+
   return (
     <AuthContextProvider>
       <BrowserRouter>
@@ -31,7 +49,7 @@ export default function App () {
                 <Route path='/explora' element={<Explore />} />
                 <Route path='/mensajes' element={<Messages />} />
                 <Route path='/editar-perfil' element={<EditProfile />} />
-                <Route path='/ajustes' element={<Settings />} />
+                <Route path='/ajustes' element={<Settings toggleTheme={toggleTheme} theme={theme} />} />
                 <Route path='/:username' element={<UserProfile />} />
                 {/* <Route path='/:username/post/:postId' element={<PostPage />} /> */}
               </Route>

@@ -46,10 +46,14 @@
 
 .settings_info p {
   margin-left: 1rem;
+  color: var(--primary-font-color);
 }
+
 
 .settings_info span {
   margin: 1rem;
+  color: var(--primary-font-color);
+
 }
 
 @media (min-width: 768px) {
@@ -75,9 +79,9 @@
   align-items: center;
   text-align: center;
   -webkit-box-shadow: 0px 0px 10px 0px rgba(242,242,242,0.75);
--moz-box-shadow: 0px 0px 10px 0px rgba(242,242,242,0.75);
-box-shadow: 0px 0px 10px 0px rgba(242,242,242,0.75);
-border-radius: 6px;
+  -moz-box-shadow: 0px 0px 10px 0px rgba(242,242,242,0.75);
+  box-shadow: 0px 0px 10px 0px rgba(242,242,242,0.75);
+  border-radius: 6px;
 }
 
 .modal_buttons {

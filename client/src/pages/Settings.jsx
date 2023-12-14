@@ -8,7 +8,7 @@ import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
-const Settings = () => {
+const Settings = ({ toggleTheme, theme }) => {
   const navigate = useNavigate();
   const { logout, currentUser } = useContext(AuthContext);
 
@@ -17,17 +17,16 @@ const Settings = () => {
     settings_info,
     modal,
     modal_buttons,
-    toggle_icon,
-    toggle_container
   } = Styles;
 
-  // show modal
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState(null);
 
   const ModalSession = ({ onClose }) => (
     <div className={modal}>
-      <span><strong>¿Estás seguro de que deseas cerrar la sesión?</strong></span>
+      <span>
+        <strong>¿Estás seguro de que deseas cerrar la sesión?</strong>
+      </span>
       <small>Esta opción no se puede deshacer</small>
       <div className={modal_buttons}>
         <Button onClick={handleLogout} text="Aceptar" variant="secondary" />
@@ -38,31 +37,20 @@ const Settings = () => {
 
   const ModalProfile = ({ onClose }) => (
     <div className={modal}>
-      <span><strong>¿Estás seguro de que deseas eliminar el perfil?</strong></span>
-      <small>Esta opción no se puede deshacer y perderás todos tus datos almacenados</small>
+      <span>
+        <strong>¿Estás seguro de que deseas eliminar el perfil?</strong>
+      </span>
+      <small>
+        Esta opción no se puede deshacer y perderás todos tus datos almacenados
+      </small>
       <div className={modal_buttons}>
-        <Button onClick={deteleUser} text="Eliminar" variant="secondary" />
+        <Button onClick={deleteUser} text="Eliminar" variant="secondary" />
         <Button onClick={onClose} text="Volver" variant="primary" />
       </div>
     </div>
   );
 
-  const ToggleButton = ({ toggled}) => {
-    const [isToggled, setIsToggled] = useState(toggled);
-
-    const callback = () => {
-      setIsToggled(!isToggled);
-      onclick(!isToggled);
-    };
-    return (
-      <div className={toggle_container}>
-        <input type="checkbox" defaultChecked={isToggled} onClick={callback} />
-        <span className={toggle_icon}></span>
-      </div>
-    );
-  };
-
-  const deteleUser = async () => {
+  const deleteUser = async () => {
     try {
       const response = await axios.delete(
         apiUrl + "/api/users/delete/" + currentUser._id,
@@ -70,7 +58,6 @@ const Settings = () => {
           withCredentials: true,
         }
       );
-      // Verifica el estado de la respuesta y actualiza según sea necesario
       if (response.status === 200) {
         alert("Usuario eliminado exitosamente");
         navigate("/login");
@@ -84,7 +71,6 @@ const Settings = () => {
     }
   };
 
-  // when the user clicks on accept
   const handleLogout = async () => {
     await logout();
     navigate("/login");
@@ -110,7 +96,10 @@ const Settings = () => {
           </p>
           <span>Activa el modo oscuro en toda la web</span>
         </div>
-        {<ToggleButton />}
+        {/* <ToggleButton toggled={theme === "dark"} onToggle={toggleTheme} /> */}
+        <button onClick={toggleTheme}>
+          {theme === "light" ? "Activar Modo Oscuro" : "Desactivar Modo Oscuro"}
+        </button>
       </div>
       <div className={settings_container}>
         <div className={settings_info}>
