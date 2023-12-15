@@ -5,12 +5,16 @@ import { AuthContext } from "../context/authContext";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useTheme } from '../context/ThemeContext';
+
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
-const Settings = ({ toggleTheme, theme }) => {
+const Settings = () => {
   const navigate = useNavigate();
   const { logout, currentUser } = useContext(AuthContext);
+
+  const { theme, toggleTheme } = useTheme()
 
   const {
     settings_container,
