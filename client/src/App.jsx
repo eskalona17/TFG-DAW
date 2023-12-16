@@ -16,7 +16,6 @@ import Settings from "./pages/Settings";
 import Error404 from "./pages/Error404";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import UserProfile from "./components/userProfile/UserProfile";
-import { useEffect, useState } from "react";
 
 export default function App() {
 

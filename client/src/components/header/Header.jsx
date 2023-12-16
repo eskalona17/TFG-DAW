@@ -15,6 +15,7 @@ const serverImagePath =
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const Header = () => {
+  console.log("header render");
   const {
     header,
     title_container,
@@ -36,7 +37,9 @@ const Header = () => {
 
   const { logout } = useContext(AuthContext);
 
+  // Can change color of theme whith theme variable that is now available because of ThemeContext
   const { theme, toggleTheme } = useTheme();
+  console.log(theme);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -106,11 +109,11 @@ const Header = () => {
   return (
     <header className={header}>
       <div className={title_container} onClick={handleLogoClick}>
-        {theme === "light" ? (
-          <img src={logoLight} alt="Insta Pet Logo" className={logo} />
-        ) : (
-          <img src={logoDark} alt="Insta Pet Logo" className={logo} />
-        )}
+        <img
+          src={theme === "light" ? logoLight : logoDark}
+          alt="Insta Pet Logo"
+          className={logo}
+        />
       </div>
       <div className={search_container} ref={searchRef}>
         <form className={search_form}>

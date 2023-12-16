@@ -27,6 +27,7 @@ const {
 } = Styles
 
 export default function Formulario() {
+  console.log("hola");
   const navigate = useNavigate()
   const { currentUser, setCurrentUser } = useContext(AuthContext)  // Destructuración directa aquí
   console.log(currentUser)
