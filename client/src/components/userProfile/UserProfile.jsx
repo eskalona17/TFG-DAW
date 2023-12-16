@@ -1,17 +1,46 @@
-import { useContext, useState } from 'react';
-import useGetUserProfile from '../../hooks/getUserProfile';
+import { useEffect, useState } from 'react';
+import useGetUserProfile from '../../hooks/useGetUserProfile';
 import Loader from '../loader/Loader';
 import Styles from './userProfile.module.css';
 import useUserImage from '../../hooks/useUserImage';
-import { AuthContext } from '../../context/authContext';
 import Button from '../button/Button';
+import axios from 'axios';
 
 const UserProfile = () => {
   const { loading, user } = useGetUserProfile();
-  const { currentUser } = useContext(AuthContext);
-  const { userImage } = useUserImage(currentUser);
-  const [isActive, setIsActive] = useState(false);
-  /* console.log(user); */
+  const { userImage } = useUserImage(user);
+  const [activeButton, setActiveButton] = useState('all');
+  const [allPosts, setAllPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      if (!user) {
+        return;
+      }
+      try {
+        const response = await axios.get(`${apiUrl}/api/posts/user/${user.username}`, { withCredentials: true });
+        setAllPosts(response.data);
+        setPosts(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchPosts();
+  }, [user]);
+
+  const handleAllPostsClick = () => {
+    setActiveButton('all');
+    setPosts(allPosts);
+  };
+
+  const handleMultimediaPostsClick = () => {
+    setActiveButton('multimedia');
+    const multimediaPosts = posts.filter(post => post.media);
+    setPosts(multimediaPosts);
+  };
 
   if (loading) {
     return <Loader />
@@ -21,10 +50,6 @@ const UserProfile = () => {
     return <p>Usuario no encontrado</p>
   }
 
-  const handleClick = () => {
-    
-  }
-
   return (
     <main className="main">
       <div className={Styles.user_profile}>
@@ -32,18 +57,18 @@ const UserProfile = () => {
           <img src={userImage} alt="" className={Styles.user_img} />
         </div>
         <p>
-          {currentUser ? currentUser.name : "Nombre de usuario"}
+          {user ? user.name : "Nombre de usuario"}
         </p>
         <p>
-          {currentUser ? `@${currentUser.username}` : "@usuario"}
+          {user ? `@${user.username}` : "@usuario"}
         </p>
         <div className={Styles.follow_container}>
           <Button
             text={
-              currentUser
-                ? `${currentUser.followers.length === 1
-                  ? `${currentUser.followers.length} seguidor`
-                  : `${currentUser.followers.length} seguidores`
+              user
+                ? `${user.followers.length === 1
+                  ? `${user.followers.length} seguidor`
+                  : `${user.followers.length} seguidores`
                 }`
                 : "0 seguidores"
             }
@@ -52,10 +77,10 @@ const UserProfile = () => {
           />
           <Button
             text={
-              currentUser
-                ? `${currentUser.following.length === 1
-                  ? `${currentUser.following.length} seguido`
-                  : `${currentUser.following.length} seguidos`
+              user
+                ? `${user.following.length === 1
+                  ? `${user.following.length} seguido`
+                  : `${user.following.length} seguidos`
                 }`
                 : "0 seguidos"
             }
@@ -66,17 +91,24 @@ const UserProfile = () => {
       </div>
       <div className={Styles.user_filter}>
         <button
-          className={`${Styles.button} ${isActive ? Styles.active : ''}`}
-          onClick={handleClick}
+          className={`${Styles.button} ${activeButton === 'all' ? Styles.active : ''}`}
+          onClick={handleAllPostsClick}
         >
           Publicaciones
         </button>
         <button
-          className={`${Styles.button} ${isActive ? Styles.active : ''}`}
-          onClick={handleClick}
+          className={`${Styles.button} ${activeButton === 'multimedia' ? Styles.active : ''}`}
+          onClick={handleMultimediaPostsClick}
         >
           Multimedia
         </button>
+      </div>
+      <div className={Styles.user_posts}>
+        {/* {postType === 'all' ? (
+          <Post posts={user.posts} />
+        ) : (
+          <Post posts={user.posts.filter(post => post.hasMultimedia)} />
+        )} */}
       </div>
     </main>
   );
