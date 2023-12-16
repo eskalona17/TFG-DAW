@@ -3,10 +3,12 @@ import { useContext } from "react";
 import Button from "../button/Button";
 import { AuthContext } from "../../context/authContext";
 import useUserImage from './../../hooks/useUserImage';
+import { useNavigate } from "react-router-dom";
 
 const CurrentUser = () => {
   const { currentUser } = useContext(AuthContext);
   const { userImage } = useUserImage(currentUser);
+  const navigate = useNavigate();
 
   const {
     user,
@@ -20,7 +22,7 @@ const CurrentUser = () => {
   
   return (
     <aside className={user}>
-      <div className={user_container}>
+      <div className={user_container} onClick={() => navigate(`/${currentUser.username}`)}>
         <img src={userImage} alt="" className={user_img} />
         <div className={user_info}>
           <p className={user_name}>
