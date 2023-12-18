@@ -57,20 +57,22 @@ const NewPost = () => {
       console.log("currentUser:", currentUser);
       console.log("newPostContent:", newPostContent);
       const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-      const requestData = new FormData();
-      requestData.append("author", currentUser._id);
-      requestData.append("content", newPostContent);
+      const postData = {
+        author: currentUser._id,
+        content: newPostContent,
+
+      }
 
       console.log(selectedImage);
       if (selectedImage) {
 
-        requestData.append("media", selectedImage);
+        postData.media = selectedImage;
       }
-      console.log(requestData);
-      console.log([...requestData.entries()]);
+      console.log(postData);
+     
       const response = await axios.post(
         `${apiUrl}/api/posts/create`,
-        requestData,
+        postData,
         {
           withCredentials: true,
         }
