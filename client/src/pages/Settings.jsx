@@ -5,8 +5,13 @@ import { AuthContext } from "../context/authContext";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from "../context/ThemeContext";
+import { IoSunny } from "react-icons/io5";
+import { FaMoon } from "react-icons/fa6";
 
+// colors for icons
+const orange_color = "#ffa07a";
+const gray_color = "#6f81a5"
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -14,15 +19,19 @@ const Settings = () => {
   const navigate = useNavigate();
   const { logout, currentUser } = useContext(AuthContext);
 
-  const { theme, toggleTheme } = useTheme()
+  const { theme, toggleTheme } = useTheme();
 
   const {
     settings_container,
     settings_info,
     modal,
     modal_buttons,
+    checkbox,
+    checkbox_label,
+    ball,
   } = Styles;
 
+  // states for modals
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState(null);
 
@@ -80,6 +89,7 @@ const Settings = () => {
     navigate("/login");
   };
 
+  // there are two type of modals, session and profile
   const handleOpenModal = (type) => {
     setShowModal(true);
     setModalType(type);
@@ -89,6 +99,24 @@ const Settings = () => {
     setShowModal(false);
     setModalType(null);
   };
+
+  // component for toggle button
+  const ToggleButton = () => (
+    <>
+      <input
+        type="checkbox"
+        className={checkbox}
+        id="themeToggle"
+        onChange={toggleTheme}
+        checked={theme === "dark"}
+      />
+      <label htmlFor="themeToggle" className={checkbox_label}>
+        {theme === "light" ? <FaMoon /> : <IoSunny color={orange_color}/>}
+        {<FaMoon color={gray_color} />}
+        <span className={ball}></span>
+      </label>
+    </>
+  );
 
   return (
     <main className="main">
@@ -100,10 +128,7 @@ const Settings = () => {
           </p>
           <span>Activa el modo oscuro en toda la web</span>
         </div>
-        {/* <ToggleButton toggled={theme === "dark"} onToggle={toggleTheme} /> */}
-        <button onClick={toggleTheme}>
-          {theme === "light" ? "Activar Modo Oscuro" : "Desactivar Modo Oscuro"}
-        </button>
+        {<ToggleButton toggled={theme === "dark"} onToggle={toggleTheme} />}
       </div>
       <div className={settings_container}>
         <div className={settings_info}>
