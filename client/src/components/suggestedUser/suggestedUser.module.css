@@ -9,6 +9,7 @@
   margin: 0;
   padding: 1rem;
   gap: 1rem;
+  cursor: pointer;
 }
 
 .user_container {
@@ -48,6 +49,7 @@
 .user_small {
   margin: 0;
   color: var(--primary-font-color);
+  cursor: pointer;
 }
 
 .user_container_small {
