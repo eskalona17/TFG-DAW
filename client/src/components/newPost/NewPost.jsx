@@ -27,37 +27,7 @@ const NewPost = () => {
     previewStyle,
   } = Styles;
   
-  const handleSendClick = async () => {
-    try {
-      const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-      const requestData = {
-        author: currentUser._id,
-        content: newPostContent,
-      };
-      console.log(selectedImage)
-      if (selectedImage) {
-        
-        requestData.media = selectedImage;
-      }
-      console.log(requestData);
-      const response = await axios.post(
-        `${apiUrl}/api/posts/create`,
-        requestData,
-        {
-          withCredentials: true,
-          
-        }
-      );
-    
-      console.log("Respuesta del servidor:", response);
-      console.log("Nuevo post creado:", response.data.newPost);
-    
-      setNewPostContent("");
-     
-    } catch (error) {
-      console.error("Error al crear el nuevo post:", error.message);
-    }
-  }
+  
 
   const handleMultimediaClick=() => {
     const input = document.createElement("input");
@@ -81,7 +51,42 @@ const NewPost = () => {
   const handleEtiquetaClick=() => {
     console.log("boton Etiqueta");
   };
- 
+  const handleSendClick =  async () => {
+
+    try {
+      console.log("currentUser:", currentUser);
+      console.log("newPostContent:", newPostContent);
+      const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+      const requestData = new FormData();
+      requestData.append("author", currentUser._id);
+      requestData.append("content", newPostContent);
+
+      console.log(selectedImage);
+      if (selectedImage) {
+
+        requestData.append("media", selectedImage);
+      }
+      console.log(requestData);
+      console.log([...requestData.entries()]);
+      const response = await axios.post(
+        `${apiUrl}/api/posts/create`,
+        requestData,
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log("Respuesta del servidor:", response);
+      console.log("Nuevo post creado:", response.data.newPost);
+
+      
+
+    } catch (error) {
+      console.error("Error al crear el nuevo post:", error.message);
+      console.error("Detalles del error:", error.response.data);
+    }
+    setNewPostContent("");
+  }
   
   return (
     <div className={newPost}>

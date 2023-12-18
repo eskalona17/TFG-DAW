@@ -29,7 +29,7 @@ const usePosts = (activeFilter) => {
       try {
         let endpoint = "/api/posts/feed";
         const params = {};
-
+        console.log("Active Filter changed:", activeFilter);
         if(activeFilter && activeFilter != "Todo"){
           
           let filtro = activeFilter.toLowerCase();
@@ -41,7 +41,7 @@ const usePosts = (activeFilter) => {
           headers: {
             Authorization: `Bearer ${currentUser?.token}`,
           },
-          params, // Se añaden los parámetros a la URL automáticamente
+          params,
         });
         const data = response.data;
         console.log(response);

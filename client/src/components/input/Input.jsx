@@ -17,7 +17,7 @@ const Input = ({ type, value, placeholder, onClick, onChange, newPost }) => {
         className={`${Styles.input} ${newPost ? Styles.newPost : ''}`}
       />
       {onClick &&
-        <button className={Styles.button}>
+        <button type ="submit" className={Styles.button}>
         <VscSend className={Styles.icon} />
       </button>}
     </form>

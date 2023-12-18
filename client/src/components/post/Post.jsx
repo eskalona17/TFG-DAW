@@ -21,6 +21,7 @@ const Post = ({ activeFilter }) => {
       posts.forEach((post) => {
         commentsObj[post._id] = post.replies;
       });
+      console.log("Posts updated:", posts);
       setPostComments(commentsObj);
       setFavoritedPosts(posts.map(post => ({
         postId: post._id,
