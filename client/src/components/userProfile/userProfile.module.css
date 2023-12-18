@@ -1,4 +1,4 @@
-.user_profile {
+.user_profile, .user_posts {
   background-color: var(--bg-secondary-color);
   color: var(--primary-font-color);
   border-radius: 6px;
@@ -39,4 +39,29 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
+}
+
+.button {
+  flex: 1;
+  border: 1px solid;
+  border-radius: 6px;
+  padding: 0.5rem 2rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.3s;
+  background-color: var(--bg-main-color);
+  border-color: var(--orange-color);
+  color: var(--primary-font-color);
+}
+
+.button:hover {
+  background-color: var(--light-orange);
+  color: var(--alternative-font-color);
+  border-color: var(--light-orange);
+}
+
+.active {
+  background-color: var(--orange-color);
+  border-color: var(--orange-color);
+  color: var(--btn-main-color);
 }

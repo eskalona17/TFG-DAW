@@ -12,18 +12,16 @@ const useGetUserProfile = () => {
     const getUser = async () => {
       try {
         const res = await axios.get(`${apiUrl}/api/users/profile/${username}`, { withCredentials: true });
-        const data = res.data
+        const data = res.data;
         if (data.error) {
           console.error(data.error);
+          setUser(null);
           return;
         }
         setUser(data);
       } catch (error) {
-        if (error.response && error.response.status === 404) {
-          console.error('El usuario no existe');
-        } else {
-          console.error(error);
-        }
+        console.error(error);
+        setUser(null);
       } finally {
         setLoading(false);
       }

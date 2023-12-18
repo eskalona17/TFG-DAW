@@ -4,9 +4,9 @@ import { VscSend } from "react-icons/vsc";
 const Input = ({ type, value, placeholder, onClick, onChange, newPost }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
-    onClick();
+    console.log("Submit clicked");
+    onClick(); 
   };
-
   return (
     <form className={Styles.form} onSubmit={handleSubmit}>
       <input
@@ -17,7 +17,7 @@ const Input = ({ type, value, placeholder, onClick, onChange, newPost }) => {
         className={`${Styles.input} ${newPost ? Styles.newPost : ''}`}
       />
       {onClick &&
-        <button className={Styles.button}>
+        <button type ="submit" className={Styles.button}>
         <VscSend className={Styles.icon} />
       </button>}
     </form>

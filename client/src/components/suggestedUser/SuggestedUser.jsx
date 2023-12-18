@@ -36,7 +36,7 @@ const SuggestedUser = ({ user, version }) => {
 
   if (version === 'full') {
     return (
-      <div className={Styles.user}>
+      <div className={Styles.user} onClick={() => navigate(`/${username}`)}>
         <div className={Styles.user_container}>
           <img src={userImage} alt="" className={Styles.user_img} />
           <div className={Styles.user_info_container}>
@@ -60,7 +60,7 @@ const SuggestedUser = ({ user, version }) => {
     );
   } else {
     return (
-      <div className={Styles.user_small}>
+      <div className={Styles.user_small} onClick={() => navigate(`/${username}`)}>
         <div className={Styles.user_container_small}>
           <img src={userImage} alt="" className={Styles.user_img_small} />
           <div className={Styles.user_info_container_small}>
