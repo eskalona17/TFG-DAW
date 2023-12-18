@@ -76,6 +76,6 @@
 
 .delete {
   background-color: var(--dark-orange-color);
-  color: var(--secondary-font-color);
+  color: var(--btn-main-color);
   border-color: var(--dark-orange-color);
 }

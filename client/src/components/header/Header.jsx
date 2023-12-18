@@ -5,6 +5,9 @@ import { IoSearch } from "react-icons/io5";
 import { IoExitOutline } from "react-icons/io5";
 import { AuthContext } from "../../context/authContext";
 import axios from "axios";
+import { useTheme } from "../../context/ThemeContext";
+import logoLight from "../../assets/img/logoLight.svg";
+import logoDark from "../../assets/img/logoDark.svg";
 
 const serverImagePath =
   import.meta.env.VITE_REACT_APP_API_URL + "/public/profilePic/";
@@ -12,6 +15,7 @@ const serverImagePath =
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const Header = () => {
+  console.log("header render");
   const {
     header,
     title_container,
@@ -32,6 +36,10 @@ const Header = () => {
   const searchRef = useRef(null);
 
   const { logout } = useContext(AuthContext);
+
+  // Can change color of theme whith theme variable that is now available because of ThemeContext
+  const { theme, toggleTheme } = useTheme();
+  console.log(theme);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -93,7 +101,7 @@ const Header = () => {
 
   const handleLogoClick = () => {
     // Clear search results when clicking on the logo
-    navigate('/');
+    navigate("/");
     setSearchQuery("");
     setSearchResults([]);
   };
@@ -101,11 +109,11 @@ const Header = () => {
   return (
     <header className={header}>
       <div className={title_container} onClick={handleLogoClick}>
-          <img
-            src="../src/assets/img/logo.svg"
-            alt="Insta Pet Logo"
-            className={logo}
-          />
+        <img
+          src={theme === "light" ? logoLight : logoDark}
+          alt="Insta Pet Logo"
+          className={logo}
+        />
       </div>
       <div className={search_container} ref={searchRef}>
         <form className={search_form}>
