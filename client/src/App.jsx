@@ -15,9 +15,9 @@ import EditProfile from "./pages/EditProfile";
 import Settings from "./pages/Settings";
 import Error404 from "./pages/Error404";
 import ProtectedRoute from "./utils/ProtectedRoute";
-import UserProfile from "./components/userProfile/UserProfile";
+import UserProfile from "./pages/UserProfile";
 
-export default function App() {
+export default function App () {
 
   return (
     <AuthContextProvider>

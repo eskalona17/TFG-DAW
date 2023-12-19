@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import useGetUserProfile from '../../hooks/useGetUserProfile';
-import Loader from '../loader/Loader';
-import Styles from './userProfile.module.css';
-import useUserImage from '../../hooks/useUserImage';
-import Button from '../button/Button';
+import useGetUserProfile from '../hooks/useGetUserProfile';
+import Loader from '../components/loader/Loader';
+import Styles from './pages.module.css';
+import useUserImage from '../hooks/useUserImage';
+import Button from '../components/button/Button';
 import axios from 'axios';
 
 const UserProfile = () => {
@@ -43,7 +43,11 @@ const UserProfile = () => {
   };
 
   if (loading) {
-    return <Loader />
+    return (
+      <main className="main">
+        <Loader />
+      </main>
+    )
   }
 
   if (!user) {
