@@ -15,9 +15,10 @@ import EditProfile from "./pages/EditProfile";
 import Settings from "./pages/Settings";
 import Error404 from "./pages/Error404";
 import ProtectedRoute from "./utils/ProtectedRoute";
-import UserProfile from "./components/userProfile/UserProfile";
+import UserProfile from "./pages/UserProfile";
+import PostPage from "./pages/PostPage";
 
-export default function App() {
+export default function App () {
 
   return (
     <AuthContextProvider>
@@ -36,7 +37,7 @@ export default function App() {
                   <Route path="/editar-perfil" element={<EditProfile />} />
                   <Route path="/ajustes" element={<Settings />} />
                   <Route path="/:username" element={<UserProfile />} />
-                  {/* <Route path='/:username/post/:postId' element={<PostPage />} /> */}
+                  <Route path='/:username/post/:postId' element={<PostPage />} />
                 </Route>
                 <Route path="*" element={<Error404 />} />
               </Route>

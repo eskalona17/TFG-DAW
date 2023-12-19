@@ -8,15 +8,17 @@
   align-items: center; 
   width: 100%;
   box-sizing: border-box;
+  padding: .2rem;
 }
 
 .search_button.active {
-  color: var(--secondary-font-color);
+  color: var(--btn-main-color);
   background-color: var(--orange-color);
+  border-color: var(--orange-color);
 }
 
 .search_button.active svg {
-  fill: var(--secondary-font-color)
+  fill: var(--btn-main-color);
 }
 
 button {
