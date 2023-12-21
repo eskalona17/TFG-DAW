@@ -1,6 +1,7 @@
-import { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../context/authContext";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import Loader from "../components/loader/Loader"; // Ajusta la ruta según tu estructura de archivos
+import { AuthContext } from "../context/authContext";
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const usePosts = (activeFilter) => {
@@ -8,19 +9,30 @@ const usePosts = (activeFilter) => {
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(true); // Nuevo estado
+  const [page, setPage] = useState(1);
 
   const getUserById = async (userId) => {
     try {
       const res = await fetch(`${apiUrl}/api/users/user-info/${userId}`, {
         credentials: "include",
         headers: {
-          Authorization: `Bearer ${currentUser?.token}`, 
+          Authorization: `Bearer ${currentUser?.token}`,
         },
       });
       const userData = await res.json();
       return userData;
     } catch (error) {
-      console.error('Error fetching user:', error.message);
+      console.error("Error fetching user:", error.message);
+    }
+  };
+
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop ===
+      document.documentElement.offsetHeight
+    ) {
+      setPage((prevPage) => prevPage + 1);
     }
   };
 
@@ -29,13 +41,14 @@ const usePosts = (activeFilter) => {
       try {
         let endpoint = "/api/posts/feed";
         const params = {};
-        console.log("Active Filter changed:", activeFilter);
-        if(activeFilter && activeFilter != "Todo"){
-          
+        if (activeFilter && activeFilter !== "Todo") {
           let filtro = activeFilter.toLowerCase();
-          console.log(filtro);
           params.profileType = filtro;
         }
+
+        params.page = page;
+        params.limit = 5;
+
         const response = await axios.get(`${apiUrl}${endpoint}`, {
           withCredentials: true,
           headers: {
@@ -43,8 +56,8 @@ const usePosts = (activeFilter) => {
           },
           params,
         });
+
         const data = response.data;
-        console.log(response);
 
         if (data.error) {
           console.error(data.error);
@@ -56,22 +69,36 @@ const usePosts = (activeFilter) => {
               return {
                 ...post,
                 authorData,
+                key: post._id
               };
             })
           );
-          setPosts(updatedPosts);
+          // Actualizar el estado de los posts agregando los nuevos posts
+          setPosts((prevPosts) => [...prevPosts, ...updatedPosts]);
         }
       } catch (error) {
         console.error("Error:", error.message);
       } finally {
+        if (initialLoading) {
+          // Desactivar el loader de carga inicial
+          setInitialLoading(false);
+        }
+        // Desactivar el loader cuando se completa la carga de posts
         setLoading(false);
       }
     };
 
     fetchPosts();
-  }, [currentUser?.token, activeFilter]);
+  }, [currentUser?.token, activeFilter, page, initialLoading]);
 
-  return { loading, posts };
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
+
+  return { loading, posts, initialLoading };
 };
 
 export default usePosts;

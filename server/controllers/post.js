@@ -20,30 +20,35 @@ export async function getPost (req, res) {
   }
 }
 
-export async function getFeedPosts (req, res) {
-  const userId = req.user._id
-  const profileType = req.body.profileType || req.query.profileType
+export async function getFeedPosts(req, res) {
+  const userId = req.user._id;
+  const profileType = req.body.profileType || req.query.profileType;
+  const { page, limit } = req.query;
 
   try {
-    const user = await User.findById(userId)
+    const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ error: 'User not found' })
+      return res.status(404).json({ error: 'User not found' });
     }
 
-    let following = user.following
+    let following = user.following;
 
     if (profileType) {
-      following = await User.find({ _id: { $in: following }, profile: profileType }).select('_id')
+      following = await User.find({ _id: { $in: following }, profile: profileType }).select('_id');
     }
 
-    const feedPosts = await Post.find({ author: { $in: following } }).sort({ createdAt: -1 })
+    const feedPosts = await Post.find({ author: { $in: following } })
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
 
-    res.status(200).json(feedPosts)
+    res.status(200).json(feedPosts);
   } catch (error) {
-    console.error('Error:', error.message)
-    res.status(500).json({ error: 'Internal server error' })
+    console.error('Error:', error.message);
+    res.status(500).json({ error: 'Internal server error' });
   }
 }
+
 
 export async function getUserPosts (req, res) {
   const { username } = req.params

@@ -22,7 +22,6 @@ export default function RecoverPassword() {
   const navigate = useNavigate();
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
     try {
       await axios.post(apiUrl + `/api/users/reset-password/${token}`, data);
       alert("contraseña cambiada");
