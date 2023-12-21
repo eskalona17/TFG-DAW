@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import useUserImage from "../../hooks/useUserImage";
 import Styles from "./newPost.module.css";
-import { VscVmRunning, VscLocation, VscBookmark  } from "react-icons/vsc";
+import { VscVmRunning } from "react-icons/vsc";
 import { AuthContext } from "../../context/authContext";
 import Input from "../input/Input";
 import axios from "axios";
@@ -16,101 +16,56 @@ const NewPost = () => {
   });
 
   const { selectedImage } = imageData;
-  
+
   const {
     newPost,
     newPost_container,
     user_img,
-   
     multimedia_Container,
     multimedia_button,
     previewStyle,
   } = Styles;
-  
-  
 
-  const handleMultimediaClick=() => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.newPost ="newPost";
-    input.onchange = (e) => {
-      const file = e.target.files[0];
-  
-      setImageData({
-        selectedImage: file,
-        imagePreview: URL.createObjectURL(file), // Crear la URL de la vista previa
-      });
-    };
-  
-    input.click();
-  };
-  
-  const handleUbicacionClick=() => {
-    console.log("boton Ubicacion");
-  };
-  const handleEtiquetaClick=() => {
-    console.log("boton Etiqueta");
-  };
-  const handleSendClick =  async () => {
+  const handleSendClick = async () => {
 
     try {
-      console.log("currentUser:", currentUser);
-      console.log("newPostContent:", newPostContent);
       const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-      const postData = {
-        author: currentUser._id,
-        content: newPostContent,
+      const formData = new FormData();
+      formData.append('author', currentUser._id);
+      formData.append('content', newPostContent);
 
-      }
-
-      console.log(selectedImage);
       if (selectedImage) {
-
-        postData.media = selectedImage;
+        formData.append('media', selectedImage);
       }
-      console.log(postData);
-     
-      const response = await axios.post(
-        `${apiUrl}/api/posts/create`,
-        postData,
-        {
-          withCredentials: true,
+
+      await axios.post(`${apiUrl}/api/posts/create`, formData, { 
+        headers: { 
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
         }
       );
-
-      console.log("Respuesta del servidor:", response);
-      console.log("Nuevo post creado:", response.data.newPost);
-
-      
-
     } catch (error) {
       console.error("Error al crear el nuevo post:", error.message);
       console.error("Detalles del error:", error.response.data);
     }
     setNewPostContent("");
   }
-  
+
   return (
     <div className={newPost}>
       <div className={newPost_container}>
         <img src={userImage} alt="" className={user_img} />
-        <Input 
-          type="text" 
-          placeholder="¿Qué estás pensando?" 
+        <Input
+          type="text"
+          placeholder="¿Qué estás pensando?"
           onChange={(e) => setNewPostContent(e.target.value)}
           onClick={handleSendClick}
-          newPost="newPost"/>
+          newPost="newPost" />
       </div>
       <div className={multimedia_Container}>
-            <button className={multimedia_button} onClick={handleMultimediaClick}>
-              <VscVmRunning />Multimedia
-            </button>
-            <button className={multimedia_button} onClick={handleUbicacionClick}>
-              <VscLocation/>Ubicación
-            </button>
-            <button className={multimedia_button} onClick={handleEtiquetaClick}>
-              <VscBookmark/>Etiqueta
-            </button>
+        <input type="file" className={multimedia_button} onChange={(e) => setImageData({ selectedImage: e.target.files[0] })}/>
+        <VscVmRunning />
       </div>
       {imageData.selectedImage && (
         <div className={previewStyle}>

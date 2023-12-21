@@ -21,6 +21,7 @@ const Post = ({ activeFilter }) => {
   
   const serverImagePath =
     import.meta.env.VITE_REACT_APP_API_URL + "/public/profilePic";
+  const serverMediaPath = import.meta.env.VITE_REACT_APP_API_URL + '/public/media';
 
     useEffect(() => {
       if (!loading && posts.length > 0) {
@@ -152,7 +153,7 @@ const Post = ({ activeFilter }) => {
   const orange_color = "#ffa07a";
 
   return (
-    <div className={`${post} ${post_container}`}>
+    <div className={post}>
       {loading ? (
         <p>Cargando...</p>
       ) : (
@@ -178,7 +179,7 @@ const Post = ({ activeFilter }) => {
             {/* Multimedia*/}
             {/* {post.media && (
               <div className={multimedia}>
-                <img src={post.media} alt="" className={multimedia_item} />
+                <img src={`${serverMediaPath}/${post.media}`} alt="" className={multimedia_item} />
               </div>
             )} */}
             {/* Likes y comentarios */}

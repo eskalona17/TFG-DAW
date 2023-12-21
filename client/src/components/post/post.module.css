@@ -1,10 +1,8 @@
 .post {
-  grid-area: post;
-  color: var(--primary-font-color);
-  border-radius: 8px;
   display: flex;
-  padding: 16px;
   flex-direction: column;
+  gap: 1rem;
+  color: var(--primary-font-color);
 }
 
 .post_container {
@@ -14,23 +12,20 @@
 }
 
 .post_container_individual {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
+  border-radius: 6px;
+  padding: 1rem;
   background-color: var(--bg-secondary-color);
 
 }
+
 .post_container_user {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-
-
 .user_img {
-  width: 80px;
+  width: 75px;
   object-fit: cover;
   border-radius: 50%;
   aspect-ratio: 1/1;
@@ -42,7 +37,7 @@
 }
 
 .user_name {
-  font-size: 16px;
+  font-size: 1rem;
   margin-bottom: 8px;
 }
 .user_publictime {
