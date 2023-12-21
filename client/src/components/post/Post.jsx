@@ -13,6 +13,7 @@ const Post = ({ activeFilter }) => {
   const [postComments, setPostComments] = useState({});
   const [favoritedPosts, setFavoritedPosts] = useState([]);
   const serverImagePath = import.meta.env.VITE_REACT_APP_API_URL + '/public/profilePic';
+  const serverMediaPath = import.meta.env.VITE_REACT_APP_API_URL + '/public/media';
   
   useEffect(() => {
     
@@ -121,7 +122,7 @@ const Post = ({ activeFilter }) => {
  
 
   return (
-    <div className={`${post} ${post_container}`}>
+    <div className={post}>
       {loading ? (
         <p>Cargando...</p>
       ) : (
@@ -141,7 +142,7 @@ const Post = ({ activeFilter }) => {
             {/* Multimedia*/}
             {post.media && (
               <div className={multimedia}>
-                <img src={post.media} alt="" className={multimedia_item} />
+                <img src={`${serverMediaPath}/${post.media}`} alt="" className={multimedia_item} />
               </div>
             )}
             {/* Likes y comentarios */}
