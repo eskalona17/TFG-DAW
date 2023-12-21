@@ -11,7 +11,7 @@ const FilterButton = ({ filter, activeFilter, handleSearchClick }) => {
       className={`${search_button} ${isActive ? active : ''}`}
       onClick={() => handleSearchClick(filter)}
     >
-      {isActive && <VscListFilter />}
+      {/* {isActive && <VscListFilter />} */}
       {filter}
     </button>
   );

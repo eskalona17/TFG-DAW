@@ -5,6 +5,13 @@ import { AuthContext } from "../context/authContext";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useTheme } from "../context/ThemeContext";
+import { IoSunny } from "react-icons/io5";
+import { FaMoon } from "react-icons/fa6";
+
+// colors for icons
+const orange_color = "#ffa07a";
+const gray_color = "#6f81a5"
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -12,22 +19,27 @@ const Settings = () => {
   const navigate = useNavigate();
   const { logout, currentUser } = useContext(AuthContext);
 
+  const { theme, toggleTheme } = useTheme();
+
   const {
     settings_container,
     settings_info,
     modal,
     modal_buttons,
-    toggle_icon,
-    toggle_container
+    checkbox,
+    checkbox_label,
+    ball,
   } = Styles;
 
-  // show modal
+  // states for modals
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState(null);
 
   const ModalSession = ({ onClose }) => (
     <div className={modal}>
-      <span><strong>¿Estás seguro de que deseas cerrar la sesión?</strong></span>
+      <span>
+        <strong>¿Estás seguro de que deseas cerrar la sesión?</strong>
+      </span>
       <small>Esta opción no se puede deshacer</small>
       <div className={modal_buttons}>
         <Button onClick={handleLogout} text="Aceptar" variant="secondary" />
@@ -38,31 +50,20 @@ const Settings = () => {
 
   const ModalProfile = ({ onClose }) => (
     <div className={modal}>
-      <span><strong>¿Estás seguro de que deseas eliminar el perfil?</strong></span>
-      <small>Esta opción no se puede deshacer y perderás todos tus datos almacenados</small>
+      <span>
+        <strong>¿Estás seguro de que deseas eliminar el perfil?</strong>
+      </span>
+      <small>
+        Esta opción no se puede deshacer y perderás todos tus datos almacenados
+      </small>
       <div className={modal_buttons}>
-        <Button onClick={deteleUser} text="Eliminar" variant="secondary" />
+        <Button onClick={deleteUser} text="Eliminar" variant="secondary" />
         <Button onClick={onClose} text="Volver" variant="primary" />
       </div>
     </div>
   );
 
-  const ToggleButton = ({ toggled}) => {
-    const [isToggled, setIsToggled] = useState(toggled);
-
-    const callback = () => {
-      setIsToggled(!isToggled);
-      onclick(!isToggled);
-    };
-    return (
-      <div className={toggle_container}>
-        <input type="checkbox" defaultChecked={isToggled} onClick={callback} />
-        <span className={toggle_icon}></span>
-      </div>
-    );
-  };
-
-  const deteleUser = async () => {
+  const deleteUser = async () => {
     try {
       const response = await axios.delete(
         apiUrl + "/api/users/delete/" + currentUser._id,
@@ -70,7 +71,6 @@ const Settings = () => {
           withCredentials: true,
         }
       );
-      // Verifica el estado de la respuesta y actualiza según sea necesario
       if (response.status === 200) {
         alert("Usuario eliminado exitosamente");
         navigate("/login");
@@ -84,12 +84,12 @@ const Settings = () => {
     }
   };
 
-  // when the user clicks on accept
   const handleLogout = async () => {
     await logout();
     navigate("/login");
   };
 
+  // there are two type of modals, session and profile
   const handleOpenModal = (type) => {
     setShowModal(true);
     setModalType(type);
@@ -99,6 +99,24 @@ const Settings = () => {
     setShowModal(false);
     setModalType(null);
   };
+
+  // component for toggle button
+  const ToggleButton = () => (
+    <>
+      <input
+        type="checkbox"
+        className={checkbox}
+        id="themeToggle"
+        onChange={toggleTheme}
+        checked={theme === "dark"}
+      />
+      <label htmlFor="themeToggle" className={checkbox_label}>
+        {theme === "light" ? <FaMoon /> : <IoSunny color={orange_color}/>}
+        {<FaMoon color={gray_color} />}
+        <span className={ball}></span>
+      </label>
+    </>
+  );
 
   return (
     <main className="main">
@@ -110,7 +128,7 @@ const Settings = () => {
           </p>
           <span>Activa el modo oscuro en toda la web</span>
         </div>
-        {<ToggleButton />}
+        {<ToggleButton toggled={theme === "dark"} onToggle={toggleTheme} />}
       </div>
       <div className={settings_container}>
         <div className={settings_info}>

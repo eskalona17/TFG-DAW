@@ -31,6 +31,7 @@ export async function getFeedPosts (req, res) {
     }
 
     let following = user.following
+    following.push(userId)
 
     if (profileType) {
       following = await User.find({ _id: { $in: following }, profile: profileType }).select('_id')

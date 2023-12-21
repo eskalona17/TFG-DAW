@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthContextProvider } from "./context/authContext";
 import { SocketContextProvider } from "./context/SocketContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import "./variables.css";
 import "./index.css";
 import Register from "./pages/Register";
@@ -14,30 +15,34 @@ import EditProfile from "./pages/EditProfile";
 import Settings from "./pages/Settings";
 import Error404 from "./pages/Error404";
 import ProtectedRoute from "./utils/ProtectedRoute";
-import UserProfile from "./components/userProfile/UserProfile";
+import UserProfile from "./pages/UserProfile";
+import PostPage from "./pages/PostPage";
 
 export default function App () {
+
   return (
     <AuthContextProvider>
       <BrowserRouter>
         <SocketContextProvider>
-          <Routes>
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/reset-password/:token" element={<GetPassword />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<Home />} />
-                <Route path='/explora' element={<Explore />} />
-                <Route path='/mensajes' element={<Messages />} />
-                <Route path='/editar-perfil' element={<EditProfile />} />
-                <Route path='/ajustes' element={<Settings />} />
-                <Route path='/:username' element={<UserProfile />} />
-                {/* <Route path='/:username/post/:postId' element={<PostPage />} /> */}
+          <ThemeProvider>
+            <Routes>
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/reset-password/:token" element={<GetPassword />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<Home />} />
+                  <Route path="/explora" element={<Explore />} />
+                  <Route path="/mensajes" element={<Messages />} />
+                  <Route path="/editar-perfil" element={<EditProfile />} />
+                  <Route path="/ajustes" element={<Settings />} />
+                  <Route path="/:username" element={<UserProfile />} />
+                  <Route path='/:username/post/:postId' element={<PostPage />} />
+                </Route>
+                <Route path="*" element={<Error404 />} />
               </Route>
-              <Route path="*" element={<Error404 />} />
-            </Route>
-          </Routes>
+            </Routes>
+          </ThemeProvider>
         </SocketContextProvider>
       </BrowserRouter>
     </AuthContextProvider>
