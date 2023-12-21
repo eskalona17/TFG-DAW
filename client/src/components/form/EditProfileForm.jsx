@@ -78,7 +78,7 @@ export default function Formulario() {
       if(selectedImage){
 
         const formDataWithImage = new FormData()
-        Object.entries(commonData).forEach(([key, value]) => formDataWithImage.append(key, value))
+        Object.entries( ).forEach(([key, value]) => formDataWithImage.append(key, value))
         formDataWithImage.append('profilePic', selectedImage)
         formDataWithImage.append('followers', currentUser.followers)
         formDataWithImage.append('following', currentUser.following)

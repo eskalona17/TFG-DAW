@@ -132,7 +132,7 @@ const Post = ({ activeFilter }) => {
               <img src={ `${serverImagePath}/${post.authorData.profilePic}`} alt="" className={user_img} />
               <div className={user_info}>
                 <p className={user_name}>{post.authorData.username}</p>
-                {/* Adaptar según la fecha real en tu objeto post */}
+                
                 <p className={user_publictime}>{formatTimestamp(post.createdAt)}</p>
               </div>
             </div>
