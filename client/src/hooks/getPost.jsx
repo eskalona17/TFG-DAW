@@ -1,10 +1,13 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/authContext";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const usePosts = (activeFilter) => {
   const { currentUser } = useContext(AuthContext);
+
+  const location = useLocation(); // Obtiene la ubicación actual
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,6 +32,14 @@ const usePosts = (activeFilter) => {
       try {
         let endpoint = "/api/posts/feed";
         const params = {};
+        const segments = location.pathname.split("/");
+        const usernameFromPath = segments[segments.length - 1];
+        console.log(segments)
+        console.log(usernameFromPath)
+        // Verificar si estás en una página de perfil
+        if (usernameFromPath) {
+          endpoint = `/api/posts/user/${usernameFromPath}`;
+        } 
         console.log("Active Filter changed:", activeFilter);
         if(activeFilter && activeFilter != "Todo"){
           

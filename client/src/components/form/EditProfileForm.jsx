@@ -20,6 +20,8 @@ const {
   button,
   selectorContainer,
   perfilButton,
+  checkboxesContainer,
+  checkboxOption,
   bottomButtonContainer,
   imageContainer,
   inputConfirmContainer,
@@ -35,7 +37,7 @@ export default function Formulario() {
     selectedImage: null,
     imagePreview: null,
   })
-  
+  const [selectedLabels, setSelectedLabels] = useState([]);
   const { selectedImage } = imageData
   const {userImage: profileImage} = useUserImage(currentUser)
   
@@ -55,6 +57,7 @@ export default function Formulario() {
       city: currentUser?.city,
       zipCode: currentUser?.zipCode,
       country: currentUser?.country,
+      labels: currentUser?.labels || [],
     }
   })
 
@@ -141,6 +144,18 @@ export default function Formulario() {
 
   const handleCambiarprofile = (selectedprofile) => {
     setProfile(selectedprofile)
+  }
+
+  const handleCheckboxChange = (animal) => {
+    // Maneja el cambio en las opciones seleccionadas
+    const isSelected = selectedLabels.includes(animal);
+    if (isSelected) {
+      setSelectedLabels((prevSelected) =>
+        prevSelected.filter((selected) => selected !== animal)
+      );
+    } else {
+      setSelectedLabels((prevSelected) => [...prevSelected, animal]);
+    }
   }
 
   return (
@@ -408,7 +423,54 @@ export default function Formulario() {
             {errors.country && <span>{errors.country.message}</span>}
           </div>
         </>
-      )}
+        )}
+      <div className={inputContainer}>
+        <div className={checkboxesContainer}>
+          <label className={label}>Etiquetas:</label>
+        
+          <div className={checkboxOption}>
+            <input
+              type="checkbox"
+              {...register("labels")}
+              value="gatos"
+              checked={selectedLabels.includes("gatos")}
+              onChange={() => handleCheckboxChange("gatos")}
+            />
+            <label>Gatos</label>
+          </div>
+          <div className={checkboxOption}>
+            <input
+              type="checkbox"
+              {...register("labels")}
+              value="perros"
+              checked={selectedLabels.includes("perros")}
+              onChange={() => handleCheckboxChange("perros")}
+            />
+            <label>Perros</label>
+          </div>
+          <div className={checkboxOption}>
+            <input
+              type="checkbox"
+              {...register("labels")}
+              value="roedores"
+              checked={selectedLabels.includes("roedores")}
+              onChange={() => handleCheckboxChange("roedores")}
+            />
+            <label>Roedores</label>
+          </div>
+          <div className={checkboxOption}>
+            <input
+              type="checkbox"
+              {...register("labels")}
+              value="reptiles"
+              checked={selectedLabels.includes("reptiles")}
+              onChange={() => handleCheckboxChange("reptiles")}
+            />
+            <label>Reptiles</label>
+          </div>
+        </div>
+
+      </div>
       <div className={bottomButtonContainer}>
         <Button
           text="Guardar"
