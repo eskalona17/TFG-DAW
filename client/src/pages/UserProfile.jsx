@@ -5,6 +5,7 @@ import Styles from './pages.module.css';
 import useUserImage from '../hooks/useUserImage';
 import Button from '../components/button/Button';
 import axios from 'axios';
+import Post from '../components/post/Post';
 
 const UserProfile = () => {
   const { loading, user } = useGetUserProfile();
@@ -108,7 +109,9 @@ const UserProfile = () => {
         </button>
       </div>
       <div className={Styles.user_posts}>
-        {/* {postType === 'all' ? (
+      {
+           <Post posts={posts} />
+        /* {postType === 'all' ? (
           <Post posts={user.posts} />
         ) : (
           <Post posts={user.posts.filter(post => post.hasMultimedia)} />

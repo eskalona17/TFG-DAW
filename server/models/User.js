@@ -46,6 +46,10 @@ const UserSchema = new mongoose.Schema(
       type: [String],
       default: []
     },
+    labels: {
+      type: [String],
+      default: []
+    },
     address: {
       street: {
         type: String,
