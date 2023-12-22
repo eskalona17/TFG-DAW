@@ -1,8 +1,6 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import Loader from "../components/loader/Loader"; // Ajusta la ruta según tu estructura de archivos
 import { AuthContext } from "../context/authContext";
-import axios from "axios";
 import { useLocation } from "react-router-dom";
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
