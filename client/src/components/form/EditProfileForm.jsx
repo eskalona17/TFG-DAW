@@ -57,7 +57,7 @@ export default function Formulario() {
       city: currentUser?.city,
       zipCode: currentUser?.zipCode,
       country: currentUser?.country,
-      labels: currentUser?.labels || [],
+      labels: currentUser?.labels,
     }
   })
 
@@ -75,13 +75,14 @@ export default function Formulario() {
         city: data.city,
         zipCode: data.zipCode,
         country: data.country,
+        labels: selectedLabels,
       }
 
       let response = null
       if(selectedImage){
 
         const formDataWithImage = new FormData()
-        Object.entries( ).forEach(([key, value]) => formDataWithImage.append(key, value))
+        Object.entries(data).forEach(([key, value]) => formDataWithImage.append(key, value))
         formDataWithImage.append('profilePic', selectedImage)
         formDataWithImage.append('followers', currentUser.followers)
         formDataWithImage.append('following', currentUser.following)
@@ -147,16 +148,18 @@ export default function Formulario() {
   }
 
   const handleCheckboxChange = (animal) => {
-    // Maneja el cambio en las opciones seleccionadas
-    const isSelected = selectedLabels.includes(animal);
-    if (isSelected) {
-      setSelectedLabels((prevSelected) =>
-        prevSelected.filter((selected) => selected !== animal)
-      );
-    } else {
-      setSelectedLabels((prevSelected) => [...prevSelected, animal]);
-    }
-  }
+    setSelectedLabels((prevSelected) => {
+      const isSelected = prevSelected.includes(animal);
+      console.log(`Before: ${prevSelected}`);
+      
+      const updatedSelectedLabels = isSelected
+        ? prevSelected.filter((selected) => selected !== animal)
+        : [...prevSelected, animal];
+  
+      console.log(`After: ${updatedSelectedLabels}`);
+      return updatedSelectedLabels;
+    });
+  };
 
   return (
     <form onSubmit={onSubmit} className={form}>
@@ -433,7 +436,7 @@ export default function Formulario() {
               type="checkbox"
               {...register("labels")}
               value="gatos"
-              checked={selectedLabels.includes("gatos")}
+              defaultChecked={currentUser?.labels?.includes("gatos")}
               onChange={() => handleCheckboxChange("gatos")}
             />
             <label>Gatos</label>
@@ -443,7 +446,7 @@ export default function Formulario() {
               type="checkbox"
               {...register("labels")}
               value="perros"
-              checked={selectedLabels.includes("perros")}
+              defaultChecked={currentUser?.labels?.includes("perros")}
               onChange={() => handleCheckboxChange("perros")}
             />
             <label>Perros</label>
@@ -453,7 +456,7 @@ export default function Formulario() {
               type="checkbox"
               {...register("labels")}
               value="roedores"
-              checked={selectedLabels.includes("roedores")}
+              defaultChecked={currentUser?.labels?.includes("roedores")}
               onChange={() => handleCheckboxChange("roedores")}
             />
             <label>Roedores</label>
@@ -463,7 +466,7 @@ export default function Formulario() {
               type="checkbox"
               {...register("labels")}
               value="reptiles"
-              checked={selectedLabels.includes("reptiles")}
+              defaultChecked={currentUser?.labels?.includes("reptiles")}
               onChange={() => handleCheckboxChange("reptiles")}
             />
             <label>Reptiles</label>

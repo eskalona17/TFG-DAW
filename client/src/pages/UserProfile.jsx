@@ -7,6 +7,7 @@ import Button from '../components/button/Button';
 import axios from 'axios';
 import Post from '../components/post/Post';
 
+
 const UserProfile = () => {
   const { loading, user } = useGetUserProfile();
   const { userImage } = useUserImage(user);

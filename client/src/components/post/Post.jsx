@@ -96,7 +96,7 @@ const Post = ({ activeFilter }) => {
     user_name,
     user_info,
     user_publictime,
-    post_container,
+    
     post_container_individual,
     post_content,
     multimedia,
