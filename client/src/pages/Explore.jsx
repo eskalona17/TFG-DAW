@@ -4,7 +4,7 @@ import Button from '../components/button/Button';
 import Loader from '../components/loader/Loader';
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { AuthContext } from "../context/authContext";
+import { AuthContext } from "../context/AuthContext";
 
 const Explore = () => {
   const [users, setUsers] = useState([]);

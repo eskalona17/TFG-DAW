@@ -26,6 +26,10 @@
   background-color: var(--bg-main-color);
 }
 
+.newComment {
+  background-color: var(--bg-main-color);
+}
+
 .button {
   border: none;
   background-color: transparent;

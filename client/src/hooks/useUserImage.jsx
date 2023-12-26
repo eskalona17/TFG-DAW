@@ -45,7 +45,7 @@ const useUserImage = (user, width = '100') => {
     setUserImage(getUserImage());
   }, [serverImagePath, user, width]);
 
-  return { userImage };
+  return { userImage, setUserImage };
 };
 
 export default useUserImage;

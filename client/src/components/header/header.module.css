@@ -6,6 +6,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 5rem;
 }
 
 .title_container {
@@ -76,10 +77,18 @@
   background-color: var(--bg-secondary-color);
 }
 
+.search_results ul {
+  padding: 1rem;
+  margin: 0;
+}
+
 .search_results li {
-  margin-inline: 1rem;
   display: flex;
   align-items: center;
+}
+
+.search_results ul:hover {
+  background-color: var(--bg-main-color);
 }
 
 .search_results img {

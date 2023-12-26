@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import Button from "../components/button/Button";
 import Styles from "./pages.module.css";
-import { AuthContext } from "../context/authContext";
+import { AuthContext } from "../context/AuthContext";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -111,7 +111,7 @@ const Settings = () => {
         checked={theme === "dark"}
       />
       <label htmlFor="themeToggle" className={checkbox_label}>
-        {theme === "light" ? <FaMoon /> : <IoSunny color={orange_color}/>}
+        {theme === "light" ? <FaMoon /> : <IoSunny color={orange_color} />}
         {<FaMoon color={gray_color} />}
         <span className={ball}></span>
       </label>

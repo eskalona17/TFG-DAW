@@ -37,7 +37,7 @@ export async function getFeedPosts (req, res) {
       following = await User.find({ _id: { $in: following }, profile: profileType }).select('_id')
     }
 
-    const feedPosts = await Post.find({ author: { $in: following } }).sort({ createdAt: -1 })
+    const feedPosts = await Post.find({ author: { $in: following } }).populate('author').populate('replies.user').sort({ createdAt: -1 })
 
     res.status(200).json(feedPosts)
   } catch (error) {
@@ -64,12 +64,12 @@ export async function getUserPosts (req, res) {
 }
 
 export async function newPost (req, res) {
-  const { author, content } = req.body
-  const userId = req.user._id
+  const { content } = req.body
+  const author = req.user._id
 
   try {
-    if (!author || !content) {
-      return res.status(400).json({ error: 'Author and content are required' })
+    if (!author) {
+      return res.status(400).json({ error: 'Author is required' })
     }
 
     const user = await User.findById(author)
@@ -78,7 +78,7 @@ export async function newPost (req, res) {
       return res.status(404).json({ error: 'User not found' })
     }
 
-    if (user._id.toString() !== userId.toString()) {
+    if (user._id.toString() !== author.toString()) {
       return res.status(401).json({ error: 'Unauthorized to create post' })
     }
 
@@ -177,12 +177,19 @@ export async function favUnfavPost (req, res) {
 
     if (userLikedPost) {
       await Post.updateOne({ _id: postId }, { $pull: { favorites: userId } })
-      res.status(200).json({ message: 'Post unfavorited successfully' })
     } else {
       post.favorites.push(userId)
       await post.save()
-      res.status(200).json({ message: 'Post favorited successfully' })
     }
+
+    // Encuentra el post actualizado
+    const updatedPost = await Post.findById(postId)
+
+    // Devuelve el estado de favorito y el recuento de favoritos
+    res.status(200).json({
+      isFavorited: updatedPost.favorites.includes(userId),
+      favoritesCount: updatedPost.favorites.length
+    })
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })
@@ -190,7 +197,7 @@ export async function favUnfavPost (req, res) {
 }
 
 export async function replyToPost (req, res) {
-  const { _id: userId, profilePic: userProfilePic, username } = req.user
+  const user = req.user
   const postId = req.params.id
   const { text } = req.body
 
@@ -200,16 +207,20 @@ export async function replyToPost (req, res) {
     }
 
     const post = await Post.findById(postId)
+
     if (!post) {
       return res.status(404).json({ error: 'Post not found' })
     }
 
-    const reply = { userId, text, userProfilePic, username }
+    const reply = { user, text }
 
     post.replies.push(reply)
+
     await post.save()
 
-    res.status(201).json({ message: 'Reply added successfully', post })
+    const updatedPost = await Post.findById(postId).populate('replies.user')
+
+    res.status(201).json({ message: 'Reply added successfully', post: updatedPost })
   } catch (error) {
     console.error('Error:', error.message)
     res.status(500).json({ error: 'Internal server error' })

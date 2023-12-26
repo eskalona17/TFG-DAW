@@ -1,5 +1,5 @@
-import { useState, useContext} from "react"
-import { AuthContext } from "../../context/authContext"
+import { useState, useContext } from "react"
+import { AuthContext } from "../../context/AuthContext"
 import { useForm } from "react-hook-form"
 import Styles from "./formEditProfile.module.css"
 import Button from "../button/Button"
@@ -28,7 +28,7 @@ const {
   editButton,
 } = Styles
 
-export default function Formulario() {
+export default function Formulario () {
   const navigate = useNavigate()
   const { currentUser, setCurrentUser } = useContext(AuthContext)
   const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false)
@@ -39,8 +39,8 @@ export default function Formulario() {
   })
   const [selectedLabels, setSelectedLabels] = useState([]);
   const { selectedImage } = imageData
-  const {userImage: profileImage} = useUserImage(currentUser)
-  
+  const { userImage: profileImage } = useUserImage(currentUser)
+
   const {
     handleSubmit,
     watch,
@@ -79,35 +79,35 @@ export default function Formulario() {
       }
 
       let response = null
-      if(selectedImage){
+      if (selectedImage) {
 
         const formDataWithImage = new FormData()
         Object.entries(data).forEach(([key, value]) => formDataWithImage.append(key, value))
         formDataWithImage.append('profilePic', selectedImage)
         formDataWithImage.append('followers', currentUser.followers)
         formDataWithImage.append('following', currentUser.following)
-        
-        response = await axios.patch(apiUrl + '/api/users/update/'  + currentUser._id, formDataWithImage, {
+
+        response = await axios.patch(apiUrl + '/api/users/update/' + currentUser._id, formDataWithImage, {
           withCredentials: true,
         })
-      }else{
-         response = await axios.patch(apiUrl + "/api/users/update/" + currentUser._id, {
+      } else {
+        response = await axios.patch(apiUrl + "/api/users/update/" + currentUser._id, {
           ...commonData,
           profile: profile,
           followers: currentUser.followers,
           following: currentUser.following,
-        },{
-          withCredentials:true,
+        }, {
+          withCredentials: true,
         })
       }
-     
+
 
       if (response.status === 200) {
         console.log("Usuario actualizado exitosamente")
         alert("Usuario actualizado exitosamente")
         const updatedUserData = response.data.user
         console.log("Respuesta de la API:", response.data.user)
-        await setCurrentUser(updatedUserData) 
+        await setCurrentUser(updatedUserData)
         navigate("/")
         reset()
       } else {
@@ -127,17 +127,17 @@ export default function Formulario() {
     input.accept = "image/*"
     input.onchange = (e) => {
       const file = e.target.files[0]
-  
+
       setImageData({
         selectedImage: file,
         imagePreview: URL.createObjectURL(file), // Crear la URL de la vista previa
       })
     }
-  
+
     input.click()
   }
 
-  
+
 
   const handleCambiarPassword = () => {
     setMostrarConfirmarPassword(true)
@@ -165,7 +165,7 @@ export default function Formulario() {
     <form onSubmit={onSubmit} className={form}>
       <div className={imageContainer}>
         <img
-          src= {selectedImage ? URL.createObjectURL(selectedImage) : profileImage}
+          src={selectedImage ? URL.createObjectURL(selectedImage) : profileImage}
           alt="User"
           className={userImage}
         />
@@ -263,7 +263,7 @@ export default function Formulario() {
           className={input}
           placeholder="Contraseña Actual"
           {...register("password", {
-            
+
             minLength: {
               value: 6,
               message: "La contraseña debe tener al menos 6 caracteres",
@@ -274,7 +274,7 @@ export default function Formulario() {
       {mostrarConfirmarPassword && (
         <>
 
-        {/* new password */}
+          {/* new password */}
           <div className={inputContainer}>
             <input
               type="password"
@@ -320,18 +320,16 @@ export default function Formulario() {
         <div className={selectorContainer}>
           <label className={label}>Perfil:</label>
           <div
-            className={`${perfilButton} ${
-              profile === "personal" ? Styles.active : ""
-            }`}
+            className={`${perfilButton} ${profile === "personal" ? Styles.active : ""
+              }`}
             style={{ borderRadius: "0px" }}
             onClick={() => handleCambiarprofile("personal")}
           >
             Personal
           </div>
           <div
-            className={`${perfilButton} ${
-              profile === "profesional" ? Styles.active : ""
-            }`}
+            className={`${perfilButton} ${profile === "profesional" ? Styles.active : ""
+              }`}
             style={{ borderRadius: "0px 4px 4px 0px", borderLeft: 0 }}
             onClick={() => handleCambiarprofile("profesional")}
           >
