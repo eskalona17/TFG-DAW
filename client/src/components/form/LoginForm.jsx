@@ -81,7 +81,7 @@ export default function LoginForm () {
       {recoverPassword ? (
         <>
           <h3>Introduce tu email</h3>
-          <form onSubmit={onSubmitForgotPassword}>
+          <form>
             {/* Email */}
             <div className={input_container}>
               <input
@@ -105,6 +105,7 @@ export default function LoginForm () {
             </div>
             <Button
               text="Enviar"
+              onClick={onSubmitForgotPassword}
               className={button}
               type="submit"
               variant="primary-large"
@@ -120,7 +121,7 @@ export default function LoginForm () {
       ) : (
         <>
           <h3>LOGIN</h3>
-          <form onSubmit={onSubmitLogin}>
+          <form>
             {/* username */}
             <div className={input_container}>
               <input
@@ -180,6 +181,7 @@ export default function LoginForm () {
               text="Entrar"
               className={button}
               type="submit"
+              onClick={onSubmitLogin}
               variant="primary-large"
             />
           </form>
