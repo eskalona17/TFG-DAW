@@ -10,6 +10,7 @@ const Explore = () => {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [newLoading, setNewLoading] = useState(false);
   const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
@@ -29,7 +30,7 @@ const Explore = () => {
   }, []);
 
   const loadMoreUsers = () => {
-    setLoading(true);
+    setNewLoading(true);
     axios.get(`${apiUrl}/api/users/suggested-users?page=${page + 1}&limit=5`, {
       withCredentials: true
     })
@@ -42,12 +43,15 @@ const Explore = () => {
         const newUsers = response.data.filter(newUser => !users.some(user => user._id === newUser._id));
         setUsers(prevUsers => [...prevUsers, ...newUsers]);
         setPage(page + 1);
-        setLoading(false);
+        setNewLoading(false);
       })
       .catch(error => {
         console.error(error);
+      })
+      .finally(() => {
         setLoading(false);
-      });
+        setNewLoading(false);
+      })
   };
 
   return (
@@ -59,6 +63,7 @@ const Explore = () => {
           {users.map(user => (
             <SuggestedUser key={user._id} user={user} version='full' />
           ))}
+          {newLoading && <Loader />}
           <Button
             text="Ver más"
             onClick={loadMoreUsers}
