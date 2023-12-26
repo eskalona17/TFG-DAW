@@ -214,7 +214,11 @@
 
 /* styles for Post */
 
-.post_container {
+
+
+
+
+._user_posts {
   background-color: var(--bg-secondary-color);
   color: var(--primary-font-color);
   border-radius: 6px;

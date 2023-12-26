@@ -20,6 +20,8 @@ const {
   button,
   selectorContainer,
   perfilButton,
+  checkboxesContainer,
+  checkboxOption,
   bottomButtonContainer,
   imageContainer,
   inputConfirmContainer,
@@ -35,7 +37,7 @@ export default function Formulario() {
     selectedImage: null,
     imagePreview: null,
   })
-  
+  const [selectedLabels, setSelectedLabels] = useState([]);
   const { selectedImage } = imageData
   const {userImage: profileImage} = useUserImage(currentUser)
   
@@ -55,6 +57,7 @@ export default function Formulario() {
       city: currentUser?.city,
       zipCode: currentUser?.zipCode,
       country: currentUser?.country,
+      labels: currentUser?.labels,
     }
   })
 
@@ -72,13 +75,14 @@ export default function Formulario() {
         city: data.city,
         zipCode: data.zipCode,
         country: data.country,
+        labels: selectedLabels,
       }
 
       let response = null
       if(selectedImage){
 
         const formDataWithImage = new FormData()
-        Object.entries(commonData).forEach(([key, value]) => formDataWithImage.append(key, value))
+        Object.entries(data).forEach(([key, value]) => formDataWithImage.append(key, value))
         formDataWithImage.append('profilePic', selectedImage)
         formDataWithImage.append('followers', currentUser.followers)
         formDataWithImage.append('following', currentUser.following)
@@ -142,6 +146,20 @@ export default function Formulario() {
   const handleCambiarprofile = (selectedprofile) => {
     setProfile(selectedprofile)
   }
+
+  const handleCheckboxChange = (animal) => {
+    setSelectedLabels((prevSelected) => {
+      const isSelected = prevSelected.includes(animal);
+      console.log(`Before: ${prevSelected}`);
+      
+      const updatedSelectedLabels = isSelected
+        ? prevSelected.filter((selected) => selected !== animal)
+        : [...prevSelected, animal];
+  
+      console.log(`After: ${updatedSelectedLabels}`);
+      return updatedSelectedLabels;
+    });
+  };
 
   return (
     <form onSubmit={onSubmit} className={form}>
@@ -408,7 +426,54 @@ export default function Formulario() {
             {errors.country && <span>{errors.country.message}</span>}
           </div>
         </>
-      )}
+        )}
+      <div className={inputContainer}>
+        <div className={checkboxesContainer}>
+          <label className={label}>Etiquetas:</label>
+        
+          <div className={checkboxOption}>
+            <input
+              type="checkbox"
+              {...register("labels")}
+              value="gatos"
+              defaultChecked={currentUser?.labels?.includes("gatos")}
+              onChange={() => handleCheckboxChange("gatos")}
+            />
+            <label>Gatos</label>
+          </div>
+          <div className={checkboxOption}>
+            <input
+              type="checkbox"
+              {...register("labels")}
+              value="perros"
+              defaultChecked={currentUser?.labels?.includes("perros")}
+              onChange={() => handleCheckboxChange("perros")}
+            />
+            <label>Perros</label>
+          </div>
+          <div className={checkboxOption}>
+            <input
+              type="checkbox"
+              {...register("labels")}
+              value="roedores"
+              defaultChecked={currentUser?.labels?.includes("roedores")}
+              onChange={() => handleCheckboxChange("roedores")}
+            />
+            <label>Roedores</label>
+          </div>
+          <div className={checkboxOption}>
+            <input
+              type="checkbox"
+              {...register("labels")}
+              value="reptiles"
+              defaultChecked={currentUser?.labels?.includes("reptiles")}
+              onChange={() => handleCheckboxChange("reptiles")}
+            />
+            <label>Reptiles</label>
+          </div>
+        </div>
+
+      </div>
       <div className={bottomButtonContainer}>
         <Button
           text="Guardar"

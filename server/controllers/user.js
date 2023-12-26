@@ -268,7 +268,8 @@ export async function updateProfile (req, res) {
     newPassword,
     confirmNewPassword,
     profile,
-    address
+    address,
+    labels
   } = req.body
 
   try {
@@ -340,7 +341,7 @@ export async function updateProfile (req, res) {
         user.email = email ?? user.email
         user.profile = profile ?? user.profile
         user.address = address ?? user.address
-
+        user.labels = labels ?? user.labels
         user = await user.save()
 
         res.status(200).json({
