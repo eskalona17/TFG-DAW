@@ -7,7 +7,7 @@ export async function getPost (req, res) {
   const { id } = req.params
 
   try {
-    const post = await Post.findById(id)
+    const post = await Post.findById(id).populate('author').populate('replies.user')
 
     if (!post) {
       return res.status(404).json({ error: 'Post not found' })
