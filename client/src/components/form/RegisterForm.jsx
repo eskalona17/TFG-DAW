@@ -292,6 +292,8 @@ export default function Form() {
                 {/* pais */}
                 <div className={input_container}>
                   <input
+                    readOnly
+                    value="España"
                     type="text"
                     label="pais"
                     name="pais"

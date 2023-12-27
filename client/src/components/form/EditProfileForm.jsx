@@ -434,6 +434,7 @@ export default function Formulario() {
           {/* country */}
           <div className={inputContainer}>
             <input
+              readOnly
               type="text"
               name="pais"
               className={input}
@@ -444,7 +445,8 @@ export default function Formulario() {
                   message: "El pais es requerido",
                 },
               })}
-              defaultValue={currentUser ? currentUser.country : ""}
+              defaultValue={currentUser ? currentUser.country : "España"}
+              value="España"
             />
           </div>
           <div className={errors.country ? errors_display : ""}>
