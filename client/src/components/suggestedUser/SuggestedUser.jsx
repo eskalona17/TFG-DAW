@@ -14,7 +14,7 @@ const SuggestedUser = ({ user, version }) => {
   const navigate = useNavigate();
 
   const isFollowing = currentUser.following.includes(_id);
-  const buttonText = isFollowing ? 'Dejar de seguir' : 'Seguir';
+  const buttonText = isFollowing ? 'No seguir' : 'Seguir';
   const followBtnVariant = version === 'full'
     ? (isFollowing ? 'secondary' : 'primary')
     : (isFollowing ? 'secondary-small' : 'primary-small');

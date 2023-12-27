@@ -8,10 +8,11 @@ import axios from "axios";
 import { useTheme } from "../context/ThemeContext";
 import { IoSunny } from "react-icons/io5";
 import { FaMoon } from "react-icons/fa6";
+import Modal from "../components/modal/Modal"
 
 // colors for icons
 const orange_color = "#ffa07a";
-const gray_color = "#6f81a5"
+const gray_color = "#6f81a5";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -24,8 +25,6 @@ const Settings = () => {
   const {
     settings_container,
     settings_info,
-    modal,
-    modal_buttons,
     checkbox,
     checkbox_label,
     ball,
@@ -34,34 +33,6 @@ const Settings = () => {
   // states for modals
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState(null);
-
-  const ModalSession = ({ onClose }) => (
-    <div className={modal}>
-      <span>
-        <strong>¿Estás seguro de que deseas cerrar la sesión?</strong>
-      </span>
-      <small>Esta opción no se puede deshacer</small>
-      <div className={modal_buttons}>
-        <Button onClick={handleLogout} text="Aceptar" variant="secondary" />
-        <Button onClick={onClose} text="Volver" variant="primary" />
-      </div>
-    </div>
-  );
-
-  const ModalProfile = ({ onClose }) => (
-    <div className={modal}>
-      <span>
-        <strong>¿Estás seguro de que deseas eliminar el perfil?</strong>
-      </span>
-      <small>
-        Esta opción no se puede deshacer y perderás todos tus datos almacenados
-      </small>
-      <div className={modal_buttons}>
-        <Button onClick={deleteUser} text="Eliminar" variant="secondary" />
-        <Button onClick={onClose} text="Volver" variant="primary" />
-      </div>
-    </div>
-  );
 
   const deleteUser = async () => {
     try {
@@ -98,6 +69,16 @@ const Settings = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setModalType(null);
+  };
+
+  const handleConfirm = async () => {
+    if (modalType === "session") {
+      await handleLogout();
+    } else if (modalType === "profile") {
+      await deleteUser();
+    }
+
+    handleCloseModal();
   };
 
   // component for toggle button
@@ -158,11 +139,20 @@ const Settings = () => {
       </div>
       {showModal &&
         createPortal(
-          modalType === "session" ? (
-            <ModalSession onClose={handleCloseModal} />
-          ) : (
-            <ModalProfile onClose={handleCloseModal} />
-          ),
+          <Modal
+            onClose={handleCloseModal}
+            title={
+              modalType === "session"
+                ? "¿Estás seguro de que deseas cerrar la sesión?"
+                : "¿Estás seguro de que deseas eliminar el perfil?"
+            }
+            description={
+              modalType === "session"
+                ? "Esta opción no se puede deshacer"
+                : "Esta opción no se puede deshacer y perderás todos tus datos almacenados"
+            }
+            onConfirm={handleConfirm}
+          />,
           document.body
         )}
     </main>
