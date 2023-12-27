@@ -6,6 +6,7 @@ import { RiArrowGoBackFill } from "react-icons/ri";
 import Button from "../button/Button";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -19,7 +20,7 @@ const {
   button,
 } = Styles;
 
-export default function LoginForm () {
+export default function LoginForm() {
   const authContext = useContext(AuthContext);
   const {
     handleSubmit,
@@ -31,6 +32,8 @@ export default function LoginForm () {
   const navigate = useNavigate();
 
   const [originalState, setOriginalState] = useState(true); // Nuevo estado para manejar el estado original
+
+  const [showPassword, setShowPassword] = useState(false); // show or hide password
 
   const onSubmitLogin = handleSubmit(async (data) => {
     try {
@@ -49,10 +52,7 @@ export default function LoginForm () {
 
   const onSubmitForgotPassword = handleSubmit(async (data) => {
     try {
-      await axios.post(
-        apiUrl + "/api/users/forget-password",
-        data
-      );
+      await axios.post(apiUrl + "/api/users/forget-password", data);
       alert("Mail enviado");
     } catch (error) {
       console.error(
@@ -153,7 +153,7 @@ export default function LoginForm () {
             {/* password */}
             <div className={input_container}>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 label="Contraseña"
                 name="password"
                 {...register("password", {
@@ -168,6 +168,14 @@ export default function LoginForm () {
                 })}
               />
               <label htmlFor="contraseña">Contraseña</label>
+              <div
+                className={Styles.showPasswordIcon}
+                onMouseDown={() => setShowPassword(true)}
+                onMouseUp={() => setShowPassword(false)}
+                onMouseLeave={() => setShowPassword(false)}
+              >
+                {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+              </div>
             </div>
             <div className={errors_display}>
               {errors.password && <span>{errors.password.message}</span>}
