@@ -16,6 +16,7 @@
   flex-direction: column;
   border-radius: 6px;
   padding: 1rem;
+  color: var(--primary-font-color);
   background-color: var(--bg-secondary-color);
   gap: 1rem;
 }
