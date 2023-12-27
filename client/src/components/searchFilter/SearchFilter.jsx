@@ -4,7 +4,7 @@ import FilterButton from "../FilterButton/FilterButton";
 import { PostContext } from "../../context/PostContext";
 
 const SearchFilter = () => {
-    const { posts, filterPostsByAuthorProfile } = useContext(PostContext);
+    const { filterPostByFilter, handleFilterChange } = useContext(PostContext);
     const {
         searchFilter,
         searchFilter_container
@@ -16,13 +16,16 @@ const SearchFilter = () => {
     const handleSearchClick = (filter) => {
         if (filter !== activeFilter) {
             setActiveFilter(filter);
-          }
-          if (filter === 'Personal') {
-            filterPostsByAuthorProfile('personal');
-          } else if (filter === 'Profesional') {
-            filterPostsByAuthorProfile('profesional');
-          } else {
-            filterPostsByAuthorProfile('all');
+        }
+        if (filter === 'Personal') {
+            filterPostByFilter('personal');
+            handleFilterChange('personal');
+        } else if (filter === 'Profesional') {
+            filterPostByFilter('profesional');
+            handleFilterChange('profesional');
+        } else {
+            filterPostByFilter('all');
+            handleFilterChange('all');
           }
     };
     return (

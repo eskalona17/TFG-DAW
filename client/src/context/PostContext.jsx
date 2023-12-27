@@ -1,47 +1,52 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import axios from "axios";
-import { AuthContext } from "./AuthContext";
-import { useLocation } from "react-router-dom";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+import { AuthContext } from "./AuthContext";
+import axios from "axios";
 
 export const PostContext = createContext();
 
 export const PostContextProvider = ({ children }) => {
   const { currentUser } = useContext(AuthContext);
-  const [posts, setPosts] = useState([]);
-  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [currentFilter, setCurrentFilter] = useState('all');
+  const [feedPosts, setFeedPosts] = useState([]);
+  const [filteredPostsByFilter, setFilteredPostsByFilter] = useState([]);
   const [loading, setLoading] = useState(true);
-  const location = useLocation();
-  const username = location.pathname.split('/')[1];
+  
+  const handleFilterChange = (filter) => {
+    setCurrentFilter(filter);
+  }
 
-  const getPosts = async () => {
+  const getPosts = useCallback(async () => {
     try {
       const response = await axios.get(`${apiUrl}/api/posts/feed`, { withCredentials: true });
-      setPosts(response.data);
-      setFilteredPosts(response.data);
+      setFeedPosts(response.data);
     } catch (error) {
       console.error("Error:", error.message);
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
-  const filterPostsByAuthorProfile = (profile) => {
-    if (profile === 'all') {
-      setFilteredPosts(posts);
+  const filterPostByFilter = useCallback((filter) => {
+    if (filter === 'all') {
+      setFilteredPostsByFilter(feedPosts);
     } else {
-      setFilteredPosts(posts.filter(post => post.author.profile === profile));
+      const filteredPosts = feedPosts.filter(post => post.author.profile === filter);
+      setFilteredPostsByFilter(filteredPosts);
     }
-  };
-
-  const userPosts = posts.filter(post => post.author.username === username);
+  }, [feedPosts]);
 
   useEffect(() => {
     getPosts();
-  }, [currentUser]);
+  }, [currentUser, getPosts]);
+
+  useEffect(() => {
+    filterPostByFilter(currentFilter);
+  }, [currentUser, currentFilter, filterPostByFilter]);
+
 
   return (
-    <PostContext.Provider value={{ filteredPosts, getPosts, setFilteredPosts, filterPostsByAuthorProfile, userPosts, loading }}>
+    <PostContext.Provider value={{ loading, getPosts, feedPosts, filteredPostsByFilter, filterPostByFilter, currentFilter, handleFilterChange }}>
       {children}
     </PostContext.Provider>
   );

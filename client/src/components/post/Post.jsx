@@ -6,36 +6,55 @@ import Loader from "../loader/Loader";
 import PostItem from "../postItem/PostItem";
 
 const Post = () => {
-  const { loading, filteredPosts, userPosts } = useContext(PostContext);
+  const { loading, currentFilter, feedPosts, filteredPostsByFilter } = useContext(PostContext);
 
-  const {
-    post
-  } = Styles;
 
   return (
-    <div className={post}>
+    <div className={Styles.post}>
       {loading ? (
         <Loader />
       ) : (
         <>
-          {
-            filteredPosts.length === 0 || userPosts.length === 0 && (
+        {
+          currentFilter === 'all' ? (
+            feedPosts.length > 0 ? (
+              feedPosts.map((post) => (
+                <PostItem key={post._id} post={post} />
+              ))
+            ) : (
               <section className={Styles.noPosts}>
-                <p>No hay publicaciones, empieza a seguir a otros usuarios para ver sus publicaciones</p>
+                <p>No hay publicaciones</p>
               </section>
             )
-          }
-          {/* {
-            filteredPosts && filteredPosts.map((post) => (
-              <PostItem key={post._id} post={post} />
-            ))
-          } */}
-          {
-            userPosts && userPosts.map((post) => (
-              <PostItem key={post._id} post={post} />
-            ))
-          }
-        </>
+          ) : null
+        }
+        {
+          currentFilter === 'personal' ? (
+            filteredPostsByFilter.length > 0 ? (
+              filteredPostsByFilter.map((post) => (
+                <PostItem key={post._id} post={post} />
+              ))
+            ) : (
+              <section className={Styles.noPosts}>
+                <p>No hay publicaciones con este perfil</p>
+              </section>
+            )
+          ) : null
+        }
+        {
+          currentFilter === 'profesional' ? (
+            filteredPostsByFilter.length > 0 ? (
+              filteredPostsByFilter.map((post) => (
+                <PostItem key={post._id} post={post} />
+              ))
+            ) : (
+              <section className={Styles.noPosts}>
+                <p>No hay publicaciones con este perfil</p>
+              </section>
+            )
+          ) : null
+        }
+      </>
       )}
     </div>
   );

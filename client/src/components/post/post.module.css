@@ -12,6 +12,7 @@
 
 .noPosts p {
   padding: 1rem;
+  margin: 0;
 }
 
 .delete_button {
