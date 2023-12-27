@@ -143,6 +143,7 @@
 }
 
 .modal {
+  color: var(--primary-font-color);
   position: fixed;
   top: 50%;
   left: 50%;

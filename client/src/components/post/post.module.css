@@ -5,6 +5,15 @@
   color: var(--primary-font-color);
 }
 
+.noPosts {
+  background-color: var(--bg-secondary-color);
+  border-radius: 6px;
+}
+
+.noPosts p {
+  padding: 1rem;
+}
+
 .delete_button {
   position: absolute;
   top: 10px;

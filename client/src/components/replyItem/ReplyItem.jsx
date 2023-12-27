@@ -2,7 +2,7 @@ import useUserImage from "../../hooks/useUserImage";
 import Styles from "./replyItem.module.css";
 
 const ReplyItem = ({ reply }) => {
-  const { userImage } = useUserImage(reply.user, "40");
+  const { userImage } = useUserImage(reply.user, "50");
   const {
     comment,
     comment_user_img_container,

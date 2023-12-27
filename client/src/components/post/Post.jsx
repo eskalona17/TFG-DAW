@@ -17,9 +17,20 @@ const Post = () => {
       {loading ? (
         <Loader />
       ) : (
-        filteredPosts.map((post) => (
-          <PostItem key={post._id} post={post} />
-        ))
+        <>
+          {
+            filteredPosts.length === 0 && (
+              <section className={Styles.noPosts}>
+                <p>No hay publicaciones, empieza a seguir a otros usuarios para ver sus publicaciones</p>
+              </section>
+            )
+          }
+          {
+            filteredPosts.map((post) => (
+              <PostItem key={post._id} post={post} />
+            ))
+          }
+        </>
       )}
     </div>
   );
