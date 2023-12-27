@@ -6,10 +6,12 @@ import Styles from "./postItem.module.css";
 import Input from "../input/Input";
 import axios from "axios";
 import ReplyItem from "../replyItem/ReplyItem";
+import LabelProfesional from "../labelProfesional/LabelProfesional";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const PostItem = ({ post }) => {
+  console.log(post);
   const { currentUser } = useContext(AuthContext);
   const { userImage } = useUserImage(post.author, '75');
   const [isFavorited, setIsFavorited] = useState(post.favorites.includes(currentUser._id));
@@ -110,6 +112,10 @@ const PostItem = ({ post }) => {
           {/* Adaptar según la fecha real en tu objeto post */}
           <p className={user_publictime}>{formatTimestamp(post.createdAt)}</p>
         </div>
+        {post.author.profile === 'profesional' 
+          ? <LabelProfesional />
+          : null
+        }
       </div>
       {/* Contenido del post */}
       <p className={post_content}>{post.content}</p>

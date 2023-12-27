@@ -17,6 +17,7 @@
   flex-direction: row;
   align-items: center;
   gap: 1rem;
+  width: 50%;
 }
 
 .user_img {
@@ -34,6 +35,14 @@
 .user_info {
   margin: .5rem 0;
   text-align: start;
+}
+
+.label_profesional{
+  margin-left: 1rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 6px;
+  background-color: var(--light-orange);
+  color: var(--secondary-font-color);
 }
 
 .button_container {

@@ -4,6 +4,7 @@ import Button from "../button/Button";
 import { AuthContext } from "../../context/AuthContext";
 import useUserImage from './../../hooks/useUserImage';
 import { useNavigate } from "react-router-dom";
+import LabelProfesional from "../labelProfesional/LabelProfesional";
 
 const CurrentUser = () => {
   const { currentUser } = useContext(AuthContext);
@@ -32,6 +33,10 @@ const CurrentUser = () => {
             {currentUser ? `@${currentUser.username}` : "@usuario"}
           </p>
         </div>
+        {currentUser.profile === "profesional"
+          ? <LabelProfesional />
+          : null
+        }
       </div>
       <div className={follow_container}>
         <Button

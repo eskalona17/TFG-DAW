@@ -5,6 +5,7 @@ import Styles from "./suggestedUser.module.css";
 import { useNavigate } from 'react-router-dom';
 import Button from "../button/Button";
 import axios from "axios";
+import LabelProfesional from "../labelProfesional/LabelProfesional";
 
 const SuggestedUser = ({ user, version }) => {
   const { currentUser, followUnfollow } = useFollowUnfollow();
@@ -40,7 +41,13 @@ const SuggestedUser = ({ user, version }) => {
         <div className={Styles.user_container} onClick={() => navigate(`/${username}`)}>
           <img src={userImage} alt="" className={Styles.user_img} />
           <div className={Styles.user_info_container}>
-            <p className={Styles.user_info}>{name}</p>
+            <p className={Styles.user_info}>
+              {name}
+              {user.profile === 'profesional'
+                ? <span className={Styles.label_profesional}>pro</span>
+                : null
+              }
+            </p>
             <p className={Styles.user_info}>@{username}</p>
           </div>
         </div>
@@ -62,9 +69,14 @@ const SuggestedUser = ({ user, version }) => {
     return (
       <div className={Styles.user_small}>
         <div className={Styles.user_container_small}>
-          <img src={userImage} alt="" className={Styles.user_img_small} onClick={() => navigate(`/${username}`)}/>
+          <img src={userImage} alt="" className={Styles.user_img_small} onClick={() => navigate(`/${username}`)} />
           <div className={Styles.user_info_container_small}>
-            <p className={Styles.user_info_small} onClick={() => navigate(`/${username}`)}>@{username}</p>
+            <p className={Styles.user_info_small} onClick={() => navigate(`/${username}`)}>@{username}
+            {user.profile === 'profesional'
+                ? <span className={Styles.label_profesional}>pro</span>
+                : null
+              }
+            </p>
             <div className={Styles.button_container_small}>
               <Button
                 text={buttonText}

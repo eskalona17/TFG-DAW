@@ -21,6 +21,7 @@
 }
 
 .post_container_user {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 1rem;
