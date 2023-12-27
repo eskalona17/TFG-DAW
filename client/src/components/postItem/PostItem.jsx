@@ -11,12 +11,12 @@ import { useNavigate } from "react-router-dom";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
-const PostItem = ({ post }) => {
+const PostItem = ({ post, active = false }) => {
   const { currentUser } = useContext(AuthContext);
   const { userImage } = useUserImage(post.author, '75');
   const [isFavorited, setIsFavorited] = useState(post.favorites.includes(currentUser._id));
   const [favoritesCount, setFavoritesCount] = useState(post.favorites.length);
-  const [showComments, setShowComments] = useState(false);
+  const [showComments, setShowComments] = useState(active);
   const [replies, setReplies] = useState(post.replies);
   const [repliesCount, setRepliesCount] = useState(post.replies.length);
   const [comment, setComment] = useState("");
