@@ -54,7 +54,7 @@ export async function getUserPosts (req, res) {
       return res.status(404).json({ error: 'User not found' })
     }
 
-    const posts = await Post.find({ author: user._id }).sort({ createdAt: -1 })
+    const posts = await Post.find({ author: user._id }).populate('author').populate('replies.user').sort({ createdAt: -1 })
 
     res.status(200).json(posts)
   } catch (error) {

@@ -62,10 +62,17 @@
 .settings_info span {
   margin: 1rem;
   color: var(--primary-font-color);
-
 }
 
 /* styles for UserProfile */
+
+.no_user{
+  background-color: var(--bg-secondary-color);
+  color: var(--primary-font-color);
+  border-radius: 6px;
+  margin: 0;
+  padding: 1rem;
+}
 
 .user_profile, .user_posts {
   background-color: var(--bg-secondary-color);
