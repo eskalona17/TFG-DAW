@@ -134,8 +134,8 @@ export default function LoginForm() {
                     message: "Usuario o email es requerido",
                   },
                   minLength: {
-                    value: 2,
-                    message: "Usuario o email tiene que tener dos caracteres",
+                    value: 3,
+                    message: "Usuario o email tiene que tener tres caracteres",
                   },
                   maxLength: {
                     value: 20,
@@ -165,6 +165,10 @@ export default function LoginForm() {
                     value: 6,
                     message: "La contraseña debe tener al menos 6 caracteres",
                   },
+                  maxLength: {
+                    value: 10,
+                    message: "La contraseña no puede tener más de 10 caracteres",
+                  }
                 })}
               />
               <label htmlFor="contraseña">Contraseña</label>
