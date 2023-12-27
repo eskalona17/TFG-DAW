@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 import { AuthContext } from "./AuthContext";
 import axios from "axios";
@@ -16,7 +16,7 @@ export const PostContextProvider = ({ children }) => {
     setCurrentFilter(filter);
   }
 
-  const getPosts = async () => {
+  const getPosts = useCallback(async () => {
     try {
       const response = await axios.get(`${apiUrl}/api/posts/feed`, { withCredentials: true });
       setFeedPosts(response.data);
@@ -25,20 +25,24 @@ export const PostContextProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
-  const filterPostByFilter = (filter) => {
+  const filterPostByFilter = useCallback((filter) => {
     if (filter === 'all') {
       setFilteredPostsByFilter(feedPosts);
     } else {
       const filteredPosts = feedPosts.filter(post => post.author.profile === filter);
       setFilteredPostsByFilter(filteredPosts);
     }
-  }
+  }, [feedPosts]);
 
   useEffect(() => {
     getPosts();
-  }, [currentUser]);
+  }, [currentUser, getPosts]);
+
+  useEffect(() => {
+    filterPostByFilter(currentFilter);
+  }, [currentUser, currentFilter, filterPostByFilter]);
 
 
   return (

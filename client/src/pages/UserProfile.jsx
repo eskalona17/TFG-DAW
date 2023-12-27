@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
 import useGetUserProfile from '../hooks/useGetUserProfile';
+import { useEffect, useState } from 'react';
+import PostItem from '../components/postItem/PostItem';
 import Loader from '../components/loader/Loader';
-import Styles from './pages.module.css';
 import useUserImage from '../hooks/useUserImage';
 import Button from '../components/button/Button';
-import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-import PostItem from '../components/postItem/PostItem';
+import Styles from './pages.module.css';
+import axios from 'axios';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -27,20 +27,19 @@ const UserProfile = () => {
   const getUserPosts = async () => {
     try {
       const response = await axios.get(`${apiUrl}/api/posts/user/${username}`, { withCredentials: true });
-      console.log(response.data);
       setUserPosts(response.data);
     } catch (error) {
       console.error("Error:", error.message);
     }
   }
 
-  const handleButtonChange = useCallback((button) => {
+  const handleButtonChange = (button) => {
     setActiveButton(button);
     if (button === 'media') {
       const mediaUserPosts = userPosts.filter(post => post.media);
       setUserMediaPosts(mediaUserPosts);
     }
-  }, [userPosts]);
+  }
 
   return (
     <main className="main">
