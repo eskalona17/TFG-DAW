@@ -6,7 +6,7 @@ import Loader from "../loader/Loader";
 import PostItem from "../postItem/PostItem";
 
 const Post = () => {
-  const { loading, filteredPosts } = useContext(PostContext);
+  const { loading, filteredPosts, userPosts } = useContext(PostContext);
 
   const {
     post
@@ -19,14 +19,19 @@ const Post = () => {
       ) : (
         <>
           {
-            filteredPosts.length === 0 && (
+            filteredPosts.length === 0 || userPosts.length === 0 && (
               <section className={Styles.noPosts}>
                 <p>No hay publicaciones, empieza a seguir a otros usuarios para ver sus publicaciones</p>
               </section>
             )
           }
+          {/* {
+            filteredPosts && filteredPosts.map((post) => (
+              <PostItem key={post._id} post={post} />
+            ))
+          } */}
           {
-            filteredPosts.map((post) => (
+            userPosts && userPosts.map((post) => (
               <PostItem key={post._id} post={post} />
             ))
           }

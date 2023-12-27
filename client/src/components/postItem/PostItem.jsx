@@ -7,11 +7,11 @@ import Input from "../input/Input";
 import axios from "axios";
 import ReplyItem from "../replyItem/ReplyItem";
 import LabelProfesional from "../labelProfesional/LabelProfesional";
+import { useNavigate } from "react-router-dom";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const PostItem = ({ post }) => {
-  console.log(post);
   const { currentUser } = useContext(AuthContext);
   const { userImage } = useUserImage(post.author, '75');
   const [isFavorited, setIsFavorited] = useState(post.favorites.includes(currentUser._id));
@@ -21,6 +21,7 @@ const PostItem = ({ post }) => {
   const [repliesCount, setRepliesCount] = useState(post.replies.length);
   const [comment, setComment] = useState("");
   const serverMediaPath = apiUrl + '/public/media';
+  const navigate = useNavigate();
   const orange_color = "#ffa07a";
 
   const {
@@ -106,9 +107,9 @@ const PostItem = ({ post }) => {
     <div className={post_container_individual}>
       <div className={post_container_user}>
         {/* Información del usuario */}
-        <img src={userImage} alt="" className={user_img} />
+        <img src={userImage} alt="" className={user_img} onClick={() => navigate(`/${post.author.username}`)} />
         <div className={user_info}>
-          <p className={user_name}>{post.author.username}</p>
+          <p className={user_name} onClick={() => navigate(`/${post.author.username}`)} >{post.author.username}</p>
           {/* Adaptar según la fecha real en tu objeto post */}
           <p className={user_publictime}>{formatTimestamp(post.createdAt)}</p>
         </div>
@@ -118,10 +119,10 @@ const PostItem = ({ post }) => {
         }
       </div>
       {/* Contenido del post */}
-      <p className={post_content}>{post.content}</p>
+      <p className={post_content} onClick={() => navigate(`/${post.author.username}/post/${post._id}`)}>{post.content}</p>
       {/* Multimedia*/}
       {post.media && (
-        <div className={multimedia}>
+        <div className={multimedia} onClick={() => navigate(`/${post.author.username}/post/${post._id}`)}>
           <img src={`${serverMediaPath}/${post.media}`} alt="" className={multimedia_item} />
         </div>
       )}

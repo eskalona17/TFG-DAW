@@ -109,15 +109,7 @@ const UserProfile = () => {
           Multimedia
         </button>
       </div>
-      <div className={Styles.user_posts}>
-      {
-           <Post posts={posts} />
-        /* {postType === 'all' ? (
-          <Post posts={user.posts} />
-        ) : (
-          <Post posts={user.posts.filter(post => post.hasMultimedia)} />
-        )} */}
-      </div>
+      <Post posts={posts} />
     </main>
   );
 };
