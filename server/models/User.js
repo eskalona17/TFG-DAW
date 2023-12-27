@@ -7,13 +7,13 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
       minLength: 3,
-      maxLength: 255
+      maxLength: 50
     },
     username: {
       type: String,
       required: true,
       minLength: 3,
-      maxLength: 50,
+      maxLength: 20,
       unique: true
     },
     email: {
@@ -24,7 +24,8 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minLength: 6
+      minLength: 6,
+      maxLength: 10
     },
     // Campo obligatorio y con enum
     profile: {
@@ -59,7 +60,8 @@ const UserSchema = new mongoose.Schema(
       zipCode: {
         type: Number,
         min: 1000,
-        max: 52999
+        max: 52999,
+        maxLength: 5
       },
       city: {
         type: String,
