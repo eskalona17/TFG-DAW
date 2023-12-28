@@ -5,16 +5,16 @@ import { useContext, useEffect, useState } from "react";
 import Button from "../button/Button";
 import axios from 'axios';
 import SuggestedUser from "../suggestedUser/SuggestedUser";
-import { AuthContext } from "../../context/authContext";
+import { AuthContext } from "../../context/AuthContext";
 
 const Suggestions = () => {
   const navigate = useNavigate();
-  const { currentUser} = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
 
   const { suggestions, title } = Styles;
 
   const [users, setUsers] = useState([]);
-  
+
   useEffect(() => {
     axios.get(`${apiUrl}/api/users/suggested-users?limit=4`, {
       withCredentials: true

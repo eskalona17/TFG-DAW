@@ -2,7 +2,7 @@ import Conversation from "../components/conversation/Conversation"
 import { useContext, useEffect, useRef, useState } from "react";
 import { SocketContext } from "../context/SocketContext";
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-import { AuthContext } from "../context/authContext";
+import { AuthContext } from "../context/AuthContext";
 import Message from "../components/message/Message";
 import Loader from "../components/loader/Loader";
 import Input from "../components/input/Input";

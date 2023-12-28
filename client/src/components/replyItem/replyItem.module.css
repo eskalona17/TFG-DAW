@@ -1,0 +1,46 @@
+.comment {
+  border-radius: 6px;
+  display: flex;
+}
+
+.comment_container {
+  background-color: var(--bg-main-color);
+  border-radius: 6px;
+  padding: .25rem .5rem;
+  font-size: 1rem;
+}
+
+.comment_user_info {
+  width: auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+.comment_user_img_container {
+  margin-right: 10px;
+}
+
+.comment_user_img {
+  width: 50px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: var(--light-orange);
+}
+
+.comment_user_name {
+  margin: 0;
+  font-weight: bold;
+}
+
+.comment_user_publictime {
+  font-size: 10px;
+  margin-top: 0px;
+}
+
+.comment_text_container {
+  flex-grow: 1;
+}
+
+.comment_text {
+  margin: 0 6px;
+}

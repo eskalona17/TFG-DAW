@@ -9,8 +9,6 @@ const PostSchema = new mongoose.Schema(
     },
     content: {
       type: String,
-      required: true,
-      minLength: 1,
       maxLength: 500
     },
     media: {
@@ -24,7 +22,7 @@ const PostSchema = new mongoose.Schema(
     },
     replies: [
       {
-        userId: {
+        user: {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'User',
           required: true
@@ -32,12 +30,6 @@ const PostSchema = new mongoose.Schema(
         text: {
           type: String,
           required: true
-        },
-        userProfilePic: {
-          type: String
-        },
-        username: {
-          type: String
         }
       }
     ]

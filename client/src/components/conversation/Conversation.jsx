@@ -2,6 +2,7 @@ import useUserImage from "../../hooks/useUserImage";
 import { formatDistanceToNow } from 'date-fns';
 import Styles from './conversation.module.css'
 import { es } from 'date-fns/locale';
+import LabelProfesional from "../labelProfesional/LabelProfesional";
 
 const Conversation = ({ conversation, onClick }) => {
   if (!conversation) {
@@ -23,6 +24,10 @@ const Conversation = ({ conversation, onClick }) => {
           <p className={Styles.date}>{timeAgo}</p>
         </div>
         <p className={Styles.last_message}>{sender === _id ? name.split(' ')[0] : 'Tú'}: {text}</p>
+        {participants[0].profile === 'profesional' 
+          ? <LabelProfesional />
+          : null
+        }
       </div>
     </div>
   )

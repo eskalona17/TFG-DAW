@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Styles from "./header.module.css";
 import { IoSearch } from "react-icons/io5";
 import { IoExitOutline } from "react-icons/io5";
-import { AuthContext } from "../../context/authContext";
+import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { useTheme } from "../../context/ThemeContext";
 import logoLight from "../../assets/img/logoLight.svg";
@@ -15,7 +15,6 @@ const serverImagePath =
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const Header = () => {
-  console.log("header render");
   const {
     header,
     title_container,
@@ -39,15 +38,14 @@ const Header = () => {
 
   // Can change color of theme whith theme variable that is now available because of ThemeContext
   const { theme, toggleTheme } = useTheme();
-  console.log(theme);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  const handleSearchResultClick = () => {
+  const handleSearchResultClick = (username) => {
     // Navigate to the profile page and clear the search results
-    navigate(`/profile`);
+    navigate(`/${username}`);
     setSearchResults([]);
   };
 
@@ -132,7 +130,7 @@ const Header = () => {
         <div className={search_results}>
           {searchResults.map((result) => (
             <ul key={result.user._id}>
-              <li onClick={() => handleSearchResultClick(result.user._id)}>
+              <li onClick={() => handleSearchResultClick(result.user.username)} className={Styles.search_result}>
                 <img
                   src={serverImagePath + result.user.profilePic}
                   alt=""

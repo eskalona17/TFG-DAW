@@ -78,7 +78,7 @@ export default function Form() {
   return (
     <div className={form_container}>
       <h3>Crea tu perfil</h3>
-      <form onSubmit={onSubmit}>
+      <form>
         {/* name */}
         <div className={input_container}>
           <input
@@ -292,6 +292,8 @@ export default function Form() {
                 {/* pais */}
                 <div className={input_container}>
                   <input
+                    readOnly
+                    value="España"
                     type="text"
                     label="pais"
                     name="pais"
@@ -349,6 +351,7 @@ export default function Form() {
         <Button
           text="Enviar"
           className={button}
+          onClick={onSubmit}
           type="submit"
           variant="primary-large"
           disabled={!isPrivacyChecked}

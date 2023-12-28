@@ -4,8 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import Styles from "./form.module.css";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import Button from "../button/Button";
-import { AuthContext } from "../../context/authContext";
+import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -32,6 +33,8 @@ export default function LoginForm() {
 
   const [originalState, setOriginalState] = useState(true); // Nuevo estado para manejar el estado original
 
+  const [showPassword, setShowPassword] = useState(false); // show or hide password
+
   const onSubmitLogin = handleSubmit(async (data) => {
     try {
       // Use the login function from the context and await its completion
@@ -49,10 +52,7 @@ export default function LoginForm() {
 
   const onSubmitForgotPassword = handleSubmit(async (data) => {
     try {
-      await axios.post(
-        apiUrl + "/api/users/forget-password",
-        data
-      );
+      await axios.post(apiUrl + "/api/users/forget-password", data);
       alert("Mail enviado");
     } catch (error) {
       console.error(
@@ -81,7 +81,7 @@ export default function LoginForm() {
       {recoverPassword ? (
         <>
           <h3>Introduce tu email</h3>
-          <form onSubmit={onSubmitForgotPassword}>
+          <form>
             {/* Email */}
             <div className={input_container}>
               <input
@@ -105,6 +105,7 @@ export default function LoginForm() {
             </div>
             <Button
               text="Enviar"
+              onClick={onSubmitForgotPassword}
               className={button}
               type="submit"
               variant="primary-large"
@@ -120,7 +121,7 @@ export default function LoginForm() {
       ) : (
         <>
           <h3>LOGIN</h3>
-          <form onSubmit={onSubmitLogin}>
+          <form>
             {/* username */}
             <div className={input_container}>
               <input
@@ -133,8 +134,8 @@ export default function LoginForm() {
                     message: "Usuario o email es requerido",
                   },
                   minLength: {
-                    value: 2,
-                    message: "Usuario o email tiene que tener dos caracteres",
+                    value: 3,
+                    message: "Usuario o email tiene que tener tres caracteres",
                   },
                   maxLength: {
                     value: 20,
@@ -152,7 +153,7 @@ export default function LoginForm() {
             {/* password */}
             <div className={input_container}>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 label="Contraseña"
                 name="password"
                 {...register("password", {
@@ -164,9 +165,21 @@ export default function LoginForm() {
                     value: 6,
                     message: "La contraseña debe tener al menos 6 caracteres",
                   },
+                  maxLength: {
+                    value: 10,
+                    message: "La contraseña no puede tener más de 10 caracteres",
+                  }
                 })}
               />
               <label htmlFor="contraseña">Contraseña</label>
+              <div
+                className={Styles.showPasswordIcon}
+                onMouseDown={() => setShowPassword(true)}
+                onMouseUp={() => setShowPassword(false)}
+                onMouseLeave={() => setShowPassword(false)}
+              >
+                {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+              </div>
             </div>
             <div className={errors_display}>
               {errors.password && <span>{errors.password.message}</span>}
@@ -180,6 +193,7 @@ export default function LoginForm() {
               text="Entrar"
               className={button}
               type="submit"
+              onClick={onSubmitLogin}
               variant="primary-large"
             />
           </form>

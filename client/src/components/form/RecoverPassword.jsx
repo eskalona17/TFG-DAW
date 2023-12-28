@@ -39,7 +39,7 @@ export default function RecoverPassword() {
   return (
     <div className={form_container}>
       <h3>Reestablece tu contraseña</h3>
-      <form onSubmit={onSubmit}>
+      <form>
         {/* password */}
         <div className={input_container}>
           <input
@@ -87,6 +87,7 @@ export default function RecoverPassword() {
         </div>
         <Button
           text="Enviar"
+          onClick={onSubmit}
           className={button}
           type="submit"
           variant="primary-large"

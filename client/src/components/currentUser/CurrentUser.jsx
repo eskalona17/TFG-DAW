@@ -1,9 +1,10 @@
 import Styles from "./currentUser.module.css";
 import { useContext } from "react";
 import Button from "../button/Button";
-import { AuthContext } from "../../context/authContext";
+import { AuthContext } from "../../context/AuthContext";
 import useUserImage from './../../hooks/useUserImage';
 import { useNavigate } from "react-router-dom";
+import LabelProfesional from "../labelProfesional/LabelProfesional";
 
 const CurrentUser = () => {
   const { currentUser } = useContext(AuthContext);
@@ -19,7 +20,7 @@ const CurrentUser = () => {
     user_username,
     follow_container,
   } = Styles;
-  
+
   return (
     <aside className={user}>
       <div className={user_container} onClick={() => navigate(`/${currentUser.username}`)}>
@@ -32,16 +33,19 @@ const CurrentUser = () => {
             {currentUser ? `@${currentUser.username}` : "@usuario"}
           </p>
         </div>
+        {currentUser.profile === "profesional"
+          ? <LabelProfesional />
+          : null
+        }
       </div>
       <div className={follow_container}>
         <Button
           text={
             currentUser
-              ? `${
-                  currentUser.followers.length === 1
-                    ? `${currentUser.followers.length} seguidor`
-                    : `${currentUser.followers.length} seguidores`
-                }`
+              ? `${currentUser.followers.length === 1
+                ? `${currentUser.followers.length} seguidor`
+                : `${currentUser.followers.length} seguidores`
+              }`
               : "0 seguidores"
           }
           onClick={() => console.log("click")}
@@ -50,11 +54,10 @@ const CurrentUser = () => {
         <Button
           text={
             currentUser
-              ? `${
-                  currentUser.following.length === 1
-                    ? `${currentUser.following.length} seguido`
-                    : `${currentUser.following.length} seguidos`
-                }`
+              ? `${currentUser.following.length === 1
+                ? `${currentUser.following.length} seguido`
+                : `${currentUser.following.length} seguidos`
+              }`
               : "0 seguidos"
           }
           onClick={() => console.log("click")}

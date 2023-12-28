@@ -1,14 +1,14 @@
-import { useState, useContext} from "react"
-import { AuthContext } from "../../context/authContext"
-import { useForm } from "react-hook-form"
-import Styles from "./formEditProfile.module.css"
-import Button from "../button/Button"
-import { VscDeviceCamera } from "react-icons/vsc"
-import axios from "axios"
-import { useNavigate } from "react-router-dom"
-import useUserImage from './../../hooks/useUserImage'
+import { useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { useForm } from "react-hook-form";
+import Styles from "./formEditProfile.module.css";
+import Button from "../button/Button";
+import { VscDeviceCamera } from "react-icons/vsc";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import useUserImage from "./../../hooks/useUserImage";
 
-const apiUrl = import.meta.env.VITE_REACT_APP_API_URL
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const {
   form,
@@ -26,21 +26,22 @@ const {
   imageContainer,
   inputConfirmContainer,
   editButton,
-} = Styles
+} = Styles;
 
 export default function Formulario() {
-  const navigate = useNavigate()
-  const { currentUser, setCurrentUser } = useContext(AuthContext)
-  const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false)
-  const [profile, setProfile] = useState(currentUser.profile || "personal")
+  const navigate = useNavigate();
+  const { currentUser, setCurrentUser } = useContext(AuthContext);
+  const [mostrarConfirmarPassword, setMostrarConfirmarPassword] =
+    useState(false);
+  const [profile, setProfile] = useState(currentUser.profile || "personal");
   const [imageData, setImageData] = useState({
     selectedImage: null,
     imagePreview: null,
-  })
+  });
   const [selectedLabels, setSelectedLabels] = useState([]);
-  const { selectedImage } = imageData
-  const {userImage: profileImage} = useUserImage(currentUser)
-  
+  const { selectedImage } = imageData;
+  const { userImage: profileImage } = useUserImage(currentUser);
+
   const {
     handleSubmit,
     watch,
@@ -58,8 +59,8 @@ export default function Formulario() {
       zipCode: currentUser?.zipCode,
       country: currentUser?.country,
       labels: currentUser?.labels,
-    }
-  })
+    },
+  });
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -76,86 +77,92 @@ export default function Formulario() {
         zipCode: data.zipCode,
         country: data.country,
         labels: selectedLabels,
-      }
+      };
 
-      let response = null
-      if(selectedImage){
+      let response = null;
+      if (selectedImage) {
+        const formDataWithImage = new FormData();
+        Object.entries(data).forEach(([key, value]) =>
+          formDataWithImage.append(key, value)
+        );
+        formDataWithImage.append("profilePic", selectedImage);
+        formDataWithImage.append("followers", currentUser.followers);
+        formDataWithImage.append("following", currentUser.following);
 
-        const formDataWithImage = new FormData()
-        Object.entries(data).forEach(([key, value]) => formDataWithImage.append(key, value))
-        formDataWithImage.append('profilePic', selectedImage)
-        formDataWithImage.append('followers', currentUser.followers)
-        formDataWithImage.append('following', currentUser.following)
-        
-        response = await axios.patch(apiUrl + '/api/users/update/'  + currentUser._id, formDataWithImage, {
-          withCredentials: true,
-        })
-      }else{
-         response = await axios.patch(apiUrl + "/api/users/update/" + currentUser._id, {
-          ...commonData,
-          profile: profile,
-          followers: currentUser.followers,
-          following: currentUser.following,
-        },{
-          withCredentials:true,
-        })
+        response = await axios.patch(
+          apiUrl + "/api/users/update/" + currentUser._id,
+          formDataWithImage,
+          {
+            withCredentials: true,
+          }
+        );
+      } else {
+        response = await axios.patch(
+          apiUrl + "/api/users/update/" + currentUser._id,
+          {
+            ...commonData,
+            profile: profile,
+            followers: currentUser.followers,
+            following: currentUser.following,
+          },
+          {
+            withCredentials: true,
+          }
+        );
       }
-     
 
       if (response.status === 200) {
-        console.log("Usuario actualizado exitosamente")
-        alert("Usuario actualizado exitosamente")
-        const updatedUserData = response.data.user
-        console.log("Respuesta de la API:", response.data.user)
-        await setCurrentUser(updatedUserData) 
-        navigate("/")
-        reset()
+        console.log("Usuario actualizado exitosamente");
+        alert("Usuario actualizado exitosamente");
+        const updatedUserData = response.data.user;
+        console.log("Respuesta de la API:", response.data.user);
+        await setCurrentUser(updatedUserData);
+        navigate("/");
+        reset();
       } else {
-        console.error("Error al actualizrr usuario:", response.statusText)
-        alert("Error al actulizar usuario")
+        console.error("Error al actualizrr usuario:", response.statusText);
+        alert("Error al actulizar usuario");
       }
     } catch (error) {
-      console.error("Error:", error.message)
-      alert("Error al actualizar el usuario")
+      console.error("Error:", error.message);
+      alert("Error al actualizar el usuario");
     }
-    reset()
-  })
+    reset();
+  });
 
   const handleImageChange = () => {
-    const input = document.createElement("input")
-    input.type = "file"
-    input.accept = "image/*"
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
     input.onchange = (e) => {
-      const file = e.target.files[0]
-  
+      const file = e.target.files[0];
+
       setImageData({
         selectedImage: file,
         imagePreview: URL.createObjectURL(file), // Crear la URL de la vista previa
-      })
-    }
-  
-    input.click()
-  }
+      });
+    };
 
-  
+    input.click();
+  };
 
   const handleCambiarPassword = () => {
-    setMostrarConfirmarPassword(true)
-  }
+    setMostrarConfirmarPassword(true);
+  };
 
   const handleCambiarprofile = (selectedprofile) => {
-    setProfile(selectedprofile)
-  }
+    setProfile(selectedprofile);
+  };
 
   const handleCheckboxChange = (animal) => {
     setSelectedLabels((prevSelected) => {
       const isSelected = prevSelected.includes(animal);
       console.log(`Before: ${prevSelected}`);
-      
+
       const updatedSelectedLabels = isSelected
         ? prevSelected.filter((selected) => selected !== animal)
         : [...prevSelected, animal];
-  
+
       console.log(`After: ${updatedSelectedLabels}`);
       return updatedSelectedLabels;
     });
@@ -165,7 +172,9 @@ export default function Formulario() {
     <form onSubmit={onSubmit} className={form}>
       <div className={imageContainer}>
         <img
-          src= {selectedImage ? URL.createObjectURL(selectedImage) : profileImage}
+          src={
+            selectedImage ? URL.createObjectURL(selectedImage) : profileImage
+          }
           alt="User"
           className={userImage}
         />
@@ -215,8 +224,8 @@ export default function Formulario() {
               message: "El usuario es requerido",
             },
             minLength: {
-              value: 2,
-              message: "El usuario tiene que tener dos caracteres",
+              value: 3,
+              message: "El usuario tiene que tener al menos tres caracteres",
             },
             maxLength: {
               value: 20,
@@ -263,18 +272,20 @@ export default function Formulario() {
           className={input}
           placeholder="Contraseña Actual"
           {...register("password", {
-            
             minLength: {
               value: 6,
               message: "La contraseña debe tener al menos 6 caracteres",
+            },
+            maxLength: {
+              value: 10,
+              message: "La contraseña no puede tener más de 10 caracteres",
             },
           })}
         />
       </div>
       {mostrarConfirmarPassword && (
         <>
-
-        {/* new password */}
+          {/* new password */}
           <div className={inputContainer}>
             <input
               type="password"
@@ -284,7 +295,12 @@ export default function Formulario() {
               {...register("newPassword", {
                 minLength: {
                   value: 6,
-                  message: "La nueva contraseña debe tener al menos 6 caracteres",
+                  message:
+                    "La nueva contraseña debe tener al menos 6 caracteres",
+                },
+                maxLength: {
+                  value: 10,
+                  message: "La contraseña no puede tener más de 10 caracteres",
                 },
               })}
             />
@@ -303,7 +319,8 @@ export default function Formulario() {
                   message: "Confirmar contraseña es requerido",
                 },
                 validate: (value) =>
-                  value === watch("newPassword") || "Las contraseñas no coinciden",
+                  value === watch("newPassword") ||
+                  "Las contraseñas no coinciden",
               })}
             />
           </div>
@@ -373,6 +390,14 @@ export default function Formulario() {
                   value: true,
                   message: "La ciudad es requerida",
                 },
+                minLength: {
+                  value: 3,
+                  message: "La ciudad debe tener al menos 3 caracteres",
+                },
+                maxLength: {
+                  value: 50,
+                  message: "La ciudad no puede tener más de 50 caracteres",
+                },
               })}
               defaultValue={currentUser ? currentUser.city : ""}
             />
@@ -409,6 +434,7 @@ export default function Formulario() {
           {/* country */}
           <div className={inputContainer}>
             <input
+              readOnly
               type="text"
               name="pais"
               className={input}
@@ -419,18 +445,19 @@ export default function Formulario() {
                   message: "El pais es requerido",
                 },
               })}
-              defaultValue={currentUser ? currentUser.country : ""}
+              defaultValue={currentUser ? currentUser.country : "España"}
+              value="España"
             />
           </div>
           <div className={errors.country ? errors_display : ""}>
             {errors.country && <span>{errors.country.message}</span>}
           </div>
         </>
-        )}
+      )}
       <div className={inputContainer}>
         <div className={checkboxesContainer}>
           <label className={label}>Etiquetas:</label>
-        
+
           <div className={checkboxOption}>
             <input
               type="checkbox"
@@ -472,7 +499,6 @@ export default function Formulario() {
             <label>Reptiles</label>
           </div>
         </div>
-
       </div>
       <div className={bottomButtonContainer}>
         <Button
@@ -483,6 +509,5 @@ export default function Formulario() {
         />
       </div>
     </form>
-
-  )
+  );
 }
