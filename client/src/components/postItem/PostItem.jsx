@@ -1,4 +1,4 @@
-import { VscStarEmpty, VscStarFull, VscComment } from "react-icons/vsc";
+import { VscStarEmpty, VscStarFull, VscComment, VscKebabVertical } from "react-icons/vsc";
 import { AuthContext } from "../../context/AuthContext";
 import useUserImage from "../../hooks/useUserImage";
 import { useContext, useState } from "react";
@@ -23,6 +23,8 @@ const PostItem = ({ post, active = false }) => {
   const serverMediaPath = apiUrl + '/public/media';
   const navigate = useNavigate();
   const orange_color = "#ffa07a";
+  const isCurrentUserPost = post.author._id === currentUser._id;
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const {
     post_container_user,
@@ -33,6 +35,8 @@ const PostItem = ({ post, active = false }) => {
     post_container_individual,
     post_content,
     multimedia,
+    dropdown,
+    dropdownContent,
     multimedia_item,
     likes_container,
     likes,
@@ -65,6 +69,26 @@ const PostItem = ({ post, active = false }) => {
       console.error('Error al enviar la respuesta: ', error.message);
     } finally {
       setComment('');
+    }
+  };
+
+  const handleDropdownToggle = () => {
+    setIsDropdownOpen((prevIsOpen) => !prevIsOpen);
+  };
+
+  const handleDeletePostFromDropdown = () => {
+    handleDeletePost(post._id);
+    setIsDropdownOpen(false); // Cierra el desplegable después de eliminar el post
+  };
+
+  const handleDeletePost = async (postId) => {
+    try {
+      const response = await axios.delete(`${apiUrl}/api/posts/delete/${postId}`, { withCredentials: true });
+      if (response.status === 200) {
+        console.log(response)
+      }
+    } catch (error) {
+      console.error('Error al eliminar el post: ', error.message);
     }
   };
 
@@ -113,6 +137,17 @@ const PostItem = ({ post, active = false }) => {
           {/* Adaptar según la fecha real en tu objeto post */}
           <p className={user_publictime}>{formatTimestamp(post.createdAt)}</p>
         </div>
+        {isCurrentUserPost && (
+          <div className={dropdown} onClick={handleDropdownToggle}>
+            <VscKebabVertical color={orange_color} />
+            {isDropdownOpen && (
+              <div className={dropdownContent}>
+                <span onClick={handleDeletePostFromDropdown}>Eliminar post</span>
+                
+              </div>
+            )}
+          </div>
+        )}
         {post.author.profile === 'profesional' 
           ? <LabelProfesional />
           : null

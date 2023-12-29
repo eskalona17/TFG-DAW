@@ -24,11 +24,3 @@
   cursor: pointer;
 }
 
-.delete_button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border: none;
-  padding: 5px;
-  cursor: pointer;
-}
