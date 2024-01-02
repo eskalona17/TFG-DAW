@@ -9,7 +9,7 @@ import { useTheme } from "../context/ThemeContext";
 import { IoSunny } from "react-icons/io5";
 import { FaMoon } from "react-icons/fa6";
 import Modal from "../components/modal/Modal"
-
+import Swal from "sweetalert2";
 // colors for icons
 const orange_color = "#ffa07a";
 const gray_color = "#6f81a5";
@@ -43,15 +43,27 @@ const Settings = () => {
         }
       );
       if (response.status === 200) {
-        alert("Usuario eliminado exitosamente");
+        Swal.fire({
+          title: "Usuario eliminado Correctamente!",
+          icon: "success",
+          confirmButtonColor: "var(--orange-color)"
+        });
         navigate("/login");
       } else {
         console.error("Error al eliminar el usuario:", response.data.message);
-        alert("Error al eliminar el usuario");
+        Swal.fire({
+          title: "Error al borrar el usuario",
+          icon: "error",
+          confirmButtonColor: "var(--orange-color)"
+        });
       }
     } catch (error) {
       console.error("Error:", error.message);
-      alert("Error al eliminar el usuario");
+      Swal.fire({
+        title: "Error al borrar el usuario",
+        icon: "error",
+        confirmButtonColor: "var(--orange-color)"
+      });
     }
   };
 

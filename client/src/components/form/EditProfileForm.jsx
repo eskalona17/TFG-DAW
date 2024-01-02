@@ -7,7 +7,7 @@ import { VscDeviceCamera } from "react-icons/vsc";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useUserImage from "./../../hooks/useUserImage";
-
+import Swal from 'sweetalert2';
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const {
@@ -113,7 +113,11 @@ export default function Formulario() {
 
       if (response.status === 200) {
         console.log("Usuario actualizado exitosamente");
-        alert("Usuario actualizado exitosamente");
+        Swal.fire({
+          title: "Datos Actualizados Correctamente!",
+          icon: "success",
+          confirmButtonColor: "var(--orange-color)"
+        });
         const updatedUserData = response.data.user;
         console.log("Respuesta de la API:", response.data.user);
         await setCurrentUser(updatedUserData);
@@ -121,11 +125,21 @@ export default function Formulario() {
         reset();
       } else {
         console.error("Error al actualizrr usuario:", response.statusText);
-        alert("Error al actulizar usuario");
+        Swal.fire({
+          title: "Error al actualizar",
+          text: "Revise sus nuevos datos",
+          icon: "error",
+          confirmButtonColor: "var(--orange-color)"
+        });
       }
     } catch (error) {
       console.error("Error:", error.message);
-      alert("Error al actualizar el usuario");
+      Swal.fire({
+        title: "Error al actualizar",
+        text: "Revise sus nuevos datos",
+        icon: "error",
+        confirmButtonColor: "var(--orange-color)"
+      });
     }
     reset();
   });

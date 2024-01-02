@@ -3,6 +3,7 @@ import Styles from "./form.module.css";
 import Button from "../button/Button";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -25,7 +26,11 @@ export default function RecoverPassword() {
     console.log(data);
     try {
       await axios.post(apiUrl + `/api/users/reset-password/${token}`, data);
-      alert("contraseña cambiada");
+      Swal.fire({
+        title: "Contraseña cambida correctamente!",
+        icon: "success",
+        confirmButtonColor: "var(--orange-color)"
+      });
       navigate("/login");
     } catch (error) {
       console.error(

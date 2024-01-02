@@ -7,6 +7,7 @@ import Button from "../button/Button";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import Swal from 'sweetalert2';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -41,11 +42,21 @@ export default function LoginForm() {
       await authContext.login(data);
 
       // Now that the login is complete, you can proceed with other actions
-      alert("Bienvenido");
+      Swal.fire({
+        title: "Acceso Correcto",
+        text: "¡Bienvenido!",
+        icon: "success",
+        confirmButtonColor: "var(--orange-color)"
+      });
       navigate("/");
     } catch (error) {
       console.error("Error:", error.message);
-      alert("Error al iniciar sesión");
+      Swal.fire({
+        title: "Error",
+        text: "Revise los datos introducidos",
+        icon: "error",
+        confirmButtonColor: "var(--orange-color)"
+      });
     }
     reset();
   });
@@ -53,7 +64,11 @@ export default function LoginForm() {
   const onSubmitForgotPassword = handleSubmit(async (data) => {
     try {
       await axios.post(apiUrl + "/api/users/forget-password", data);
-      alert("Mail enviado");
+      Swal.fire({
+        title: "E-mail Mandado correctamente!",
+        icon: "success",
+        confirmButtonColor: "var(--orange-color)"
+      });
     } catch (error) {
       console.error(
         "Error:",
