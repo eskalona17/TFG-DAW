@@ -130,9 +130,7 @@ margin: 10px 0;
 }
 
 .checkboxOption input[type="checkbox"]:checked {
-  /* Cambiar el color del tick cuando la casilla está marcada */
-  background-color: var(--orange-color);
-  /* Puedes ajustar otros estilos según sea necesario */
   
-  color: white; /* Color del tick en algunos navegadores */
+  background-color: var(--orange-color);
+ 
 }
