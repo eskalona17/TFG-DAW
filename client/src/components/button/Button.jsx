@@ -1,4 +1,4 @@
-//import { useState } from 'react';
+import { useState } from 'react';
 import Styles from './button.module.css'
 
 /* 
@@ -10,17 +10,19 @@ Para usar el componente debe indicarse el texto que se quiere mostrar [text] , l
 */
 
 const Button = ({ text, onClick, variant }) => {
- // const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const buttonClass = `${Styles.button} ${Styles[variant]}`
 
-  // const handleClick = async () => {
-  //   setIsLoading(true);
-  //   await onClick();
-  //   setIsLoading(false);
-  // }
+  const handleClick = async () => {
+    setIsLoading(true);
+    if(typeof onClick ==='function'){
+      await onClick();
+    }
+    setIsLoading(false);
+  }
 
   return (
-    <button className={buttonClass} onClick={onClick} >
+    <button className={buttonClass} onClick={handleClick} disabled= {isLoading} >
       {text}
     </button>
   )
