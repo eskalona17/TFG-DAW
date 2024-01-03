@@ -5,6 +5,7 @@ import Styles from "./form.module.css";
 import axios from "axios";
 import Button from "../button/Button";
 import PrivacyModal from "../privacymodal/PrivacyModal";
+import Swal from "sweetalert2";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -46,16 +47,30 @@ export default function Form() {
 
       if (response.status === 201) {
         console.log("Usuario registrado exitosamente");
-        alert("Usuario registrado exitosamente");
+        Swal.fire({
+          title: "Usuario Registrado Correctamente!",
+          icon: "success",
+          confirmButtonColor: "var(--orange-color)"
+        });
         navigate("/login");
         reset();
       } else {
         console.error("Error al registrar usuario:", response.statusText);
-        alert("Error al registrar usuario");
+        Swal.fire({
+          title: "Error registrar usuario",
+          text: "Revise sus datos",
+          icon: "error",
+          confirmButtonColor: "var(--orange-color)"
+        });
       }
     } catch (error) {
       console.error("Error:", error.message);
-      alert("Error al registrar usuario");
+      Swal.fire({
+        title: "Error registrar usuario",
+        text: "Revise sus datos",
+        icon: "error",
+        confirmButtonColor: "var(--orange-color)"
+      });
     }
     reset();
   });
