@@ -16,7 +16,7 @@
     background-color: var(--bg-secondary-color);
     padding: 2rem;
     z-index: 10;
-    width: calc(27rem - 10rem);
+    width: calc(30rem - 10rem);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
