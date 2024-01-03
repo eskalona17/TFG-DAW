@@ -24,8 +24,7 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minLength: 6,
-      maxLength: 10
+      minLength: 6
     },
     // Campo obligatorio y con enum
     profile: {

@@ -38,7 +38,7 @@ export default function Formulario() {
     selectedImage: null,
     imagePreview: null,
   });
-  const [selectedLabels, setSelectedLabels] = useState([]);
+  const [selectedLabels, setSelectedLabels] = useState(currentUser?.labels);
   const { selectedImage } = imageData;
   const { userImage: profileImage } = useUserImage(currentUser);
 
@@ -76,7 +76,7 @@ export default function Formulario() {
         city: data.city,
         zipCode: data.zipCode,
         country: data.country,
-        labels: selectedLabels,
+        labels: selectedLabels
       };
 
       let response = null;
@@ -290,10 +290,7 @@ export default function Formulario() {
               value: 6,
               message: "La contraseña debe tener al menos 6 caracteres",
             },
-            maxLength: {
-              value: 10,
-              message: "La contraseña no puede tener más de 10 caracteres",
-            },
+            
           })}
         />
       </div>
