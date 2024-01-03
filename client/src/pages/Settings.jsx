@@ -113,7 +113,6 @@ const Settings = () => {
 
   return (
     <main className="main">
-      <h3>Configuración de la cuenta</h3>
       <div className={settings_container}>
         <div className={settings_info}>
           <p>
