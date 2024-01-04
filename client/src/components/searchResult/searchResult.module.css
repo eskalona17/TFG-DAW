@@ -1,0 +1,12 @@
+.search_result {
+  display: flex;
+  align-items: center;
+}
+
+.search_results_img {
+  width: calc(50.5px - 1rem);
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: var(--light-orange);
+  margin-right: 1rem;
+}

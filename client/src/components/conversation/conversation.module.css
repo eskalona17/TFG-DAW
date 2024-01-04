@@ -6,6 +6,20 @@
   color: var(--primary-font-color);
 }
 
+.online {
+  position: absolute;
+  bottom: 0;
+  width: 1rem;
+  height: 1rem;
+  background-color: green;
+  border: 2px solid var(--bg-secondary-color);
+  border-radius: 50%;
+}
+
+.offline {
+  display: none;
+}
+
 .conversation img {
   width: 75px;
   height: 75px;

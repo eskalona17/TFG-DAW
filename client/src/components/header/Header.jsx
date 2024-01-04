@@ -8,9 +8,7 @@ import axios from "axios";
 import { useTheme } from "../../context/ThemeContext";
 import logoLight from "../../assets/img/logoLight.svg";
 import logoDark from "../../assets/img/logoDark.svg";
-
-const serverImagePath =
-  import.meta.env.VITE_REACT_APP_API_URL + "/public/profilePic/";
+import SearchResult from "../searchResult/SearchResult";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -19,7 +17,6 @@ const Header = () => {
     header,
     title_container,
     logo,
-    user_img,
     search_container,
     search_form,
     search,
@@ -35,22 +32,18 @@ const Header = () => {
   const searchRef = useRef(null);
 
   const { logout } = useContext(AuthContext);
-
-  // Can change color of theme whith theme variable that is now available because of ThemeContext
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
   const handleSearchResultClick = (username) => {
-    // Navigate to the profile page and clear the search results
     navigate(`/${username}`);
     setSearchResults([]);
   };
 
   const handleOutsideClick = (e) => {
-    // Check if the click is outside the search container
     if (searchRef.current && !searchRef.current.contains(e.target)) {
       setSearchQuery("");
       setSearchResults([]);
@@ -58,11 +51,9 @@ const Header = () => {
   };
 
   useEffect(() => {
-    // Attach click event listener to document
     document.addEventListener("click", handleOutsideClick);
 
     return () => {
-      // Detach click event listener on component unmount
       document.removeEventListener("click", handleOutsideClick);
     };
   }, []);
@@ -77,17 +68,16 @@ const Header = () => {
           }
         );
         const data = response.data;
+        console.log(response.data);
         setSearchResults(data);
       } catch (error) {
         console.error("Error:", error.message);
       }
     };
 
-    // if there's a query
     if (searchQuery.trim() !== "") {
       fetchSearchResults();
     } else {
-      // if the query's empty, clean the results
       setSearchResults([]);
     }
   }, [searchQuery]);
@@ -98,7 +88,6 @@ const Header = () => {
   };
 
   const handleLogoClick = () => {
-    // Clear search results when clicking on the logo
     navigate("/");
     setSearchQuery("");
     setSearchResults([]);
@@ -130,14 +119,7 @@ const Header = () => {
         <div className={search_results}>
           {searchResults.map((result) => (
             <ul key={result.user._id}>
-              <li onClick={() => handleSearchResultClick(result.user.username)} className={Styles.search_result}>
-                <img
-                  src={serverImagePath + result.user.profilePic}
-                  alt=""
-                  className={user_img}
-                />
-                <span>{result.user.username}</span>
-              </li>
+              <SearchResult item={result} handleSearchResultClick={handleSearchResultClick} />
             </ul>
           ))}
         </div>

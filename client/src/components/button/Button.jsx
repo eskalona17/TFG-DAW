@@ -15,12 +15,14 @@ const Button = ({ text, onClick, variant }) => {
 
   const handleClick = async () => {
     setIsLoading(true);
-    await onClick();
+    if(typeof onClick ==='function'){
+      await onClick();
+    }
     setIsLoading(false);
   }
 
   return (
-    <button className={buttonClass} onClick={handleClick} disabled={isLoading}>
+    <button className={buttonClass} onClick={handleClick} disabled= {isLoading} >
       {text}
     </button>
   )

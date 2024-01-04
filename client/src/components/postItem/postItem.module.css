@@ -141,3 +141,18 @@
 .comment_text {
   margin: 0 6px;
 }
+
+.dropdown{
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+}
+
+.dropdownContent {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  background-color: var(--bg-main-color);;
+  min-width: 160px;
+  z-index: 1;
+}

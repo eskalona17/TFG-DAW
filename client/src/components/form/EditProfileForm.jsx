@@ -7,6 +7,8 @@ import { VscDeviceCamera } from "react-icons/vsc";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useUserImage from "./../../hooks/useUserImage";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -38,7 +40,7 @@ export default function Formulario() {
     selectedImage: null,
     imagePreview: null,
   });
-  const [selectedLabels, setSelectedLabels] = useState([]);
+  const [selectedLabels, setSelectedLabels] = useState(currentUser?.labels);
   const { selectedImage } = imageData;
   const { userImage: profileImage } = useUserImage(currentUser);
 
@@ -76,7 +78,7 @@ export default function Formulario() {
         city: data.city,
         zipCode: data.zipCode,
         country: data.country,
-        labels: selectedLabels,
+        labels: selectedLabels
       };
 
       let response = null;
@@ -113,7 +115,11 @@ export default function Formulario() {
 
       if (response.status === 200) {
         console.log("Usuario actualizado exitosamente");
-        alert("Usuario actualizado exitosamente");
+        toast.success('Usuario Actualizado', {
+          position: 'top-center',
+          autoClose: 3000,
+          
+        });
         const updatedUserData = response.data.user;
         console.log("Respuesta de la API:", response.data.user);
         await setCurrentUser(updatedUserData);
@@ -121,11 +127,19 @@ export default function Formulario() {
         reset();
       } else {
         console.error("Error al actualizrr usuario:", response.statusText);
-        alert("Error al actulizar usuario");
+        toast.error('Error al actualizar los datos', {
+          position: 'top-center',
+          autoClose: 3000,
+          
+        });
       }
     } catch (error) {
       console.error("Error:", error.message);
-      alert("Error al actualizar el usuario");
+      toast.error('Error al actualizar los datos', {
+        position: 'top-center',
+        autoClose: 3000,
+        
+      });
     }
     reset();
   });
@@ -276,10 +290,7 @@ export default function Formulario() {
               value: 6,
               message: "La contraseña debe tener al menos 6 caracteres",
             },
-            maxLength: {
-              value: 10,
-              message: "La contraseña no puede tener más de 10 caracteres",
-            },
+            
           })}
         />
       </div>

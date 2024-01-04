@@ -3,6 +3,8 @@ import Styles from "./form.module.css";
 import Button from "../button/Button";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -25,7 +27,11 @@ export default function RecoverPassword() {
     console.log(data);
     try {
       await axios.post(apiUrl + `/api/users/reset-password/${token}`, data);
-      alert("contraseña cambiada");
+      toast.success('Contraseña Modificada', {
+        position: 'top-center',
+        autoClose: 3000,
+        
+      });
       navigate("/login");
     } catch (error) {
       console.error(

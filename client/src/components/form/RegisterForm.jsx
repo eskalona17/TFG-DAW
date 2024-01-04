@@ -5,6 +5,8 @@ import Styles from "./form.module.css";
 import axios from "axios";
 import Button from "../button/Button";
 import PrivacyModal from "../privacymodal/PrivacyModal";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -46,16 +48,28 @@ export default function Form() {
 
       if (response.status === 201) {
         console.log("Usuario registrado exitosamente");
-        alert("Usuario registrado exitosamente");
+        toast.success('Usuario Registrado Correctamente', {
+          position: 'top-center',
+          autoClose: 3000,
+          
+        });
         navigate("/login");
         reset();
       } else {
         console.error("Error al registrar usuario:", response.statusText);
-        alert("Error al registrar usuario");
+        toast.error('Error al registrar', {
+          position: 'top-center',
+          autoClose: 3000,
+          
+        });
       }
     } catch (error) {
       console.error("Error:", error.message);
-      alert("Error al registrar usuario");
+      toast.error('Error al registrar', {
+        position: 'top-center',
+        autoClose: 3000,
+        
+      });
     }
     reset();
   });
