@@ -5,7 +5,8 @@ import Styles from "./form.module.css";
 import axios from "axios";
 import Button from "../button/Button";
 import PrivacyModal from "../privacymodal/PrivacyModal";
-import Swal from "sweetalert2";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -47,29 +48,27 @@ export default function Form() {
 
       if (response.status === 201) {
         console.log("Usuario registrado exitosamente");
-        Swal.fire({
-          title: "Usuario Registrado Correctamente!",
-          icon: "success",
-          confirmButtonColor: "var(--orange-color)"
+        toast.success('Usuario Registrado Correctamente', {
+          position: 'top-center',
+          autoClose: 3000,
+          
         });
         navigate("/login");
         reset();
       } else {
         console.error("Error al registrar usuario:", response.statusText);
-        Swal.fire({
-          title: "Error registrar usuario",
-          text: "Revise sus datos",
-          icon: "error",
-          confirmButtonColor: "var(--orange-color)"
+        toast.error('Error al registrar', {
+          position: 'top-center',
+          autoClose: 3000,
+          
         });
       }
     } catch (error) {
       console.error("Error:", error.message);
-      Swal.fire({
-        title: "Error registrar usuario",
-        text: "Revise sus datos",
-        icon: "error",
-        confirmButtonColor: "var(--orange-color)"
+      toast.error('Error al registrar', {
+        position: 'top-center',
+        autoClose: 3000,
+        
       });
     }
     reset();

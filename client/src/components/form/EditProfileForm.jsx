@@ -7,7 +7,9 @@ import { VscDeviceCamera } from "react-icons/vsc";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useUserImage from "./../../hooks/useUserImage";
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const {
@@ -113,10 +115,10 @@ export default function Formulario() {
 
       if (response.status === 200) {
         console.log("Usuario actualizado exitosamente");
-        Swal.fire({
-          title: "Datos Actualizados Correctamente!",
-          icon: "success",
-          confirmButtonColor: "var(--orange-color)"
+        toast.success('Usuario Actualizado', {
+          position: 'top-center',
+          autoClose: 3000,
+          
         });
         const updatedUserData = response.data.user;
         console.log("Respuesta de la API:", response.data.user);
@@ -125,20 +127,18 @@ export default function Formulario() {
         reset();
       } else {
         console.error("Error al actualizrr usuario:", response.statusText);
-        Swal.fire({
-          title: "Error al actualizar",
-          text: "Revise sus nuevos datos",
-          icon: "error",
-          confirmButtonColor: "var(--orange-color)"
+        toast.error('Error al actualizar los datos', {
+          position: 'top-center',
+          autoClose: 3000,
+          
         });
       }
     } catch (error) {
       console.error("Error:", error.message);
-      Swal.fire({
-        title: "Error al actualizar",
-        text: "Revise sus nuevos datos",
-        icon: "error",
-        confirmButtonColor: "var(--orange-color)"
+      toast.error('Error al actualizar los datos', {
+        position: 'top-center',
+        autoClose: 3000,
+        
       });
     }
     reset();

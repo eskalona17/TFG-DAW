@@ -18,6 +18,8 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import UserProfile from "./pages/UserProfile";
 import PostPage from "./pages/PostPage";
 import { PostContextProvider } from "./context/PostContext";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App () {
 
@@ -27,6 +29,7 @@ export default function App () {
         <SocketContextProvider>
           <ThemeProvider>
             <PostContextProvider>
+            <ToastContainer />
               <Routes>
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />

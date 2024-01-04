@@ -7,7 +7,8 @@ import Button from "../button/Button";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -42,20 +43,18 @@ export default function LoginForm() {
       await authContext.login(data);
 
       // Now that the login is complete, you can proceed with other actions
-      Swal.fire({
-        title: "Acceso Correcto",
-        text: "¡Bienvenido!",
-        icon: "success",
-        confirmButtonColor: "var(--orange-color)"
+      toast.success('Bienvenido', {
+        position: 'top-center',
+        autoClose: 3000,
+        
       });
       navigate("/");
     } catch (error) {
       console.error("Error:", error.message);
-      Swal.fire({
-        title: "Error",
-        text: "Revise los datos introducidos",
-        icon: "error",
-        confirmButtonColor: "var(--orange-color)"
+      toast.error('Error al iniciar sesión', {
+        position: 'top-center',
+        autoClose: 3000,
+        
       });
     }
     reset();
@@ -64,10 +63,10 @@ export default function LoginForm() {
   const onSubmitForgotPassword = handleSubmit(async (data) => {
     try {
       await axios.post(apiUrl + "/api/users/forget-password", data);
-      Swal.fire({
-        title: "E-mail Mandado correctamente!",
-        icon: "success",
-        confirmButtonColor: "var(--orange-color)"
+      toast.success('E-mail enviado', {
+        position: 'top-center',
+        autoClose: 3000,
+        
       });
     } catch (error) {
       console.error(
