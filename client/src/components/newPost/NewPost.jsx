@@ -6,6 +6,8 @@ import { useContext, useState } from "react";
 import Styles from "./newPost.module.css";
 import Input from "../input/Input";
 import axios from "axios";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -48,9 +50,19 @@ const NewPost = () => {
       }
       );
       getPosts()
+      toast.success('Post Publicado', {
+        position: 'top-center',
+        autoClose: 3000,
+        
+      });
     } catch (error) {
       console.error("Error al crear el nuevo post:", error.message);
       console.error("Detalles del error:", error.response.data);
+      toast.error('Error al publicar el post', {
+        position: 'top-center',
+        autoClose: 3000,
+        
+      });
     } finally {
       setInputKey(Math.random().toString());
       setImageData({ selectedImage: null, imagePreview: null });
