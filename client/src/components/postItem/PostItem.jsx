@@ -8,6 +8,8 @@ import axios from "axios";
 import ReplyItem from "../replyItem/ReplyItem";
 import LabelProfesional from "../labelProfesional/LabelProfesional";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -86,9 +88,19 @@ const PostItem = ({ post, active = false }) => {
       const response = await axios.delete(`${apiUrl}/api/posts/delete/${postId}`, { withCredentials: true });
       if (response.status === 200) {
         console.log(response)
+        toast.success('Post Eliminado Correctamente', {
+          position: 'top-center',
+          autoClose: 3000,
+          
+        });
       }
     } catch (error) {
       console.error('Error al eliminar el post: ', error.message);
+      toast.error('Error al borrar el post', {
+        position: 'top-center',
+        autoClose: 3000,
+        
+      });
     }
   };
 
