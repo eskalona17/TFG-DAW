@@ -136,7 +136,7 @@ export async function forgetPassword (req, res) {
       from: process.env.MAIL_USERNAME,
       to: user.email,
       subject: '¿Has olvidado tu contraseña?',
-      text: `Restablecer contraseña: ${BASEURL}:${PORT}/reset-password/${token}`,
+      text: `Restablecer contraseña: ${BASEURL}:${PORT_CLIENT}/reset-password/${token}`,
       html: emailTemplate(`${BASEURL}:${PORT_CLIENT}/reset-password/${token}`)
     }
 

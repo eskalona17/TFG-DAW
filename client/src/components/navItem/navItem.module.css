@@ -4,12 +4,34 @@
 }
 
 .navitem a {
+  position: relative;
   text-decoration: none;
   display: flex;
   align-items: center;
 }
 
+.navitem a span {
+  border-bottom: 1px solid transparent;
+}
+
+.navitem a span.active {
+  border-bottom: 1px solid var(--orange-color);
+}
+
 .navitem svg {
   margin-right: 0.5rem;
   align-self: center;
+}
+
+.notification::after {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  margin-left: 1rem;
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: var(--orange-color);
+  transform: translateY(-50%);
 }

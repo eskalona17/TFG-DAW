@@ -25,6 +25,7 @@ const Navbar = () => {
         label="Mensajes"
         path="/mensajes"
         icon={<HiOutlineEnvelope color={orange_color} />}
+        notify={true} 
       />
       <NavItem
         label="Editar perfil"
