@@ -18,8 +18,8 @@ const Post = () => {
         {
           currentFilter === 'all' ? (
             feedPosts.length > 0 ? (
-              feedPosts.map((post) => (
-                <PostItem key={post._id} post={post} />
+              feedPosts.map((post, index) => (
+                <PostItem key={index} post={post} />
               ))
             ) : (
               <section className={Styles.noPosts}>
@@ -31,8 +31,8 @@ const Post = () => {
         {
           currentFilter === 'personal' ? (
             filteredPostsByFilter.length > 0 ? (
-              filteredPostsByFilter.map((post) => (
-                <PostItem key={post._id} post={post} />
+              filteredPostsByFilter.map((post, index) => (
+                <PostItem key={index} post={post} />
               ))
             ) : (
               <section className={Styles.noPosts}>
@@ -44,8 +44,8 @@ const Post = () => {
         {
           currentFilter === 'profesional' ? (
             filteredPostsByFilter.length > 0 ? (
-              filteredPostsByFilter.map((post) => (
-                <PostItem key={post._id} post={post} />
+              filteredPostsByFilter.map((post, index) => (
+                <PostItem key={index} post={post} />
               ))
             ) : (
               <section className={Styles.noPosts}>

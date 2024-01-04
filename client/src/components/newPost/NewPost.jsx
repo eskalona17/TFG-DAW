@@ -14,7 +14,7 @@ const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 const NewPost = () => {
   const { currentUser } = useContext(AuthContext);
   const { userImage } = useUserImage(currentUser);
-  const { getPosts } = useContext(PostContext);
+  const { fetchPosts } = useContext(PostContext);
   const [newPostContent, setNewPostContent] = useState("");
   const [inputKey, setInputKey] = useState(Math.random().toString());
   const [imageData, setImageData] = useState({

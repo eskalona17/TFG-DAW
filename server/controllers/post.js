@@ -20,31 +20,39 @@ export async function getPost (req, res) {
   }
 }
 
-export async function getFeedPosts (req, res) {
-  const userId = req.user._id
-  const profileType = req.body.profileType || req.query.profileType
+export async function getFeedPosts(req, res) {
+  const userId = req.user._id;
+  const profileType = req.body.profileType || req.query.profileType;
+  const offset = parseInt(req.query.offset) || 0; // Obtén el offset de la consulta
+  const limit = parseInt(req.query.limit) || 5; // Obtén el límite de la consulta
 
   try {
-    const user = await User.findById(userId)
+    const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ error: 'User not found' })
+      return res.status(404).json({ error: 'User not found' });
     }
 
-    let following = user.following
-    following.push(userId)
+    let following = user.following;
+    following.push(userId);
 
     if (profileType) {
-      following = await User.find({ _id: { $in: following }, profile: profileType }).select('_id')
+      following = await User.find({ _id: { $in: following }, profile: profileType }).select('_id');
     }
 
-    const feedPosts = await Post.find({ author: { $in: following } }).populate('author').populate('replies.user').sort({ createdAt: -1 })
+    const feedPosts = await Post.find({ author: { $in: following } })
+      .populate('author')
+      .populate('replies.user')
+      .sort({ createdAt: -1 })
+      .skip(offset) // Aplica el offset
+      .limit(limit); // Aplica el límite
 
-    res.status(200).json(feedPosts)
+    res.status(200).json(feedPosts);
   } catch (error) {
-    console.error('Error:', error.message)
-    res.status(500).json({ error: 'Internal server error' })
+    console.error('Error:', error.message);
+    res.status(500).json({ error: 'Internal server error' });
   }
 }
+
 
 export async function getUserPosts (req, res) {
   const { username } = req.params
