@@ -68,7 +68,6 @@ const Header = () => {
           }
         );
         const data = response.data;
-        console.log(response.data);
         setSearchResults(data);
       } catch (error) {
         console.error("Error:", error.message);

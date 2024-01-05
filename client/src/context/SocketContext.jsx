@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useRef, useState } from "react"
 import io from "socket.io-client"
 import { AuthContext } from "./AuthContext"
 import axios from "axios";
@@ -20,8 +20,11 @@ export const SocketContextProvider = ({ children }) => {
   const [messages, setMessages] = useState({})
   const [activeConversation, setActiveConversation] = useState(null)
   const [newMessageToSend, setNewMessageToSend] = useState('');
-  const { currentUser } = useContext(AuthContext);
   const location = useLocation();
+  const locationConversation = location.state?.conversation;
+
+  const endOfMessagesRef = useRef(null);
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     const getConversations = async () => {
@@ -54,31 +57,7 @@ export const SocketContextProvider = ({ children }) => {
     if (location.pathname !== '/messages') {
       setActiveConversation(null);
     }
-  }, [setConversations, currentUser, location]);
-
-  const loadMessages = async (activeConversation) => {
-    if (!activeConversation.participants || !Array.isArray(activeConversation.participants) || activeConversation.participants.length === 0) {
-      return;
-    }
-
-    const otherUserId = activeConversation.participants.find(participant => participant._id !== currentUser._id)._id;
-
-    if (!otherUserId) {
-      return;
-    }
-
-    try {
-      const response = await axios.get(`${apiUrl}/api/messages/${otherUserId}`, { withCredentials: true });
-      const messages = response.data.messages;
-      socket.emit('markMessagesAsSeen', { conversationId: activeConversation._id });
-      setMessages({
-        [activeConversation._id]: messages
-      });
-      setUnread(prev => ({ ...prev, [activeConversation._id]: false }));
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  }, [currentUser._id, location.pathname]);
 
   const handleSendMessage = async (recipientId, message) => {
     if (message.trim() === '') return;
@@ -110,13 +89,6 @@ export const SocketContextProvider = ({ children }) => {
       console.error(error);
     }
   }
-
-  useEffect(() => {
-    if (activeConversation) {
-      loadMessages(activeConversation);
-    }
-  }, [activeConversation]);
-
 
   useEffect(() => {
     const socket = io(apiUrl, {
@@ -187,15 +159,47 @@ export const SocketContextProvider = ({ children }) => {
     })
 
     return () => {
-      if (socket) {
-        socket.off('newMessage');
-      }
       socket && socket.close()
     }
-  }, [currentUser])
+  }, [currentUser._id])
+
+  useEffect(() => {
+    if (locationConversation) {
+      setActiveConversation(locationConversation);
+    }
+  }, [locationConversation]);
+
+  useEffect(() => {
+    if (activeConversation) {
+      const loadMessages = async (activeConversation) => {
+        if (!activeConversation.participants || !Array.isArray(activeConversation.participants) || activeConversation.participants.length === 0) {
+          return;
+        }
+
+        const otherUserId = activeConversation.participants.find(participant => participant._id !== currentUser._id)._id;
+
+        if (!otherUserId) {
+          return;
+        }
+
+        try {
+          const response = await axios.get(`${apiUrl}/api/messages/${otherUserId}`, { withCredentials: true });
+          const messages = response.data.messages;
+          socket.emit('markMessagesAsSeen', { conversationId: activeConversation._id });
+          setMessages({
+            [activeConversation._id]: messages
+          });
+          setUnread(prev => ({ ...prev, [activeConversation._id]: false }));
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      loadMessages(activeConversation);
+    }
+  }, [activeConversation, currentUser._id, socket]);
 
   return (
-    <SocketContext.Provider value={{ socket, loading, onlineUsers, conversations, setConversations, unread, setUnread, messages, setMessages, activeConversation, setActiveConversation, handleSendMessage, newMessageToSend, setNewMessageToSend }}>
+    <SocketContext.Provider value={{ socket, loading, onlineUsers, conversations, setConversations, unread, setUnread, messages, setMessages, activeConversation, setActiveConversation, handleSendMessage, newMessageToSend, setNewMessageToSend, locationConversation, endOfMessagesRef }}>
       {children}
     </SocketContext.Provider>
   )
