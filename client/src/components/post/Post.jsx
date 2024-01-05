@@ -10,13 +10,12 @@ const Post = () => {
   const [isFetching, setIsFetching] = useState(false);
 
   const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight
-    ) {
-      // El usuario ha llegado al final de la página
+
+    if ((window.innerHeight + Math.round(window.scrollY)) >= document.body.offsetHeight) {
+      // you're at the bottom of the page
       setIsFetching(true);
-    }
+
+  }
   };
 
   useEffect(() => {
