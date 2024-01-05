@@ -2,6 +2,14 @@ import Post from '../models/Post.js'
 import User from '../models/User.js'
 import multer from 'multer'
 import { mediaUpload } from '../config/multerConfig.js'
+import fs from 'fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 
 export async function getPost (req, res) {
   const { id } = req.params
@@ -143,23 +151,31 @@ export async function updatePost (req, res) {
   }
 }
 
-export async function deletePost (req, res) {
-  const userId = req.user._id
-  const { id } = req.params
+export async function deletePost(req, res) {
+  const userId = req.user._id;
+  const { id } = req.params;
 
   try {
-    const post = await Post.findById(id)
+    const post = await Post.findById(id);
     if (!post) {
-      return res.status(404).json({ error: 'Post not found' })
+      return res.status(404).json({ error: 'Post not found' });
     }
     if (post.author.toString() !== userId.toString()) {
-      return res.status(401).json({ error: 'Unauthorized to delete post' })
+      return res.status(401).json({ error: 'Unauthorized to delete post' });
     }
-    await Post.findByIdAndDelete(id)
-    res.status(200).json({ message: 'Post deleted successfully' })
+
+
+    // Borra la imagen del sistema de archivos si existe
+    if (post.media) {
+      const imagePath = path.join(__dirname, '..', 'public', 'media', post.media);
+      await fs.unlink(imagePath);
+    }
+
+    await Post.findByIdAndDelete(id);
+    res.status(200).json({ message: 'Post deleted successfully' });
   } catch (error) {
-    console.error('Error:', error.message)
-    res.status(500).json({ error: 'Internal server error' })
+    console.error('Error:', error.message);
+    res.status(500).json({ error: 'Internal server error' });
   }
 }
 

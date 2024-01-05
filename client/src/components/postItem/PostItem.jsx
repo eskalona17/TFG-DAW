@@ -1,4 +1,9 @@
-import { VscStarEmpty, VscStarFull, VscComment, VscKebabVertical } from "react-icons/vsc";
+import {
+  VscStarEmpty,
+  VscStarFull,
+  VscComment,
+  VscKebabVertical,
+} from "react-icons/vsc";
 import { AuthContext } from "../../context/AuthContext";
 import useUserImage from "../../hooks/useUserImage";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -8,27 +13,31 @@ import axios from "axios";
 import ReplyItem from "../replyItem/ReplyItem";
 import LabelProfesional from "../labelProfesional/LabelProfesional";
 import { useNavigate } from "react-router-dom";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { PostContext } from "../../context/PostContext";
+import Modal from "../modal/Modal";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const PostItem = ({ post, active = false }) => {
   const { currentUser } = useContext(AuthContext);
-  const { userImage } = useUserImage(post.author, '75');
-  const {handleDeletePost } = useContext(PostContext);
-  const [isFavorited, setIsFavorited] = useState(post.favorites.includes(currentUser._id));
+  const { userImage } = useUserImage(post.author, "75");
+  const { handleDeletePost } = useContext(PostContext);
+  const [isFavorited, setIsFavorited] = useState(
+    post.favorites.includes(currentUser._id)
+  );
   const [favoritesCount, setFavoritesCount] = useState(post.favorites.length);
   const [showComments, setShowComments] = useState(active);
   const [replies, setReplies] = useState(post.replies);
   const [repliesCount, setRepliesCount] = useState(post.replies.length);
   const [comment, setComment] = useState("");
-  const serverMediaPath = apiUrl + '/public/media';
+  const serverMediaPath = apiUrl + "/public/media";
   const navigate = useNavigate();
   const orange_color = "#ffa07a";
   const isCurrentUserPost = post.author._id === currentUser._id;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const {
     post_container_user,
@@ -48,31 +57,47 @@ const PostItem = ({ post, active = false }) => {
     comments_container,
   } = Styles;
 
+  const openDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
+
   const handleFavoriteClick = async (postId) => {
     try {
-      const response = await axios.post(`${apiUrl}/api/posts/fav/${postId}`, {}, { withCredentials: true });
+      const response = await axios.post(
+        `${apiUrl}/api/posts/fav/${postId}`,
+        {},
+        { withCredentials: true }
+      );
       if (response.status === 200) {
         setIsFavorited(response.data.isFavorited);
         setFavoritesCount(response.data.favoritesCount);
       }
     } catch (error) {
-      console.error('error al actualizar fav: ', error.message)
+      console.error("error al actualizar fav: ", error.message);
     }
   };
 
   const handleCommentClick = () => {
-    setShowComments(prevShowComments => !prevShowComments);
+    setShowComments((prevShowComments) => !prevShowComments);
   };
 
   const handleCommentSubmit = async (postId) => {
     try {
-      const response = await axios.post(`${apiUrl}/api/posts/reply/${postId}`, { text: comment }, { withCredentials: true });
+      const response = await axios.post(
+        `${apiUrl}/api/posts/reply/${postId}`,
+        { text: comment },
+        { withCredentials: true }
+      );
       setReplies(response.data.post.replies);
       setRepliesCount(response.data.post.replies.length);
     } catch (error) {
-      console.error('Error al enviar la respuesta: ', error.message);
+      console.error("Error al enviar la respuesta: ", error.message);
     } finally {
-      setComment('');
+      setComment("");
     }
   };
 
@@ -81,21 +106,25 @@ const PostItem = ({ post, active = false }) => {
   };
 
   const handleDeletePostFromDropdown = () => {
-    handleDeletePost(post._id);
-    setIsDropdownOpen(false);
+    openDeleteModal();
+  setIsDropdownOpen(false);
   };
 
   useEffect(() => {
     const handleDocumentClick = (event) => {
-      if (isDropdownOpen && dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (
+        isDropdownOpen &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
         setIsDropdownOpen(false);
       }
     };
-  
-    document.addEventListener('click', handleDocumentClick);
-  
+
+    document.addEventListener("click", handleDocumentClick);
+
     return () => {
-      document.removeEventListener('click', handleDocumentClick);
+      document.removeEventListener("click", handleDocumentClick);
     };
   }, [isDropdownOpen, dropdownRef]);
 
@@ -106,27 +135,40 @@ const PostItem = ({ post, active = false }) => {
     const seconds = Math.floor(elapsedMilliseconds / 1000);
 
     if (seconds < 60) {
-      return `Hace ${seconds} segundo${seconds !== 1 ? 's' : ''}`;
+      return `Hace ${seconds} segundo${seconds !== 1 ? "s" : ""}`;
     }
 
     const minutes = Math.floor(seconds / 60);
 
     if (minutes < 60) {
-      return `Hace ${minutes} minuto${minutes !== 1 ? 's' : ''}`;
+      return `Hace ${minutes} minuto${minutes !== 1 ? "s" : ""}`;
     }
 
     const hours = Math.floor(minutes / 60);
 
     if (hours < 24) {
-      return `Hace ${hours} hora${hours !== 1 ? 's' : ''}`;
+      return `Hace ${hours} hora${hours !== 1 ? "s" : ""}`;
     }
 
     // Si han pasado más de 24 horas, mostrar la fecha y hora completas
-    const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    const meses = [
+      "enero",
+      "febrero",
+      "marzo",
+      "abril",
+      "mayo",
+      "junio",
+      "julio",
+      "agosto",
+      "septiembre",
+      "octubre",
+      "noviembre",
+      "diciembre",
+    ];
     const dia = createdAt.getDate();
     const mes = meses[createdAt.getMonth()];
     const horas = createdAt.getHours();
-    const minutos = createdAt.getMinutes().toString().padStart(2, '0');
+    const minutos = createdAt.getMinutes().toString().padStart(2, "0");
 
     // Formatea la fecha
     const formattedTimestamp = `${dia} de ${mes} a las ${horas}:${minutos}h`;
@@ -138,41 +180,68 @@ const PostItem = ({ post, active = false }) => {
     <div className={post_container_individual}>
       <div className={post_container_user}>
         {/* Información del usuario */}
-        <img src={userImage} alt="" className={user_img} onClick={() => navigate(`/${post.author.username}`)} />
+        <img
+          src={userImage}
+          alt=""
+          className={user_img}
+          onClick={() => navigate(`/${post.author.username}`)}
+        />
         <div className={user_info}>
-          <p className={user_name} onClick={() => navigate(`/${post.author.username}`)} >{post.author.username}</p>
+          <p
+            className={user_name}
+            onClick={() => navigate(`/${post.author.username}`)}
+          >
+            {post.author.username}
+          </p>
           {/* Adaptar según la fecha real en tu objeto post */}
           <p className={user_publictime}>{formatTimestamp(post.createdAt)}</p>
         </div>
         {isCurrentUserPost && (
-          <div className={dropdown} onClick={handleDropdownToggle} ref={dropdownRef}>
+          <div
+            className={dropdown}
+            onClick={handleDropdownToggle}
+            ref={dropdownRef}
+          >
             <VscKebabVertical color={orange_color} />
             {isDropdownOpen && (
-              <div className={dropdownContent} >
-                <span onClick={handleDeletePostFromDropdown}>Eliminar post</span>
+              <div className={dropdownContent}>
+                <span onClick={handleDeletePostFromDropdown}>
+                  Eliminar post
+                </span>
               </div>
             )}
           </div>
         )}
-        {post.author.profile === 'profesional' 
-          ? <LabelProfesional />
-          : null
-        }
+        {post.author.profile === "profesional" ? <LabelProfesional /> : null}
       </div>
       {/* Contenido del post */}
-      <p className={post_content} onClick={() => navigate(`/${post.author.username}/post/${post._id}`)}>{post.content}</p>
+      <p
+        className={post_content}
+        onClick={() => navigate(`/${post.author.username}/post/${post._id}`)}
+      >
+        {post.content}
+      </p>
       {/* Multimedia*/}
       {post.media && (
-        <div className={multimedia} onClick={() => navigate(`/${post.author.username}/post/${post._id}`)}>
-          <img src={`${serverMediaPath}/${post.media}`} alt="" className={multimedia_item} />
+        <div
+          className={multimedia}
+          onClick={() => navigate(`/${post.author.username}/post/${post._id}`)}
+        >
+          <img
+            src={`${serverMediaPath}/${post.media}`}
+            alt=""
+            className={multimedia_item}
+          />
         </div>
       )}
       {/* Likes y comentarios */}
       <div className={likes_container}>
         <span className={likes} onClick={() => handleFavoriteClick(post._id)}>
-          {isFavorited
-            ? (<VscStarFull color={orange_color} />)
-            : (<VscStarEmpty color={orange_color} />)}
+          {isFavorited ? (
+            <VscStarFull color={orange_color} />
+          ) : (
+            <VscStarEmpty color={orange_color} />
+          )}
           {favoritesCount} favoritos
         </span>
         <span className={comments} onClick={() => handleCommentClick()}>
@@ -198,6 +267,19 @@ const PostItem = ({ post, active = false }) => {
           />
         </div>
       )}
+
+       {/* Modal de confirmación */}
+    {isDeleteModalOpen && (
+      <Modal
+        onClose={closeDeleteModal}
+        title="Eliminar Post"
+        description="¿Está seguro que desea eliminar el post?"
+        onConfirm={() => {
+          handleDeletePost(post._id);
+          closeDeleteModal();
+        }}
+      />
+    )}
     </div>
   );
 };
