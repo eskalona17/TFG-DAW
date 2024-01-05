@@ -2,32 +2,34 @@ import { useContext, useState, useEffect } from "react";
 import Styles from "./post.module.css";
 import Loader from "../loader/Loader";
 import PostItem from "../postItem/PostItem";
-import { PostContext } from '../../context/PostContext';
+import { PostContext } from "../../context/PostContext";
 
 const Post = () => {
-  const { loading, currentFilter, feedPosts, filteredPostsByFilter } = useContext(PostContext);
-  const [visiblePosts, setVisiblePosts] = useState(5); // Número de publicaciones a mostrar inicialmente
+  const { loading, currentFilter, feedPosts, filteredPostsByFilter } =
+    useContext(PostContext);
+    // number of posts at the beginning
+  const [visiblePosts, setVisiblePosts] = useState(5);
   const [isFetching, setIsFetching] = useState(false);
 
   const handleScroll = () => {
-
-    if ((window.innerHeight + Math.round(window.scrollY)) >= document.body.offsetHeight) {
+    if (
+      window.innerHeight + Math.round(window.scrollY) >=
+      document.body.offsetHeight
+    ) {
       // you're at the bottom of the page
       setIsFetching(true);
-
-  }
+    }
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, []); 
+  }, []);
 
   useEffect(() => {
     const fetchMorePosts = () => {
-      
       setTimeout(() => {
         setVisiblePosts((prevVisiblePosts) => prevVisiblePosts + 5);
         setIsFetching(false);
@@ -39,7 +41,8 @@ const Post = () => {
     }
   }, [isFetching]);
 
-  const postsToDisplay = currentFilter === 'all' ? feedPosts : filteredPostsByFilter;
+  const postsToDisplay =
+    currentFilter === "all" ? feedPosts : filteredPostsByFilter;
 
   return (
     <div className={Styles.post}>
@@ -48,19 +51,20 @@ const Post = () => {
       ) : (
         <>
           {postsToDisplay.length > 0 ? (
-            postsToDisplay.slice(0, visiblePosts).map((post) => (
-              <PostItem key={post._id} post={post} />
-            ))
+            postsToDisplay
+              .slice(0, visiblePosts)
+              .map((post) => <PostItem key={post._id} post={post} />)
           ) : (
             <section className={Styles.noPosts}>
-              {currentFilter === 'all' ? (
+              {currentFilter === "all" ? (
                 <p>No hay publicaciones</p>
               ) : (
                 <p>No hay publicaciones con este perfil</p>
               )}
             </section>
           )}
-          {isFetching && <Loader />} {/* Muestra el loader mientras se obtienen más publicaciones */}
+          {isFetching && <Loader />}{" "}
+          {/* fetch more posts and show loader */}
         </>
       )}
     </div>
