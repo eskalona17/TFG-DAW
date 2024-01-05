@@ -10,18 +10,14 @@ const Messages = () => {
   const { loading, conversations, unread, messages, activeConversation, setActiveConversation, handleSendMessage, newMessageToSend, setNewMessageToSend } = useContext(SocketContext);
   const endOfMessagesRef = useRef(null);
 
-
-  const scrollToBottom = () => {
-    if (endOfMessagesRef.current) {
-      const scrollHeight = endOfMessagesRef.current.scrollHeight;
-      endOfMessagesRef.current.scrollTop = scrollHeight;
-    }
-  };
-
   useEffect(() => {
-    if (endOfMessagesRef.current) {
-      scrollToBottom();
-    }
+    const scrollToBottom = () => {
+      if (endOfMessagesRef.current) {
+        const scrollHeight = endOfMessagesRef.current.scrollHeight;
+        endOfMessagesRef.current.scrollTop = scrollHeight;
+      }
+    };
+    setTimeout(scrollToBottom, 100);
   }, [messages]);
 
   return (

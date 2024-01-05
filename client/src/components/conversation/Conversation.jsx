@@ -5,11 +5,9 @@ import { es } from 'date-fns/locale';
 import LabelProfesional from "../labelProfesional/LabelProfesional";
 import { SocketContext } from "../../context/SocketContext";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Conversation = ({ conversation, onClick }) => {
-  if (!conversation) {
-    return
-  }
   const { onlineUsers } = useContext(SocketContext)
   const { lastMessage, participants, createdAt } = conversation
   const { sender, text, timestamp } = lastMessage
@@ -17,10 +15,11 @@ const Conversation = ({ conversation, onClick }) => {
   const { userImage } = useUserImage(participants[0], '75');
   const timeAgo = lastMessage.text ? formatDistanceToNow(new Date(timestamp), { addSuffix: true, locale: es }) : formatDistanceToNow(new Date(createdAt), { addSuffix: true, locale: es })
   const online = onlineUsers.includes(_id)
+  const navigate = useNavigate();
 
   return (
     <div className={Styles.conversation} onClick={() => onClick(_id)} >
-      <img src={userImage} alt="" className={Styles.image} />
+      <img src={userImage} alt="" className={Styles.image} onClick={() => navigate(`/${username}`)} />
       <span className={`${online ? Styles.online : Styles.offline}`}></span>
       <div className={Styles.info_container}>
         <div className={Styles.info}>
