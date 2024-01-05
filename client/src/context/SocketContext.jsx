@@ -57,7 +57,7 @@ export const SocketContextProvider = ({ children }) => {
     if (location.pathname !== '/messages') {
       setActiveConversation(null);
     }
-  }, [currentUser._id, location.pathname]);
+  }, [currentUser?._id, location.pathname]);
 
   const handleSendMessage = async (recipientId, message) => {
     if (message.trim() === '') return;
@@ -161,7 +161,7 @@ export const SocketContextProvider = ({ children }) => {
     return () => {
       socket && socket.close()
     }
-  }, [currentUser._id])
+  }, [currentUser?._id])
 
   useEffect(() => {
     if (locationConversation) {
@@ -196,7 +196,7 @@ export const SocketContextProvider = ({ children }) => {
       }
       loadMessages(activeConversation);
     }
-  }, [activeConversation, currentUser._id, socket]);
+  }, [activeConversation, currentUser?._id, socket]);
 
   return (
     <SocketContext.Provider value={{ socket, loading, onlineUsers, conversations, setConversations, unread, setUnread, messages, setMessages, activeConversation, setActiveConversation, handleSendMessage, newMessageToSend, setNewMessageToSend, locationConversation, endOfMessagesRef }}>

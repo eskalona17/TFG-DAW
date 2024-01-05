@@ -144,15 +144,24 @@
 
 .dropdown{
   position: absolute;
+  top: 1rem;
   right: 0;
   cursor: pointer;
 }
 
 .dropdownContent {
-  display: flex;
-  flex-direction: column;
+  color: var(--primary-font-color);
+  width: max-content;
+  padding: .5rem 1rem;
   position: absolute;
-  background-color: var(--bg-main-color);;
-  min-width: 160px;
+  right: 2rem;
+  top: -.5rem;
+  background-color: var(--bg-main-color);
+  border-radius: 6px;
   z-index: 1;
+}
+
+.dropdownContent:hover {
+  background-color: var(--orange-color);
+  color: var(--btn-main-color);
 }

@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useState } from "rea
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 import { AuthContext } from "./AuthContext";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export const PostContext = createContext();
 
@@ -11,7 +12,7 @@ export const PostContextProvider = ({ children }) => {
   const [feedPosts, setFeedPosts] = useState([]);
   const [filteredPostsByFilter, setFilteredPostsByFilter] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   const handleFilterChange = (filter) => {
     setCurrentFilter(filter);
   }
@@ -36,6 +37,27 @@ export const PostContextProvider = ({ children }) => {
     }
   }, [feedPosts]);
 
+  const handleDeletePost = useCallback(async (postId) => {
+    try {
+      const response = await axios.delete(`${apiUrl}/api/posts/delete/${postId}`, { withCredentials: true });
+      if (response.status === 200) {
+        toast.success('Post eliminado correctamente', {
+          position: 'top-center',
+          autoClose: 3000,
+        });
+
+        const updatedPosts = feedPosts.filter(post => post._id !== postId);
+        setFeedPosts(updatedPosts);
+      }
+    } catch (error) {
+      console.error('Error al eliminar el post: ', error.message);
+      toast.error('Error al borrar el post', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
+    }
+  }, [feedPosts]);
+
   useEffect(() => {
     getPosts();
   }, [currentUser, getPosts]);
@@ -44,9 +66,8 @@ export const PostContextProvider = ({ children }) => {
     filterPostByFilter(currentFilter);
   }, [currentUser, currentFilter, filterPostByFilter]);
 
-
   return (
-    <PostContext.Provider value={{ loading, getPosts, feedPosts, filteredPostsByFilter, filterPostByFilter, currentFilter, handleFilterChange }}>
+    <PostContext.Provider value={{ loading, getPosts, feedPosts, filteredPostsByFilter, filterPostByFilter, currentFilter, handleFilterChange, handleDeletePost }}>
       {children}
     </PostContext.Provider>
   );

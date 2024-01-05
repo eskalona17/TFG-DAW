@@ -1,21 +1,22 @@
 import { VscStarEmpty, VscStarFull, VscComment, VscKebabVertical } from "react-icons/vsc";
 import { AuthContext } from "../../context/AuthContext";
 import useUserImage from "../../hooks/useUserImage";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Styles from "./postItem.module.css";
 import Input from "../input/Input";
 import axios from "axios";
 import ReplyItem from "../replyItem/ReplyItem";
 import LabelProfesional from "../labelProfesional/LabelProfesional";
 import { useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { PostContext } from "../../context/PostContext";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const PostItem = ({ post, active = false }) => {
   const { currentUser } = useContext(AuthContext);
   const { userImage } = useUserImage(post.author, '75');
+  const {handleDeletePost } = useContext(PostContext);
   const [isFavorited, setIsFavorited] = useState(post.favorites.includes(currentUser._id));
   const [favoritesCount, setFavoritesCount] = useState(post.favorites.length);
   const [showComments, setShowComments] = useState(active);
@@ -27,6 +28,7 @@ const PostItem = ({ post, active = false }) => {
   const orange_color = "#ffa07a";
   const isCurrentUserPost = post.author._id === currentUser._id;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const {
     post_container_user,
@@ -80,29 +82,22 @@ const PostItem = ({ post, active = false }) => {
 
   const handleDeletePostFromDropdown = () => {
     handleDeletePost(post._id);
-    setIsDropdownOpen(false); // Cierra el desplegable después de eliminar el post
+    setIsDropdownOpen(false);
   };
 
-  const handleDeletePost = async (postId) => {
-    try {
-      const response = await axios.delete(`${apiUrl}/api/posts/delete/${postId}`, { withCredentials: true });
-      if (response.status === 200) {
-        console.log(response)
-        toast.success('Post Eliminado Correctamente', {
-          position: 'top-center',
-          autoClose: 3000,
-          
-        });
+  useEffect(() => {
+    const handleDocumentClick = (event) => {
+      if (isDropdownOpen && dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
       }
-    } catch (error) {
-      console.error('Error al eliminar el post: ', error.message);
-      toast.error('Error al borrar el post', {
-        position: 'top-center',
-        autoClose: 3000,
-        
-      });
-    }
-  };
+    };
+  
+    document.addEventListener('click', handleDocumentClick);
+  
+    return () => {
+      document.removeEventListener('click', handleDocumentClick);
+    };
+  }, [isDropdownOpen, dropdownRef]);
 
   const formatTimestamp = (timestamp) => {
     const createdAt = new Date(timestamp);
@@ -150,12 +145,11 @@ const PostItem = ({ post, active = false }) => {
           <p className={user_publictime}>{formatTimestamp(post.createdAt)}</p>
         </div>
         {isCurrentUserPost && (
-          <div className={dropdown} onClick={handleDropdownToggle}>
+          <div className={dropdown} onClick={handleDropdownToggle} ref={dropdownRef}>
             <VscKebabVertical color={orange_color} />
             {isDropdownOpen && (
-              <div className={dropdownContent}>
+              <div className={dropdownContent} >
                 <span onClick={handleDeletePostFromDropdown}>Eliminar post</span>
-                
               </div>
             )}
           </div>

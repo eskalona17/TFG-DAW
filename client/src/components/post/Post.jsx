@@ -1,13 +1,11 @@
 import { PostContext } from '../../context/PostContext';
 import { useContext } from "react";
-
 import Styles from "./post.module.css";
 import Loader from "../loader/Loader";
 import PostItem from "../postItem/PostItem";
 
 const Post = () => {
   const { loading, currentFilter, feedPosts, filteredPostsByFilter } = useContext(PostContext);
-
 
   return (
     <div className={Styles.post}>
