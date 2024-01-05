@@ -15,6 +15,7 @@ import LabelProfesional from "../labelProfesional/LabelProfesional";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { PostContext } from "../../context/PostContext";
+import Modal from "../modal/Modal";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -36,6 +37,7 @@ const PostItem = ({ post, active = false }) => {
   const isCurrentUserPost = post.author._id === currentUser._id;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const {
     post_container_user,
@@ -54,6 +56,14 @@ const PostItem = ({ post, active = false }) => {
     comments,
     comments_container,
   } = Styles;
+
+  const openDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
 
   const handleFavoriteClick = async (postId) => {
     try {
@@ -96,8 +106,8 @@ const PostItem = ({ post, active = false }) => {
   };
 
   const handleDeletePostFromDropdown = () => {
-    handleDeletePost(post._id);
-    setIsDropdownOpen(false);
+    openDeleteModal();
+  setIsDropdownOpen(false);
   };
 
   useEffect(() => {
@@ -257,6 +267,19 @@ const PostItem = ({ post, active = false }) => {
           />
         </div>
       )}
+
+       {/* Modal de confirmación */}
+    {isDeleteModalOpen && (
+      <Modal
+        onClose={closeDeleteModal}
+        title="Eliminar Post"
+        description="¿Está seguro que desea eliminar el post?"
+        onConfirm={() => {
+          handleDeletePost(post._id);
+          closeDeleteModal();
+        }}
+      />
+    )}
     </div>
   );
 };
