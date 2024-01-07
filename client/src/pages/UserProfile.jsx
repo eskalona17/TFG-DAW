@@ -7,15 +7,19 @@ import Button from '../components/button/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Styles from './pages.module.css';
 import axios from 'axios';
+import useFollowUnfollow from '../hooks/useFollowUnfollow';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const UserProfile = () => {
+  const { currentUser, followUnfollow } = useFollowUnfollow();
   const { loading, user } = useGetUserProfile();
   const { userImage } = useUserImage(user);
   const [activeButton, setActiveButton] = useState('publications');
   const [userPosts, setUserPosts] = useState([]);
   const [userMediaPosts, setUserMediaPosts] = useState([]);
+  const isFollowing = currentUser?.following.includes(user?._id);
+  const buttonText = isFollowing ? 'No seguir' : 'Seguir';
   const location = useLocation();
   const username = location.pathname.split('/')[1];
   const navigate = useNavigate();
@@ -27,7 +31,7 @@ const UserProfile = () => {
 
   const getUserPosts = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/posts/user/${username}`, { withCredentials: true });
+      const response = await axios.get(`${apiUrl}/api/posts/user${username}`, { withCredentials: true });
       setUserPosts(response.data);
     } catch (error) {
       console.error("Error:", error.message);
@@ -41,6 +45,21 @@ const UserProfile = () => {
       setUserMediaPosts(mediaUserPosts);
     }
   }
+
+  const sendMessage = async (recipientId) => {
+    try {
+      const response = await axios.post(`${apiUrl}/api/messages/conversation/`, { recipientId }, { withCredentials: true });
+      const conversation = response.data.conversation;
+      if (!conversation) {
+        return
+      }
+      if (conversation && conversation._id) {
+        navigate('/mensajes', { state: { conversation } });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <main className="main">
@@ -59,6 +78,18 @@ const UserProfile = () => {
               <p>
                 {user ? `@${user.username}` : "@usuario"}
               </p>
+              <div className={Styles.button_container}>
+                <Button
+                  text={buttonText}
+                  onClick={() => followUnfollow(user?._id)}
+                  variant="primary"
+                />
+                <Button
+                  text="Mensaje"
+                  onClick={() => sendMessage(user?._id)}
+                  variant='secondary'
+                />
+              </div>
               <div className={Styles.follow_container}>
                 <Button
                   text={

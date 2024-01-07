@@ -149,8 +149,6 @@
   }
 }
 
-
-
 /* styles for toggle */
 .checkbox {
   opacity: 0;
@@ -196,4 +194,15 @@
   border-radius: 6px;
   padding: 1rem;
   margin: 0;
+}
+
+/* Styles for user profile */
+
+.button_container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
 }
