@@ -78,18 +78,22 @@ const UserProfile = () => {
               <p>
                 {user ? `@${user.username}` : "@usuario"}
               </p>
-              <div className={Styles.button_container}>
-                <Button
-                  text={buttonText}
-                  onClick={() => followUnfollow(user?._id)}
-                  variant="primary"
-                />
-                <Button
-                  text="Mensaje"
-                  onClick={() => sendMessage(user?._id)}
-                  variant='secondary'
-                />
-              </div>
+              {
+                currentUser.username !== user.username && (
+                  <div className={Styles.button_container}>
+                    <Button
+                      text={buttonText}
+                      onClick={() => followUnfollow(user._id)}
+                      variant={isFollowing ? 'secondary' : 'primary'}
+                    />
+                    <Button
+                      text="Mensaje"
+                      onClick={() => sendMessage(user._id)}
+                      variant='secondary'
+                    />
+                  </div>
+                )
+              }
               <div className={Styles.follow_container}>
                 <Button
                   text={
