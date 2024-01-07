@@ -4,7 +4,7 @@ import PostItem from '../components/postItem/PostItem';
 import Loader from '../components/loader/Loader';
 import useUserImage from '../hooks/useUserImage';
 import Button from '../components/button/Button';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Styles from './pages.module.css';
 import axios from 'axios';
 
@@ -18,6 +18,7 @@ const UserProfile = () => {
   const [userMediaPosts, setUserMediaPosts] = useState([]);
   const location = useLocation();
   const username = location.pathname.split('/')[1];
+  const navigate = useNavigate();
 
   useEffect(() => {
     getUserPosts();
@@ -68,7 +69,7 @@ const UserProfile = () => {
                       }`
                       : "0 seguidores"
                   }
-                  onClick={() => console.log("click")}
+                  onClick={() => navigate(`/${username}/seguidores`)}
                   variant="alternative"
                 />
                 <Button
@@ -80,7 +81,7 @@ const UserProfile = () => {
                       }`
                       : "0 seguidos"
                   }
-                  onClick={() => console.log("click")}
+                  onClick={() => navigate(`/${username}/seguidos`)}
                   variant="alternative"
                 />
               </div>

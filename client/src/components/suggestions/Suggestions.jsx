@@ -30,7 +30,7 @@ const Suggestions = () => {
     <div className={suggestions}>
       <h2 className={title}>Sugerencias</h2>
       {users.map(user => (
-        <SuggestedUser key={user._id} user={user} variant='mini' />
+        <SuggestedUser key={user._id} user={user} version='mini' />
       ))}
       <Button
         text="Ver más"
