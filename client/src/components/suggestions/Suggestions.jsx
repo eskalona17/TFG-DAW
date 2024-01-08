@@ -40,15 +40,9 @@ const Suggestions = () => {
   return (
     <div className={suggestions}>
       <h2 className={title}>Sugerencias</h2>
-      {users.length > 0 ? (
-        users.map((user) => (
-          <SuggestedUser key={user._id} user={user} variant="mini" />
-        ))
-      ) : (
-        <p className={noSuggestionsMessage}>
-          No hay usuarios sugeridos con tus preferencias en este momento.
-        </p>
-      )}
+      {users.map(user => (
+        <SuggestedUser key={user._id} user={user} version='mini' />
+      ))}
       <Button
         text="Ver más"
         onClick={() => navigate("/explora")}

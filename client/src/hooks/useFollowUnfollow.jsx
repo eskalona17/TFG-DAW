@@ -53,8 +53,8 @@ const useFollowUnfollow = () => {
     });
 
     return () => {
-      socket.off('userFollow');
-      socket.off('userUnfollow');
+      socket?.off('userFollow');
+      socket?.off('userUnfollow');
     };
   }, [socket, currentUser._id, setCurrentUser]);
 

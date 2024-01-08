@@ -473,3 +473,35 @@ export async function getUserById (req, res) {
     res.status(500).json({ error: 'Internal server error' })
   }
 }
+
+export async function getFollowers (req, res) {
+  const { username } = req.params
+  try {
+    const user = await User.findOne({ username })
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+    const followers = await User.find({ _id: { $in: user.followers } })
+    console.log('followers', followers)
+    res.status(200).json(followers)
+  } catch (error) {
+    console.error('Error:', error.message)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+}
+
+export async function getFollowing (req, res) {
+  const { username } = req.params
+  try {
+    const user = await User.findOne({ username })
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+    const following = await User.find({ _id: { $in: user.following } })
+    console.log('following', following)
+    res.status(200).json(following)
+  } catch (error) {
+    console.error('Error:', error.message)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+}

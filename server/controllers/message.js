@@ -106,7 +106,7 @@ export async function getConversation (req, res) {
 }
 
 export async function getConversations (req, res) {
-  const userId = req.user._id
+  const userId = req.user?._id
   try {
     const conversations = await Conversation.find({ participants: userId }).populate({
       path: 'participants'

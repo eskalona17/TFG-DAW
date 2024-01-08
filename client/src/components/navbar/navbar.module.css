@@ -1,7 +1,6 @@
 .navbar {
   grid-area: navbar;
   background-color: var(--bg-secondary-color);
-  color: var(--primary-font-color);
   border-radius: 6px;
   margin: 0;
   padding: 1rem;
@@ -13,8 +12,6 @@
   justify-content: center;
 
 }
-
-
 
 @media (min-width: 600px) {
   .navbar {

@@ -1,4 +1,4 @@
-import { login, register, updateProfile, removeUser, logout, followUnfollow, getUserProfile, searchUsers, forgetPassword, resetPassword, getSuggestedUsers, getCurrentUser, getUserById } from '../controllers/user.js'
+import { login, register, updateProfile, removeUser, logout, followUnfollow, getUserProfile, searchUsers, forgetPassword, resetPassword, getSuggestedUsers, getCurrentUser, getUserById, getFollowers, getFollowing } from '../controllers/user.js'
 import protectRoute from '../middlewares/protectRoute.js'
 import express from 'express'
 
@@ -9,6 +9,8 @@ router.get('/search', protectRoute, searchUsers)
 router.get('/profile/:username', protectRoute, getUserProfile)
 router.get('/user', protectRoute, getCurrentUser)
 router.get('/user-info/:userId', protectRoute, getUserById)
+router.get('/:username/followers', protectRoute, getFollowers)
+router.get('/:username/following', protectRoute, getFollowing)
 router.post('/register', register)
 router.post('/login', login)
 router.post('/forget-password', forgetPassword)
