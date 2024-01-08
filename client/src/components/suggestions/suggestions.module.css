@@ -9,6 +9,12 @@
   padding: 1rem;
   margin: 0;
   gap: 1rem;
+  align-items: center;
+}
+
+.noSuggestionsMessage {
+  width: 15rem;
+  text-align: center;
 }
 
 .title {

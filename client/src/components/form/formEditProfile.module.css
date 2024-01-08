@@ -7,8 +7,8 @@
 }
 
 .imageContainer {
-  position: relative;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
 }
 
 .userImage {
@@ -20,11 +20,13 @@
 }
 
 .editButton {
-  position: absolute;
-  bottom: 85%;
-  left: 45%;
-  background-color: var(--orange-color);
-  color: var(--primary-font-color);
+  align-self: center;
+  transition: all 0.3s;
+  margin-bottom: 10px;
+}
+
+.editButton:hover {
+  color: var(--orange-color);
 }
 
 .inputContainer {
@@ -45,7 +47,7 @@
   background-color: var(--bg-main-color);
   align-self: center;
   border: 1px solid var(--orange-color);
-  padding: 10px; 
+  padding: 10px;
   border-radius: 6px 0px 0px 6px;
   border-color: var(--light-orange);
 }
@@ -57,7 +59,6 @@
   font-size: 14px;
   border: 1px solid var(--light-orange);
   border-radius: 6px;
-
 }
 .errors_display {
   display: flex;
@@ -75,9 +76,9 @@
   justify-content: space-between;
   border-radius: 6px;
 }
-  
+
 .perfilButton.active {
-  background-color:var(--orange-color);
+  background-color: var(--orange-color);
   color: var(--btn-main-color);
   border-color: var(--orange-color);
 }
@@ -94,10 +95,10 @@
 }
 
 .bottomButtonContainer {
-display: flex;
-justify-content: center;
-align-items: center;
-margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
 }
 
 .checkboxesContainer {
@@ -107,22 +108,20 @@ margin: 10px 0;
 }
 
 .checkboxOption {
-  margin-bottom: 10px;
-  
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
 }
 
 .checkboxOption label {
   margin-left: 5px;
 }
-.checkboxOption {
-  margin-bottom: 10px;
-  
-}
+
 
 .checkboxOption input[type="checkbox"] {
   -webkit-appearance: none;
   appearance: none;
-  background-color: var(--bg-main-color);;
+  background-color: var(--bg-main-color);
   border: 1px solid var(--orange-color);
   border-radius: 4px;
   padding: 5px;
@@ -130,7 +129,5 @@ margin: 10px 0;
 }
 
 .checkboxOption input[type="checkbox"]:checked {
-  
   background-color: var(--orange-color);
- 
 }
