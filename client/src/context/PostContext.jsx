@@ -5,10 +5,11 @@ import {
   useEffect,
   useState,
 } from "react";
-const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-import { AuthContext } from "./AuthContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { AuthContext } from "./AuthContext";
+
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 export const PostContext = createContext();
 
@@ -19,9 +20,6 @@ export const PostContextProvider = ({ children }) => {
   const [filteredPostsByFilter, setFilteredPostsByFilter] = useState([]);
   const [loading, setLoading] = useState(true);
   const [inputKey, setInputKey] = useState(Math.random().toString());
-  // const { selectedImage } = imageData;
-
-
   const [newPostContent, setNewPostContent] = useState("");
   const [imageData, setImageData] = useState({
     selectedImage: null,
@@ -34,39 +32,43 @@ export const PostContextProvider = ({ children }) => {
 
   const getPosts = useCallback(async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/posts/feed`, {
-        withCredentials: true,
-      });
-      if (response && response.data) {
-        setFeedPosts(response.data);
+      if (currentUser) {
+        const response = await axios.get(`${apiUrl}/api/posts/feed`, {
+          withCredentials: true,
+        });
+        if (response && response.data) {
+          setFeedPosts(response.data);
+        }
       }
     } catch (error) {
       console.error("Error:", error.message);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [currentUser]);
 
   const newPost = async () => {
     try {
-      const formData = new FormData();
-      formData.append("content", newPostContent);
+      if (currentUser) {
+        const formData = new FormData();
+        formData.append("content", newPostContent);
 
-      if (imageData.selectedImage) {
-        formData.append("media", imageData.selectedImage);
+        if (imageData.selectedImage) {
+          formData.append("media", imageData.selectedImage);
+        }
+
+        await axios.post(`${apiUrl}/api/posts/create`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        });
+        getPosts();
+        toast.success("Post Publicado", {
+          position: "top-center",
+          autoClose: 3000,
+        });
       }
-
-      await axios.post(`${apiUrl}/api/posts/create`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      });
-      getPosts();
-      toast.success("Post Publicado", {
-        position: "top-center",
-        autoClose: 3000,
-      });
     } catch (error) {
       console.error("Error al crear el nuevo post:", error.message);
       console.error("Detalles del error:", error.response.data);
@@ -145,12 +147,17 @@ export const PostContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    getPosts();
+    if (currentUser) {
+      getPosts();
+    }
   }, [currentUser, getPosts]);
 
   useEffect(() => {
-    filterPostByFilter(currentFilter);
+    if (currentUser) {
+      filterPostByFilter(currentFilter);
+    }
   }, [currentUser, currentFilter, filterPostByFilter]);
+
 
   return (
     <PostContext.Provider
@@ -169,7 +176,7 @@ export const PostContextProvider = ({ children }) => {
         setNewPostContent,
         imageData,
         setImageData,
-        handleImageChange
+        handleImageChange,
       }}
     >
       {children}

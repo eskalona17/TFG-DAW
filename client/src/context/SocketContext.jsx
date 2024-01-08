@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react"
 import io from "socket.io-client"
-import { AuthContext } from "./AuthContext"
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 export const SocketContext = createContext()
@@ -27,6 +27,11 @@ export const SocketContextProvider = ({ children }) => {
   const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
+    if (!currentUser) {
+      // Manejar el caso en el que no hay usuario almacenado.
+      return;
+    }
+
     const getConversations = async () => {
       setLoading(true);
       try {
@@ -53,6 +58,7 @@ export const SocketContextProvider = ({ children }) => {
         setLoading(false);
       }
     }
+
     getConversations();
     if (location.pathname !== '/messages') {
       setActiveConversation(null);
@@ -91,6 +97,11 @@ export const SocketContextProvider = ({ children }) => {
   }
 
   useEffect(() => {
+    if (!currentUser) {
+      // Manejar el caso en el que no hay usuario almacenado.
+      return;
+    }
+
     const socket = io(apiUrl, {
       query: {
         userId: currentUser?._id
@@ -170,33 +181,37 @@ export const SocketContextProvider = ({ children }) => {
   }, [locationConversation]);
 
   useEffect(() => {
-    if (activeConversation) {
-      const loadMessages = async (activeConversation) => {
-        if (!activeConversation.participants || !Array.isArray(activeConversation.participants) || activeConversation.participants.length === 0) {
-          return;
-        }
-
-        const otherUserId = activeConversation.participants.find(participant => participant._id !== currentUser._id)._id;
-
-        if (!otherUserId) {
-          return;
-        }
-
-        try {
-          const response = await axios.get(`${apiUrl}/api/messages/${otherUserId}`, { withCredentials: true });
-          const messages = response.data.messages;
-          socket.emit('markMessagesAsSeen', { conversationId: activeConversation._id });
-          setMessages({
-            [activeConversation._id]: messages
-          });
-          setUnread(prev => ({ ...prev, [activeConversation._id]: false }));
-        } catch (error) {
-          console.error(error);
-        }
-      }
-      loadMessages(activeConversation);
+    if (!currentUser || !activeConversation) {
+      // Manejar el caso en el que no hay usuario activo o conversación activa.
+      return;
     }
-  }, [activeConversation, currentUser?._id, socket]);
+
+    const loadMessages = async (activeConversation) => {
+      if (!activeConversation.participants || !Array.isArray(activeConversation.participants) || activeConversation.participants.length === 0) {
+        return;
+      }
+
+      const otherUserId = activeConversation.participants.find(participant => participant._id !== currentUser._id)._id;
+
+      if (!otherUserId) {
+        return;
+      }
+
+      try {
+        const response = await axios.get(`${apiUrl}/api/messages/${otherUserId}`, { withCredentials: true });
+        const messages = response.data.messages;
+        socket.emit('markMessagesAsSeen', { conversationId: activeConversation._id });
+        setMessages({
+          [activeConversation._id]: messages
+        });
+        setUnread(prev => ({ ...prev, [activeConversation._id]: false }));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadMessages(activeConversation);
+  }, [currentUser?._id, activeConversation, socket]);
 
   return (
     <SocketContext.Provider value={{ socket, loading, onlineUsers, conversations, setConversations, unread, setUnread, messages, setMessages, activeConversation, setActiveConversation, handleSendMessage, newMessageToSend, setNewMessageToSend, locationConversation, endOfMessagesRef }}>
