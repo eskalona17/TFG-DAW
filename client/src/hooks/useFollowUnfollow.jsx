@@ -32,16 +32,19 @@ const useFollowUnfollow = () => {
   };
 
   useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
     socket?.on('userFollow', (id) => {
       setCurrentUser(prevUser => {
-        if (prevUser._id === id && !prevUser.followers.includes(currentUser._id)) {
+        if (prevUser && prevUser._id === id && Array.isArray(prevUser.followers) && !prevUser.followers.includes(currentUser._id)) {
           return { ...prevUser, followers: [...prevUser.followers, currentUser._id] };
         } else {
           return prevUser;
         }
       });
     });
-
+  
     socket?.on('userUnfollow', (id) => {
       setCurrentUser(prevUser => {
         if (prevUser._id === id && prevUser.followers.includes(currentUser._id)) {
@@ -51,12 +54,12 @@ const useFollowUnfollow = () => {
         }
       });
     });
-
+  
     return () => {
       socket?.off('userFollow');
       socket?.off('userUnfollow');
     };
-  }, [socket, currentUser._id, setCurrentUser]);
+  }, [socket, currentUser, setCurrentUser]);
 
   return { currentUser, followUnfollow };
 };
