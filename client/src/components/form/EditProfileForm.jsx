@@ -193,16 +193,15 @@ export default function Formulario() {
   const handleCheckboxChange = (animal) => {
     setSelectedLabels((prevSelected) => {
       const isSelected = prevSelected.includes(animal);
-      console.log(`Before: ${prevSelected}`);
-
+  
       const updatedSelectedLabels = isSelected
         ? prevSelected.filter((selected) => selected !== animal)
         : [...prevSelected, animal];
-
-      console.log(`After: ${updatedSelectedLabels}`);
+  
       return updatedSelectedLabels;
     });
   };
+  
 
   return (
     <form onSubmit={onSubmit} className={form}>

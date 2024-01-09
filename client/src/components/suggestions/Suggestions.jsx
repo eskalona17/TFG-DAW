@@ -11,20 +11,31 @@ const Suggestions = () => {
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
 
-  const { suggestions, title } = Styles;
+  const { suggestions, title, noSuggestionsMessage } = Styles;
 
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axios.get(`${apiUrl}/api/users/suggested-users?limit=4`, {
-      withCredentials: true
-    })
-      .then(response => {
-        const otherUsers = response.data.filter(user => user._id !== currentUser._id);
-        setUsers(otherUsers.slice(0, 3));
+    axios
+      .get(`${apiUrl}/api/users/suggested-users?limit=4`, {
+        withCredentials: true,
+        params: { labels: currentUser.labels }
       })
-      .catch(error => console.error(error));
-  }, [currentUser._id]);
+      .then((response) => {
+        const suggestedUsers = response.data
+          .filter((user) => user._id !== currentUser._id)
+          .sort((a, b) => {
+            const aCoincidences = a.labels.filter(label => currentUser.labels.includes(label)).length;
+            const bCoincidences = b.labels.filter(label => currentUser.labels.includes(label)).length;
+            return bCoincidences - aCoincidences;
+          });
+
+          console.log(suggestedUsers);
+  
+        setUsers(suggestedUsers.slice(0, 3));
+      })
+      .catch((error) => console.error(error));
+  }, [currentUser.labels, currentUser._id]);
 
   return (
     <div className={suggestions}>
@@ -33,7 +44,7 @@ const Suggestions = () => {
         <SuggestedUser key={user._id} user={user} version='mini' />
       ))}
       <Button
-        text="Ver más"
+        text="Ver más"
         onClick={() => navigate("/explora")}
         variant="primary"
       />

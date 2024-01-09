@@ -474,26 +474,26 @@ export async function searchUsers (req, res) {
 
 export async function getSuggestedUsers (req, res) {
   const page = parseInt(req.query.page) || 1
-  const limit = parseInt(req.query.limit)
+  const limit = parseInt(req.query.limit) || 10;
   const skip = (page - 1) * limit
 
   try {
-    const totalUsers = await User.countDocuments()
+    const currentUser = req.user;
+    const limit = parseInt(req.query.limit) || 10;
 
-    if (skip >= totalUsers) {
-      return res.status(200).json([])
-    }
+    const suggestedUsers = await User.find({
+      labels: { $in: currentUser.labels },
+      _id: { $ne: currentUser._id }
+    })
+      .sort({
+        labels: -1
+      })
+      .limit(limit);
 
-    const users = await User.find().skip(skip).limit(limit)
-
-    if (!users || users.length === 0) {
-      return res.status(404).json({ message: 'No users found' })
-    }
-
-    return res.status(200).json(users)
+    res.json(suggestedUsers);
   } catch (error) {
-    console.error('Error:', error)
-    return res.status(500).json({ error: 'Internal server error' })
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
