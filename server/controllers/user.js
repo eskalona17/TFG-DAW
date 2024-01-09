@@ -35,7 +35,14 @@ export async function register (req, res) {
 
     const userExists = await User.findOne({ $or: [{ username }, { email }] })
     if (userExists) {
-      return res.status(409).json({ error: 'User already exists' })
+      let errorType
+      if (userExists.username === username) {
+        errorType = 'username'
+      } else if (userExists.email === email) {
+        errorType = 'email'
+      }
+
+      return res.status(409).json({ error: 'User already exists', type: errorType })
     }
 
     if (profile === 'profesional' && !address) {
@@ -296,7 +303,9 @@ export async function updateProfile (req, res) {
     }
 
     if (password && newPassword !== confirmNewPassword) {
-      return res.status(400).json({ message: 'New passwords do not match' })
+      return res
+        .status(400)
+        .json({ message: 'New passwords do not match' })
     }
 
     if (password && newPassword === confirmNewPassword) {
@@ -323,7 +332,9 @@ export async function updateProfile (req, res) {
             .status(400)
             .json({ message: 'Error en la carga de la imagen de perfil' })
         } else if (err) {
-          return res.status(500).json({ message: 'Error interno del servidor' })
+          return res
+            .status(500)
+            .json({ message: 'Error interno del servidor' })
         }
 
         // Si la carga de la imagen es exitosa, actualiza la propiedad de la imagen de perfil
@@ -333,7 +344,9 @@ export async function updateProfile (req, res) {
         if (profile === 'profesional' && !address) {
           return res
             .status(400)
-            .json({ message: 'Address is required for professional profiles' })
+            .json({
+              message: 'Address is required for professional profiles'
+            })
         }
 
         user.name = name ?? user.name
@@ -350,13 +363,39 @@ export async function updateProfile (req, res) {
           user
         })
       } catch (error) {
-        console.error('Error:', error.message)
-        res.status(500).json({ error: 'Internal server error' })
+        if (
+          error.code === 11000 &&
+          error.keyPattern &&
+          error.keyPattern.username
+        ) {
+          // Violación de clave duplicada para el campo 'username'
+          return res.status(409).json({
+            error: 'Conflicto',
+            type: 'username',
+            message: 'El nombre de usuario ya está registrado'
+          })
+        } else if (
+          error.code === 11000 &&
+          error.keyPattern &&
+          error.keyPattern.email
+        ) {
+          // Violación de clave duplicada para el campo 'email'
+          return res.status(409).json({
+            error: 'Conflicto',
+            type: 'email',
+            message: 'El correo electrónico ya está registrado'
+          })
+        } else {
+          console.error('Error:', error.message)
+          return res
+            .status(500)
+            .json({ error: 'Error interno del servidor' })
+        }
       }
     })
   } catch (error) {
     console.error('Error:', error.message)
-    res.status(500).json({ error: 'Internal server error' })
+    res.status(500).json({ error: 'Error interno del servidor' })
   }
 }
 

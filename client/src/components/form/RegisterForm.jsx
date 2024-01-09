@@ -62,14 +62,36 @@ export default function Form() {
       }
     } catch (error) {
       console.error("Error:", error.message);
-      toast.error('Error al registrar', {
-        position: 'top-center',
-        autoClose: 3000,
-        
-      });
+      if (error.response && error.response.status === 409 && error.response.data && error.response.data.error && error.response.data.type) {
+        const conflictError = error.response.data.error;
+        const conflictType = error.response.data.type;
+    
+        let errorMessage;
+    
+        if (conflictType === 'username') {
+          errorMessage = 'El nombre de usuario ya está registrado';
+        } else if (conflictType === 'email') {
+          errorMessage = 'El correo electrónico ya está registrado';
+        } else {
+          errorMessage = 'Error al registrar';
+        }
+    
+        console.error("Conflicto:", conflictError);
+        toast.error(errorMessage, {
+          position: 'top-center',
+          autoClose: 3000,
+        });
+      } else {
+        toast.error('Error al registrar', {
+          position: 'top-center',
+          autoClose: 3000,
+        });
+      }
     }
+  
     reset();
   });
+  
 
   //personal profile as a default
   const [profile, setProfile] = useState("personal");
