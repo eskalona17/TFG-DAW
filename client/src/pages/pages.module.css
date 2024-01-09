@@ -149,8 +149,6 @@
   }
 }
 
-
-
 /* styles for toggle */
 .checkbox {
   opacity: 0;
@@ -186,4 +184,25 @@
 
 .checkbox:checked + .checkbox_label .ball {
   transform: translateX(24px);
+}
+
+/* styles for followers and following */
+
+.no_followers, .no_following {
+  background-color: var(--bg-secondary-color);
+  color: var(--primary-font-color);
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 0;
+}
+
+/* Styles for user profile */
+
+.button_container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
 }

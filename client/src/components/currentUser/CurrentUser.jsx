@@ -48,7 +48,7 @@ const CurrentUser = () => {
               }`
               : "0 seguidores"
           }
-          onClick={() => console.log("click")}
+          onClick={() => navigate(`/${currentUser.username}/seguidores`)}
           variant="alternative"
         />
         <Button
@@ -60,7 +60,7 @@ const CurrentUser = () => {
               }`
               : "0 seguidos"
           }
-          onClick={() => console.log("click")}
+          onClick={() => navigate(`/${currentUser.username}/seguidos`)}
           variant="alternative"
         />
       </div>

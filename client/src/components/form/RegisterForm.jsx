@@ -47,11 +47,9 @@ export default function Form() {
       // }
 
       if (response.status === 201) {
-        console.log("Usuario registrado exitosamente");
-        toast.success('Usuario Registrado Correctamente', {
+        toast.success('Usuario registrado correctamente', {
           position: 'top-center',
           autoClose: 3000,
-          
         });
         navigate("/login");
         reset();
@@ -60,7 +58,6 @@ export default function Form() {
         toast.error('Error al registrar', {
           position: 'top-center',
           autoClose: 3000,
-          
         });
       }
     } catch (error) {
