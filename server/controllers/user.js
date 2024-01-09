@@ -264,9 +264,9 @@ export async function followUnfollow (req, res) {
   }
 }
 
-export async function updateProfile (req, res) {
-  const { id } = req.params
-  const userId = req.user._id
+export async function updateProfile(req, res) {
+  const { id } = req.params;
+  const userId = req.user._id;
   const {
     name,
     username,
@@ -276,52 +276,52 @@ export async function updateProfile (req, res) {
     confirmNewPassword,
     profile,
     address,
-    labels
-  } = req.body
+    labels,
+  } = req.body;
 
   try {
-    if (name) await validateText(name)
-    if (username) await validateText(username)
-    if (email) await validateEmail(email)
-    if (password) await validatePassword(password)
-    if (newPassword) await validatePassword(newPassword)
-    if (confirmNewPassword) await validatePassword(confirmNewPassword)
-    if (address) await validateAddress(address)
+    if (name) await validateText(name);
+    if (username) await validateText(username);
+    if (email) await validateEmail(email);
+    if (password) await validatePassword(password);
+    if (newPassword) await validatePassword(newPassword);
+    if (confirmNewPassword) await validatePassword(confirmNewPassword);
+    if (address) await validateAddress(address);
 
-    let user = await User.findById(userId)
+    let user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' })
+      return res.status(404).json({ message: 'User not found' });
     }
 
     if (id !== userId.toString()) {
-      return res.status(401).json({ message: 'Unauthorized' })
+      return res.status(401).json({ message: 'Unauthorized' });
     }
 
     if (password && (!newPassword || !confirmNewPassword)) {
-      return res.status(400).json({ message: 'Password is required' })
+      return res.status(400).json({ message: 'Password is required' });
     }
 
     if (password && newPassword !== confirmNewPassword) {
       return res
         .status(400)
-        .json({ message: 'New passwords do not match' })
+        .json({ message: 'New passwords do not match' });
     }
 
     if (password && newPassword === confirmNewPassword) {
       const isCurrentPasswordCorrect = bcrypt.compareSync(
         password,
         user.password
-      )
+      );
 
       if (!isCurrentPasswordCorrect) {
         return res
           .status(400)
-          .json({ message: 'Current password is incorrect' })
+          .json({ message: 'Current password is incorrect' });
       }
 
-      const hashedPwd = await bcrypt.hash(newPassword, 10)
-      user.password = hashedPwd
+      const hashedPwd = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPwd;
     }
 
     // Manejar la carga de la imagen de perfil antes de continuar
@@ -330,38 +330,38 @@ export async function updateProfile (req, res) {
         if (err instanceof multer.MulterError) {
           return res
             .status(400)
-            .json({ message: 'Error en la carga de la imagen de perfil' })
+            .json({ message: 'Error en la carga de la imagen de perfil' });
         } else if (err) {
           return res
             .status(500)
-            .json({ message: 'Error interno del servidor' })
+            .json({ message: 'Error interno del servidor' });
         }
 
         // Si la carga de la imagen es exitosa, actualiza la propiedad de la imagen de perfil
-        user.profilePic = req.file ? req.file.filename : user.profilePic
+        user.profilePic = req.file ? req.file.filename : user.profilePic;
 
         // Continuar con la lógica de actualización del perfil del usuario
         if (profile === 'profesional' && !address) {
           return res
             .status(400)
             .json({
-              message: 'Address is required for professional profiles'
-            })
+              message: 'Address is required for professional profiles',
+            });
         }
 
-        user.name = name ?? user.name
-        user.username = username ?? user.username
-        user.email = email ?? user.email
-        user.profile = profile ?? user.profile
-        user.address = address ?? user.address
-        user.labels = labels ?? user.labels
-        user = await user.save()
+        user.name = name ?? user.name;
+        user.username = username ?? user.username;
+        user.email = email ?? user.email;
+        user.profile = profile ?? user.profile;
+        user.address = address ?? user.address;
+        user.labels = labels ?? user.labels;
+        user = await user.save();
 
         res.status(200).json({
           success: true,
           message: 'User profile updated successfully',
-          user
-        })
+          user,
+        });
       } catch (error) {
         if (
           error.code === 11000 &&
@@ -372,8 +372,8 @@ export async function updateProfile (req, res) {
           return res.status(409).json({
             error: 'Conflicto',
             type: 'username',
-            message: 'El nombre de usuario ya está registrado'
-          })
+            message: 'El nombre de usuario ya está registrado',
+          });
         } else if (
           error.code === 11000 &&
           error.keyPattern &&
@@ -383,19 +383,19 @@ export async function updateProfile (req, res) {
           return res.status(409).json({
             error: 'Conflicto',
             type: 'email',
-            message: 'El correo electrónico ya está registrado'
-          })
+            message: 'El correo electrónico ya está registrado',
+          });
         } else {
-          console.error('Error:', error.message)
+          console.error('Error:', error.message);
           return res
             .status(500)
-            .json({ error: 'Error interno del servidor' })
+            .json({ error: 'Error interno del servidor' });
         }
       }
-    })
+    });
   } catch (error) {
-    console.error('Error:', error.message)
-    res.status(500).json({ error: 'Error interno del servidor' })
+    console.error('Error:', error.message);
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 }
 
