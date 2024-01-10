@@ -216,7 +216,7 @@ export default function Formulario () {
           className={userImage}
         />
         <div className={editButton} onClick={handleImageChange}>
-          <VscDeviceCamera style={{ fontSize: "24px" }} />
+          <VscDeviceCamera style={{ fontSize: "24px", color: "var(--primary-font-color)" }} />
         </div>
       </div>
 
@@ -306,7 +306,7 @@ export default function Formulario () {
           name="password"
           onClick={handleCambiarPassword}
           className={input}
-          placeholder="Contraseña Actual"
+          placeholder="••••••"
           {...register("password", {
             minLength: {
               value: 6,

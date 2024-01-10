@@ -20,12 +20,29 @@
   color: var(--primary-font-color);
   border-radius: 6px;
   height: 400px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .message_container::before {
   content: "";
   flex-grow: 1;
+}
+
+.message_container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.message_container::-webkit-scrollbar-track {
+  background: transparent; 
+}
+
+.message_container::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 6px;
+}
+
+.message_container::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }
 
 .unread {
