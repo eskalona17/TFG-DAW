@@ -34,6 +34,11 @@
   margin-top: 1rem;
 }
 
+.multimedia_Container svg:hover {
+  color: var(--orange-color);
+  transition: color .3s;
+}
+
 .multimedia_button {
   color: var(--primary-font-color);
   font-size: 1rem;

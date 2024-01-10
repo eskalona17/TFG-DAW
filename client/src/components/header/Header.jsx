@@ -17,6 +17,7 @@ const Header = () => {
     header,
     title_container,
     logo,
+    title,
     search_container,
     search_form,
     search,
@@ -100,6 +101,7 @@ const Header = () => {
           alt="Insta Pet Logo"
           className={logo}
         />
+        <h1 className={title}>InstaPet</h1>
       </div>
       <div className={search_container} ref={searchRef}>
         <form className={search_form}>

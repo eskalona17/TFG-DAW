@@ -12,10 +12,15 @@
 .title_container {
   padding: 0 2rem;
   flex: 1;
+  display: flex;
+  gap: 1rem;
 }
 
 .title {
   font-size: 2rem;
+  font-family: "Caveat";
+  color: var(--primary-font-color);
+  cursor: pointer;
 }
 
 .search_container {
@@ -65,9 +70,15 @@
   justify-content: flex-end;
 }
 
+.notifications:hover {
+  color: var(--orange-color);
+  transition: color .3s;
+}
+
 .logo {
   width: 3rem;
   cursor: pointer;
+  object-fit: contain;
 }
 
 .search_results {

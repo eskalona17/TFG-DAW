@@ -4,6 +4,12 @@
     url("./fonts/Inter/Inter-Regular.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "Caveat";
+  src: local("Caveat"), local("Caveat"),
+    url("./fonts/Caveat/Caveat-Regular.ttf") format("truetype");
+}
+
 :root {
   --main-font: "Inter";
   --alternative-font-color: #000;
