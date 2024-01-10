@@ -22,14 +22,14 @@ const {
   button,
 } = Styles;
 
-export default function LoginForm() {
+export default function LoginForm () {
   const { login } = useContext(AuthContext);
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset,
-  } = useForm();
+  } = useForm({ mode: "onChange" });
 
   const navigate = useNavigate();
 
@@ -38,7 +38,6 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false); // show or hide password
 
   const onSubmitLogin = handleSubmit(async (data) => {
-    
     try {
       // Use the login function from the context and await its completion
       await login(data);
@@ -61,16 +60,16 @@ export default function LoginForm() {
   const onSubmitForgotPassword = handleSubmit(async (data) => {
     try {
       await axios.post(apiUrl + "/api/users/forget-password", data);
-      toast.success('E-mail enviado', {
+
+    } catch (error) {
+      console.error("Error:", error.response.data.error || "Internal server error");
+    } finally {
+      toast.success('E-mail enviado correctamente', {
         position: 'top-center',
         autoClose: 3000,
       });
-    } catch (error) {
-      console.error(
-        "Error:",
-        error.response.data.error || "Internal server error"
-      );
     }
+    reset();
   });
 
   const [recoverPassword, setRecoverPassword] = useState(false);
@@ -78,13 +77,11 @@ export default function LoginForm() {
   const handleForgotPasswordClick = () => {
     setOriginalState(false); // Cambiar al estado de recuperación de contraseña
     setRecoverPassword(true);
-    reset();
   };
 
   const handleGoBackClick = () => {
     setOriginalState(true); // Cambiar al estado original
     setRecoverPassword(false);
-    reset();
   };
 
   return (
@@ -92,7 +89,7 @@ export default function LoginForm() {
       {recoverPassword ? (
         <>
           <h3>Introduce tu email</h3>
-          <form>
+          <form onSubmit={onSubmitForgotPassword} noValidate>
             {/* Email */}
             <div className={input_container}>
               <input
@@ -116,7 +113,6 @@ export default function LoginForm() {
             </div>
             <Button
               text="Enviar"
-              onClick={onSubmitForgotPassword}
               className={button}
               type="submit"
               variant="primary-large"
