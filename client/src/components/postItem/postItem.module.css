@@ -70,6 +70,7 @@
 }
 
 .likes_container {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -144,8 +145,8 @@
 
 .dropdown{
   position: absolute;
-  top: 1rem;
   right: 0;
+  bottom: 0;
   cursor: pointer;
 }
 
@@ -154,7 +155,7 @@
   width: max-content;
   padding: .5rem 1rem;
   position: absolute;
-  right: 2rem;
+  right: 1.7rem;
   top: -.5rem;
   background-color: var(--bg-main-color);
   border-radius: 6px;
@@ -164,4 +165,10 @@
 .dropdownContent:hover {
   background-color: var(--orange-color);
   color: var(--btn-main-color);
+}
+
+.dropdownIcon {
+  width: min-content;
+  height: 15px;
+  stroke-width: 1;
 }

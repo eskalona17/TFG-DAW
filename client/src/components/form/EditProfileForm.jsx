@@ -5,7 +5,6 @@ import Styles from "./formEditProfile.module.css";
 import Button from "../button/Button";
 import { VscDeviceCamera } from "react-icons/vsc";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import useUserImage from "./../../hooks/useUserImage";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,6 +18,7 @@ const {
   label,
   input,
   errors_display,
+  noError,
   button,
   selectorContainer,
   perfilButton,
@@ -31,7 +31,6 @@ const {
 } = Styles;
 
 export default function Formulario () {
-  const navigate = useNavigate();
   const { currentUser, setCurrentUser } = useContext(AuthContext);
   const [mostrarConfirmarPassword, setMostrarConfirmarPassword] =
     useState(false);
@@ -62,6 +61,7 @@ export default function Formulario () {
       country: currentUser?.address?.country,
       labels: currentUser?.labels,
     },
+    mode: "onChange"
   });
 
   const onSubmit = handleSubmit(async (data) => {
@@ -76,7 +76,7 @@ export default function Formulario () {
         profile: data.profile,
         labels: selectedLabels
       };
-      
+
       if (data.street || data.city || data.zipCode || data.country) {
         commonData.address = {
           street: data.street,
@@ -126,7 +126,6 @@ export default function Formulario () {
         });
         const updatedUserData = response.data.user;
         await setCurrentUser(updatedUserData);
-        navigate("/");
         reset();
       } else {
         console.error("Error al actualizrr usuario:", response.statusText);
@@ -204,7 +203,6 @@ export default function Formulario () {
     });
   };
 
-
   return (
     <form onSubmit={onSubmit} className={form}>
       <div className={imageContainer}>
@@ -243,7 +241,7 @@ export default function Formulario () {
           defaultValue={currentUser ? currentUser.name : ""}
         />
       </div>
-      <div className={errors.name ? errors_display : ""}>
+      <div className={errors.name ? errors_display : noError}>
         {errors.name && <span>{errors.name.message}</span>}
       </div>
 
@@ -272,9 +270,8 @@ export default function Formulario () {
           defaultValue={currentUser ? currentUser.username : ""}
         />
       </div>
-      <div className={errors.username ? errors_display : ""}>
-        {errors.username && <span>{errors.username.message}</span>}
-      </div>
+
+      {errors.username && <span className={errors.username ? errors_display : noError}>{errors.username.message}</span>}
 
       {/* email */}
       <div className={inputContainer}>
@@ -296,7 +293,7 @@ export default function Formulario () {
         />
       </div>
 
-      <div className={errors.email ? errors_display : ""}>
+      <div className={errors.email ? errors_display : noError}>
         {errors.email && <span>{errors.email.message}</span>}
       </div>
 
@@ -358,7 +355,7 @@ export default function Formulario () {
               })}
             />
           </div>
-          <div className={errors.confirmPassword ? errors_display : ""}>
+          <div className={errors.confirmPassword ? errors_display : noError}>
             {errors.confirmPassword && (
               <span>{errors.confirmPassword.message}</span>
             )}
@@ -406,7 +403,7 @@ export default function Formulario () {
               defaultValue={currentUser ? currentUser.address?.street : ""}
             />
           </div>
-          <div className={errors.address ? errors_display : ""}>
+          <div className={errors.address ? errors_display : noError}>
             {errors.address && <span>{errors.address.message}</span>}
           </div>
 
@@ -434,7 +431,7 @@ export default function Formulario () {
               defaultValue={currentUser ? currentUser.address?.city : ""}
             />
           </div>
-          <div className={errors.city ? errors_display : ""}>
+          <div className={errors.city ? errors_display : noError}>
             {errors.city && <span>{errors.city.message}</span>}
           </div>
 
@@ -459,7 +456,7 @@ export default function Formulario () {
               defaultValue={currentUser ? currentUser.address?.zipCode : ""}
             />
           </div>
-          <div className={errors.zipCode ? errors_display : ""}>
+          <div className={errors.zipCode ? errors_display : noError}>
             {errors.zipCode && <span>{errors.zipCode.message}</span>}
           </div>
 
@@ -480,54 +477,58 @@ export default function Formulario () {
               defaultValue={currentUser ? currentUser.address?.country : "España"}
             />
           </div>
-          <div className={errors.country ? errors_display : ""}>
+          <div className={errors.country ? errors_display : noError}>
             {errors.country && <span>{errors.country.message}</span>}
           </div>
         </>
       )}
       <div className={inputContainer}>
         <div className={checkboxesContainer}>
-          <label className={label}>Etiquetas:</label>
+          <label className={label} style={{ borderRadius: "6px"}}>Etiquetas:</label>
 
           <div className={checkboxOption}>
             <input
               type="checkbox"
+              id="gatos"
               {...register("labels")}
               value="gatos"
               defaultChecked={currentUser?.labels?.includes("gatos")}
               onChange={() => handleCheckboxChange("gatos")}
             />
-            <label>Gatos</label>
+            <label htmlFor="gatos">Gatos</label>
           </div>
           <div className={checkboxOption}>
             <input
               type="checkbox"
+              id="perros"
               {...register("labels")}
               value="perros"
               defaultChecked={currentUser?.labels?.includes("perros")}
               onChange={() => handleCheckboxChange("perros")}
             />
-            <label>Perros</label>
+            <label htmlFor="perros">Perros</label>
           </div>
           <div className={checkboxOption}>
             <input
               type="checkbox"
+              id="roedores"
               {...register("labels")}
               value="roedores"
               defaultChecked={currentUser?.labels?.includes("roedores")}
               onChange={() => handleCheckboxChange("roedores")}
             />
-            <label>Roedores</label>
+            <label htmlFor="roedores">Roedores</label>
           </div>
           <div className={checkboxOption}>
             <input
               type="checkbox"
+              id="reptiles"
               {...register("labels")}
               value="reptiles"
               defaultChecked={currentUser?.labels?.includes("reptiles")}
               onChange={() => handleCheckboxChange("reptiles")}
             />
-            <label>Reptiles</label>
+            <label htmlFor="reptiles">Reptiles</label>
           </div>
         </div>
       </div>

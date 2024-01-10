@@ -50,6 +50,7 @@ const PostItem = ({ post, active = false }) => {
     multimedia,
     dropdown,
     dropdownContent,
+    dropdownIcon,
     multimedia_item,
     likes_container,
     likes,
@@ -196,22 +197,6 @@ const PostItem = ({ post, active = false }) => {
           {/* Adaptar según la fecha real en tu objeto post */}
           <p className={user_publictime}>{formatTimestamp(post.createdAt)}</p>
         </div>
-        {isCurrentUserPost && (
-          <div
-            className={dropdown}
-            onClick={handleDropdownToggle}
-            ref={dropdownRef}
-          >
-            <VscKebabVertical color={orange_color} />
-            {isDropdownOpen && (
-              <div className={dropdownContent}>
-                <span onClick={handleDeletePostFromDropdown}>
-                  Eliminar post
-                </span>
-              </div>
-            )}
-          </div>
-        )}
         {post.author.profile === "profesional" ? <LabelProfesional /> : null}
       </div>
       {/* Contenido del post */}
@@ -248,6 +233,22 @@ const PostItem = ({ post, active = false }) => {
           <VscComment color={orange_color} />
           {repliesCount} comentarios
         </span>
+        {isCurrentUserPost && (
+          <span
+            className={dropdown}
+            onClick={handleDropdownToggle}
+            ref={dropdownRef}
+          >
+            <VscKebabVertical color={orange_color} className={dropdownIcon}/>
+            {isDropdownOpen && (
+              <div className={dropdownContent}>
+                <span onClick={handleDeletePostFromDropdown}>
+                  Eliminar post
+                </span>
+              </div>
+            )}
+          </span>
+        )}
       </div>
       {/* Mostrar comentarios */}
       {showComments && (

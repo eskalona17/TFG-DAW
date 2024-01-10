@@ -24,7 +24,6 @@ export default function RecoverPassword() {
   const navigate = useNavigate();
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
     try {
       await axios.post(apiUrl + `/api/users/reset-password/${token}`, data);
       toast.success('Contraseña Modificada', {
@@ -45,7 +44,7 @@ export default function RecoverPassword() {
   return (
     <div className={form_container}>
       <h3>Reestablece tu contraseña</h3>
-      <form>
+      <form onSubmit={onSubmit}>
         {/* password */}
         <div className={input_container}>
           <input
@@ -93,7 +92,6 @@ export default function RecoverPassword() {
         </div>
         <Button
           text="Enviar"
-          onClick={onSubmit}
           className={button}
           type="submit"
           variant="primary-large"

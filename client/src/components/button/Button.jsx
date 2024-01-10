@@ -13,8 +13,7 @@ const Button = ({ text, onClick, variant, disabled }) => {
   const [isLoading, setIsLoading] = useState(false);
   const buttonClass = `${Styles.button} ${Styles[variant]}`
 
-  const handleClick = async (event) => {
-    event.preventDefault();
+  const handleClick = async () => {
     setIsLoading(true);
     if(typeof onClick ==='function'){
       await onClick();

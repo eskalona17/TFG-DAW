@@ -2,11 +2,25 @@
   grid-area: footer;
   background-color: var(--bg-secondary-color);
   color: var(--primary-font-color);
-  padding: 20px;
+  padding: 1rem;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  flex-direction: column;
+  margin: 0;
 }
 
+.collaborators {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 1rem;
+}
 
+.collaborators li {
+  margin: 0;
+  padding: 0;
+}
+
+.rights {
+  align-self: center;
+}

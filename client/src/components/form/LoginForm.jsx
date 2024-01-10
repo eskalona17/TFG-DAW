@@ -38,6 +38,7 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false); // show or hide password
 
   const onSubmitLogin = handleSubmit(async (data) => {
+    
     try {
       // Use the login function from the context and await its completion
       await authContext.login(data);
@@ -134,8 +135,8 @@ export default function LoginForm() {
         </>
       ) : (
         <>
-          <h3>LOGIN</h3>
-          <form>
+          <h3>Inicia sesión</h3>
+          <form onSubmit={onSubmitLogin}>
             {/* username */}
             <div className={input_container}>
               <input
@@ -152,9 +153,9 @@ export default function LoginForm() {
                     message: "Usuario o email tiene que tener tres caracteres",
                   },
                   maxLength: {
-                    value: 20,
+                    value: 50,
                     message:
-                      "Usuario o email no puede tener más de 20 caracteres",
+                      "Usuario o email no puede tener más de 50 caracteres",
                   },
                 })}
               />
@@ -207,7 +208,6 @@ export default function LoginForm() {
               text="Entrar"
               className={button}
               type="submit"
-              onClick={onSubmitLogin}
               variant="primary-large"
             />
           </form>
@@ -216,7 +216,7 @@ export default function LoginForm() {
       {originalState && !recoverPassword && (
         <div className={register_container}>
           <p>¿No tienes cuenta?</p>
-          <Link to="/register">Registrate</Link>
+          <Link to="/register">Regístrate</Link>
         </div>
       )}
     </div>

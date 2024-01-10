@@ -4,16 +4,12 @@ const Footer = () => {
   const { footer, collaborators, rights } = Styles;
   return (
     <footer className={footer}>
-      <div>
-        <ul className={collaborators}>
-          <li>Fernando Escalona Alonso</li>
-          <li>Ignacio Menéndez López</li>
-          <li>Laura Tortosa Gil de Pareja</li>
-        </ul>
-        <ul className={rights}>
-          <li>InstaPet © 2023 - All rights reserved</li>
-        </ul>
-      </div>
+      <ul className={collaborators}>
+        <li>Fernando Escalona Alonso</li>
+        <li>Ignacio Menéndez López</li>
+        <li>Laura Tortosa Gil de Pareja</li>
+      </ul>
+      <p className={rights}>InstaPet © 2023 - Todos los derechos reservados</p>
     </footer>
   );
 };
