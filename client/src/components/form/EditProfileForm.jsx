@@ -16,11 +16,13 @@ const {
   userImage,
   inputContainer,
   label,
+  labelLabel,
   input,
   errors_display,
   noError,
   button,
   selectorContainer,
+  tooltip,
   perfilButton,
   checkboxesContainer,
   checkboxOption,
@@ -482,9 +484,13 @@ export default function Formulario () {
           </div>
         </>
       )}
+
+      {/* labels */}
       <div className={inputContainer}>
         <div className={checkboxesContainer}>
-          <label className={label} style={{ borderRadius: "6px"}}>Etiquetas:</label>
+          <label className={labelLabel} style={{ borderRadius: "6px" }}>Etiquetas:
+            <span className={tooltip}>?</span>
+          </label>
 
           <div className={checkboxOption}>
             <input

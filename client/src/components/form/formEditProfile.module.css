@@ -42,13 +42,54 @@
   display: flex;
 }
 
-.label {
+.label, .labelLabel {
   background-color: var(--bg-main-color);
   align-self: center;
   border: 1px solid var(--orange-color);
   padding: 10px;
   border-radius: 6px 0px 0px 6px;
   border-color: var(--light-orange);
+}
+
+.labelLabel {
+  position: relative;
+}
+
+.tooltip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--light-orange);
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: -.5rem;
+  right: -.5rem;
+  font-size: .7rem;
+  padding: .2rem;
+  border: 1px solid var(--light-orange);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.tooltip::before {
+  content: "Selecciona etiquetas en función de tus preferencias";
+  width: max-content;
+  position: absolute;
+  top: -2.5rem;
+  font-size: .7rem;
+  background-color: var(--bg-main-color);
+  border: 1px solid var(--light-orange);
+  padding: .5rem;
+  border-radius: 5px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover::before {
+  visibility: visible;
+  opacity: 1;
 }
 
 .input {
@@ -112,7 +153,6 @@
 }
 
 .checkboxOption {
-  margin: 10px 0;
   display: flex;
   align-items: center;
 }
