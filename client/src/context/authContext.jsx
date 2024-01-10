@@ -7,7 +7,9 @@ export const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [profilePic, setProfilePic] = useState(null);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(
+    JSON.parse(localStorage.getItem("user")) ?? null
+  );
 
   const login = async (inputs) => {
     try {
@@ -26,7 +28,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post(`${apiUrl}/api/users/logout`, "", {
+      await axios.post(`${apiUrl}/api/users/logout`, "",{
         withCredentials: true,
       });
       localStorage.removeItem('user');
@@ -42,15 +44,16 @@ export const AuthContextProvider = ({ children }) => {
     const fetchUser = async () => {
       try {
         setLoading(true);
-        const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-          const { password, ...userData } = JSON.parse(storedUser);
-          const user = { ...userData };
-          setCurrentUser(user);
-          setProfilePic(user.profilePic);
-        }
+        const res = await axios.get(`${apiUrl}/api/users/user`, { withCredentials: true });
+        const { password, ...userData } = res.data;
+        const user = { ...userData };
+        setCurrentUser(user);
+        setProfilePic(user.profilePic)
+        localStorage.setItem("user", JSON.stringify(user));
       } catch (error) {
-        console.error("Ocurrió un error al obtener el usuario del almacenamiento local: ", error);
+        if (error.response && error.response.status !== 401) {
+          console.error(error);
+        }
       } finally {
         setLoading(false);
       }

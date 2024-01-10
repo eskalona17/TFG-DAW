@@ -36,7 +36,7 @@ export async function validateAddress (address) {
     street: z.string(),
     city: z.string(),
     zipCode: z.number().int().min(1000).max(52999),
-    country: z.enum(['spain'])
+    country: z.enum(['España'])
   })
   return await addressSchema.parseAsync(address)
 }

@@ -30,12 +30,12 @@ const {
   editButton,
 } = Styles;
 
-export default function Formulario() {
+export default function Formulario () {
   const navigate = useNavigate();
   const { currentUser, setCurrentUser } = useContext(AuthContext);
   const [mostrarConfirmarPassword, setMostrarConfirmarPassword] =
     useState(false);
-  const [profile, setProfile] = useState(currentUser.profile || "personal");
+  const [profile, setProfile] = useState(currentUser?.profile || "personal");
   const [imageData, setImageData] = useState({
     selectedImage: null,
     imagePreview: null,
@@ -56,10 +56,10 @@ export default function Formulario() {
       username: currentUser?.username,
       email: currentUser?.email,
       profile: currentUser?.profile,
-      address: currentUser?.address,
-      city: currentUser?.city,
-      zipCode: currentUser?.zipCode,
-      country: currentUser?.country,
+      street: currentUser?.address?.street,
+      city: currentUser?.address?.city,
+      zipCode: currentUser?.address?.zipCode,
+      country: currentUser?.address?.country,
       labels: currentUser?.labels,
     },
   });
@@ -74,12 +74,17 @@ export default function Formulario() {
         newPassword: data.newPassword,
         confirmNewPassword: data.confirmNewPassword,
         profile: data.profile,
-        address: data.address,
-        city: data.city,
-        zipCode: data.zipCode,
-        country: data.country,
         labels: selectedLabels
       };
+      
+      if (data.street || data.city || data.zipCode || data.country) {
+        commonData.address = {
+          street: data.street,
+          city: data.city,
+          zipCode: Number(data.zipCode),
+          country: data.country,
+        };
+      }
 
       let response = null;
       if (selectedImage) {
@@ -114,14 +119,12 @@ export default function Formulario() {
       }
 
       if (response.status === 200) {
-        console.log("Usuario actualizado exitosamente");
         toast.success('Usuario Actualizado', {
           position: 'top-center',
           autoClose: 3000,
-          
+
         });
         const updatedUserData = response.data.user;
-        console.log("Respuesta de la API:", response.data.user);
         await setCurrentUser(updatedUserData);
         navigate("/");
         reset();
@@ -130,18 +133,17 @@ export default function Formulario() {
         toast.error('Error al actualizar los datos', {
           position: 'top-center',
           autoClose: 3000,
-          
+
         });
       }
     } catch (error) {
       console.error("Error:", error.message);
-  
+
       if (error.response && error.response.status === 409 && error.response.data && error.response.data.error && error.response.data.type) {
         const conflictError = error.response.data.error;
         const conflictType = error.response.data.type;
-        console.log(conflictType);
         let errorMessage;
-  
+
         if (conflictType === 'username') {
           errorMessage = 'El nombre de usuario ya está registrado';
         } else if (conflictType === 'email') {
@@ -149,7 +151,7 @@ export default function Formulario() {
         } else {
           errorMessage = 'Error al actualizar';
         }
-  
+
         console.error("Conflicto:", conflictError);
         toast.error(errorMessage, {
           position: 'top-center',
@@ -161,7 +163,7 @@ export default function Formulario() {
           autoClose: 3000,
         });
       }
-  
+
       reset();
     }
   });
@@ -193,15 +195,15 @@ export default function Formulario() {
   const handleCheckboxChange = (animal) => {
     setSelectedLabels((prevSelected) => {
       const isSelected = prevSelected.includes(animal);
-  
+
       const updatedSelectedLabels = isSelected
         ? prevSelected.filter((selected) => selected !== animal)
         : [...prevSelected, animal];
-  
+
       return updatedSelectedLabels;
     });
   };
-  
+
 
   return (
     <form onSubmit={onSubmit} className={form}>
@@ -311,7 +313,7 @@ export default function Formulario() {
               value: 6,
               message: "La contraseña debe tener al menos 6 caracteres",
             },
-            
+
           })}
         />
       </div>
@@ -369,18 +371,16 @@ export default function Formulario() {
         <div className={selectorContainer}>
           <label className={label}>Perfil:</label>
           <div
-            className={`${perfilButton} ${
-              profile === "personal" ? Styles.active : ""
-            }`}
+            className={`${perfilButton} ${profile === "personal" ? Styles.active : ""
+              }`}
             style={{ borderRadius: "0px" }}
             onClick={() => handleCambiarprofile("personal")}
           >
             Personal
           </div>
           <div
-            className={`${perfilButton} ${
-              profile === "profesional" ? Styles.active : ""
-            }`}
+            className={`${perfilButton} ${profile === "profesional" ? Styles.active : ""
+              }`}
             style={{ borderRadius: "0px 4px 4px 0px", borderLeft: 0 }}
             onClick={() => handleCambiarprofile("profesional")}
           >
@@ -397,13 +397,13 @@ export default function Formulario() {
               name="direccion"
               className={input}
               placeholder="Dirección"
-              {...register("address", {
+              {...register("street", {
                 required: {
                   value: true,
                   message: "La dirección es requerida",
                 },
               })}
-              defaultValue={currentUser ? currentUser.address : ""}
+              defaultValue={currentUser ? currentUser.address?.street : ""}
             />
           </div>
           <div className={errors.address ? errors_display : ""}>
@@ -431,7 +431,7 @@ export default function Formulario() {
                   message: "La ciudad no puede tener más de 50 caracteres",
                 },
               })}
-              defaultValue={currentUser ? currentUser.city : ""}
+              defaultValue={currentUser ? currentUser.address?.city : ""}
             />
           </div>
           <div className={errors.city ? errors_display : ""}>
@@ -456,7 +456,7 @@ export default function Formulario() {
                     "El código postal debe tener como máximo 5 caracteres",
                 },
               })}
-              defaultValue={currentUser ? currentUser.zipCode : ""}
+              defaultValue={currentUser ? currentUser.address?.zipCode : ""}
             />
           </div>
           <div className={errors.zipCode ? errors_display : ""}>
@@ -477,8 +477,7 @@ export default function Formulario() {
                   message: "El pais es requerido",
                 },
               })}
-              defaultValue={currentUser ? currentUser.country : "España"}
-              value="España"
+              defaultValue={currentUser ? currentUser.address?.country : "España"}
             />
           </div>
           <div className={errors.country ? errors_display : ""}>
