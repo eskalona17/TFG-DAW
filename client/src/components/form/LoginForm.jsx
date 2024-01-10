@@ -23,7 +23,7 @@ const {
 } = Styles;
 
 export default function LoginForm() {
-  const authContext = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const {
     handleSubmit,
     register,
@@ -41,13 +41,11 @@ export default function LoginForm() {
     
     try {
       // Use the login function from the context and await its completion
-      await authContext.login(data);
-
+      await login(data);
       // Now that the login is complete, you can proceed with other actions
       toast.success('Bienvenido', {
         position: 'top-center',
         autoClose: 3000,
-        
       });
       navigate("/");
     } catch (error) {
@@ -55,7 +53,6 @@ export default function LoginForm() {
       toast.error('Error al iniciar sesión', {
         position: 'top-center',
         autoClose: 3000,
-        
       });
     }
     reset();
@@ -67,7 +64,6 @@ export default function LoginForm() {
       toast.success('E-mail enviado', {
         position: 'top-center',
         autoClose: 3000,
-        
       });
     } catch (error) {
       console.error(
