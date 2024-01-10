@@ -148,7 +148,6 @@ export async function forgetPassword (req, res) {
     }
 
     await transporter.sendMail(info)
-    console.log(`${BASEURL}:${PORT}/reset-password/${token}`)
 
     res
       .status(201)
@@ -180,13 +179,12 @@ export async function resetPassword (req, res) {
 
     const user = await User.findOne({ resetToken: token })
 
-    console.log(user)
-
     if (!user) {
       return res.status(404).send({ message: 'User not found' })
     }
 
     user.password = bcrypt.hashSync(password, 10)
+    user.resetToken = null
     await user.save()
 
     res.send({ message: 'Password set successfully' })
@@ -474,12 +472,12 @@ export async function searchUsers (req, res) {
 
 export async function getSuggestedUsers (req, res) {
   const page = parseInt(req.query.page) || 1
-  const limit = parseInt(req.query.limit) || 10;
+  const limit = parseInt(req.query.limit) || 10
   const skip = (page - 1) * limit
 
   try {
-    const currentUser = req.user;
-    const limit = parseInt(req.query.limit) || 10;
+    const currentUser = req.user
+    const limit = parseInt(req.query.limit) || 10
 
     const suggestedUsers = await User.find({
       labels: { $in: currentUser.labels },
@@ -488,12 +486,12 @@ export async function getSuggestedUsers (req, res) {
       .sort({
         labels: -1
       })
-      .limit(limit);
+      .limit(limit)
 
-    res.json(suggestedUsers);
+    res.json(suggestedUsers)
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error(error)
+    res.status(500).json({ error: 'Internal Server Error' })
   }
 }
 

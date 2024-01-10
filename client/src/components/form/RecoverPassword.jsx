@@ -29,7 +29,6 @@ export default function RecoverPassword() {
       toast.success('Contraseña Modificada', {
         position: 'top-center',
         autoClose: 3000,
-        
       });
       navigate("/login");
     } catch (error) {
@@ -37,6 +36,10 @@ export default function RecoverPassword() {
         "Error:",
         error.response.data.error || "Internal server error"
       );
+      toast.error('Ha ocurrido un error', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
     }
     reset();
   });
