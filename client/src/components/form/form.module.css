@@ -79,6 +79,11 @@ h3 {
   gap: 10px;
 }
 
+.register_container a:hover, .forgot_container span:hover {
+  color: var(--orange-color);
+  transition: color .3s;
+}
+
 .register_container .goback {
   display: flex;
   align-items: center;
