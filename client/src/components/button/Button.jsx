@@ -9,7 +9,7 @@ Para usar el componente debe indicarse el texto que se quiere mostrar [text] , l
 
 */
 
-const Button = ({ text, onClick, variant }) => {
+const Button = ({ text, onClick, variant, disabled }) => {
   const [isLoading, setIsLoading] = useState(false);
   const buttonClass = `${Styles.button} ${Styles[variant]}`
 
@@ -22,7 +22,7 @@ const Button = ({ text, onClick, variant }) => {
   }
 
   return (
-    <button className={buttonClass} onClick={handleClick} disabled= {isLoading} >
+    <button className={buttonClass} onClick={handleClick} disabled={disabled || isLoading} >
       {text}
     </button>
   )

@@ -35,9 +35,26 @@ export default function Form() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
+        const commonData = {
+          name: data.name,
+          username: data.username,
+          email: data.email,
+          password: data.password,
+          confirmPassword: data.confirmPassword,
+          profile: data.profile
+        };
+        
+        if (data.street || data.city || data.zipCode || data.country) {
+          commonData.address = {
+            street: data.street,
+            city: data.city,
+            zipCode: Number(data.zipCode),
+            country: data.country,
+          };
+        }
       // Enviar datos al backend
       const response = await axios.post(apiUrl + "/api/users/register", {
-        ...data,
+        ...commonData,
         profile: profile,
       });
 
@@ -97,7 +114,7 @@ export default function Form() {
   const [profile, setProfile] = useState("personal");
 
   // check if ckeckbox is accepted
-  const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
+  const isPrivacyChecked = watch('privacyCheckbox');
 
   // Estado para controlar la apertura y cierre del modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -263,7 +280,7 @@ export default function Form() {
                 type="text"
                 label="direccion"
                 name="direccion"
-                {...register("address", {
+                {...register("street", {
                   required: {
                     value: true,
                     message: "La dirección es requerida",
@@ -300,7 +317,7 @@ export default function Form() {
                 {/* codigo postal */}
                 <div className={input_container}>
                   <input
-                    type="number"
+                    type="text"
                     label="postal"
                     name="postal"
                     {...register("zipCode", {
