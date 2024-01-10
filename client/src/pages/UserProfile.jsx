@@ -31,7 +31,7 @@ const UserProfile = () => {
 
   const getUserPosts = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/posts/user${username}`, { withCredentials: true });
+      const response = await axios.get(`${apiUrl}/api/posts/user/${username}`, { withCredentials: true });
       setUserPosts(response.data);
     } catch (error) {
       console.error("Error:", error.message);
