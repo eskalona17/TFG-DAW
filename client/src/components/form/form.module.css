@@ -79,9 +79,10 @@ h3 {
   gap: 10px;
 }
 
-.register_container a:hover, .forgot_container span:hover {
+.register_container a:hover,
+.forgot_container span:hover {
   color: var(--orange-color);
-  transition: color .3s;
+  transition: color 0.3s;
 }
 
 .register_container .goback {
@@ -161,5 +162,16 @@ h3 {
   transform: translateY(-50%);
   cursor: pointer;
   font-size: 18px;
+  color: var(--orange-color);
+}
+
+.privacyLink {
+  cursor: pointer;
+  text-decoration: underline;
+  margin-left: 5px;
+  transition: color 0.3s;
+}
+
+.privacyLink:hover {
   color: var(--orange-color);
 }

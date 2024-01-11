@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import Styles from "./form.module.css";
-import axios from "axios";
-import Button from "../button/Button";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import PrivacyModal from "../privacymodal/PrivacyModal";
-import { toast } from 'react-toastify';
+import { Link, useNavigate } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
+import { useForm } from "react-hook-form";
+import Styles from "./form.module.css";
+import { toast } from 'react-toastify';
+import Button from "../button/Button";
+import { useState } from "react";
+import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -20,9 +21,14 @@ const {
   inputs_errors,
   button,
   input_LOPD,
+  showPasswordIcon,
+  privacyLink,
+  privacyCheckbox
 } = Styles;
 
-export default function Form() {
+export default function Form () {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const {
     handleSubmit,
     watch,
@@ -35,33 +41,28 @@ export default function Form() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-        const commonData = {
-          name: data.name,
-          username: data.username,
-          email: data.email,
-          password: data.password,
-          confirmPassword: data.confirmPassword,
-          profile: data.profile
+      const commonData = {
+        name: data.name,
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+        profile: data.profile
+      };
+
+      if (data.street || data.city || data.zipCode || data.country) {
+        commonData.address = {
+          street: data.street,
+          city: data.city,
+          zipCode: Number(data.zipCode),
+          country: data.country,
         };
-        
-        if (data.street || data.city || data.zipCode || data.country) {
-          commonData.address = {
-            street: data.street,
-            city: data.city,
-            zipCode: Number(data.zipCode),
-            country: data.country,
-          };
-        }
+      }
       // Enviar datos al backend
       const response = await axios.post(apiUrl + "/api/users/register", {
         ...commonData,
         profile: profile,
       });
-
-      // if (!isPrivacyChecked) {
-      //   alert("Debes aceptar la política de privacidad");
-      //   return;
-      // }
 
       if (response.status === 201) {
         toast.success('Usuario registrado correctamente', {
@@ -72,7 +73,7 @@ export default function Form() {
         reset();
       } else {
         console.error("Error al registrar usuario:", response.statusText);
-        toast.error('Error al registrar', {
+        toast.error('Ha ocurrido un error', {
           position: 'top-center',
           autoClose: 3000,
         });
@@ -82,39 +83,34 @@ export default function Form() {
       if (error.response && error.response.status === 409 && error.response.data && error.response.data.error && error.response.data.type) {
         const conflictError = error.response.data.error;
         const conflictType = error.response.data.type;
-    
+
         let errorMessage;
-    
+
         if (conflictType === 'username') {
           errorMessage = 'El nombre de usuario ya está registrado';
         } else if (conflictType === 'email') {
           errorMessage = 'El correo electrónico ya está registrado';
         } else {
-          errorMessage = 'Error al registrar';
+          errorMessage = 'Ha ocurrido un error';
         }
-    
+
         console.error("Conflicto:", conflictError);
         toast.error(errorMessage, {
           position: 'top-center',
           autoClose: 3000,
         });
       } else {
-        toast.error('Error al registrar', {
+        toast.error('Ha ocurrido un error', {
           position: 'top-center',
           autoClose: 3000,
         });
       }
     }
-  
-    reset();
   });
-  
+
 
   //personal profile as a default
   const [profile, setProfile] = useState("personal");
-
-  // check if ckeckbox is accepted
-  const isPrivacyChecked = watch('privacyCheckbox');
 
   // Estado para controlar la apertura y cierre del modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -128,7 +124,7 @@ export default function Form() {
   return (
     <div className={form_container}>
       <h3>Crea tu perfil</h3>
-      <form>
+      <form onSubmit={onSubmit}>
         {/* name */}
         <div className={input_container}>
           <input
@@ -138,11 +134,11 @@ export default function Form() {
             {...register("name", {
               required: {
                 value: true,
-                message: "El nombre es requerido",
+                message: "El nombre es obligatorio",
               },
               minLength: {
                 value: 2,
-                message: "El nombre tiene que tener dos caracteres",
+                message: "El nombre debe tener un mínimo dos caracteres",
               },
               maxLength: {
                 value: 20,
@@ -165,15 +161,15 @@ export default function Form() {
             {...register("username", {
               required: {
                 value: true,
-                message: "El usuario es requerido",
+                message: "El nombre de usuario es obligatorio",
               },
               minLength: {
                 value: 2,
-                message: "El usuario tiene que tener dos caracteres",
+                message: "El nombre de usuario debe tener un mínimo dos caracteres",
               },
               maxLength: {
                 value: 20,
-                message: "El usuario no puede tener más de 20 caracteres",
+                message: "El nombre de usuario no puede tener más de 20 caracteres",
               },
             })}
           />
@@ -192,11 +188,11 @@ export default function Form() {
             {...register("email", {
               required: {
                 value: true,
-                message: "El email es requerido",
+                message: "El email es obligatorio",
               },
               pattern: {
                 value: /^[a-z0-9._%+-]+@[a-z0-9·-]+\.[a-z]{2,4}$/,
-                message: "El email no es valido",
+                message: "El email no es válido",
               },
             })}
           />
@@ -209,21 +205,29 @@ export default function Form() {
         {/* password */}
         <div className={input_container}>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             label="Contraseña"
             name="password"
             {...register("password", {
               required: {
                 value: true,
-                message: "La contraseña es requerida",
+                message: "La contraseña es obligatoria",
               },
               minLength: {
                 value: 6,
-                message: "La contraseña debe tener al menos 6 caracteres",
+                message: "La contraseña debe tener un mínimo de 6 caracteres",
               },
             })}
           />
           <label htmlFor="password">Contraseña</label>
+          <div
+            className={showPasswordIcon}
+            onMouseDown={() => setShowPassword(true)}
+            onMouseUp={() => setShowPassword(false)}
+            onMouseLeave={() => setShowPassword(false)}
+          >
+            {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+          </div>
         </div>
         <div className={errors.password ? errors_display : ""}>
           {errors.password && <span>{errors.password.message}</span>}
@@ -232,19 +236,27 @@ export default function Form() {
         {/* Confirm password */}
         <div className={input_container}>
           <input
-            type="password"
+            type={showConfirmPassword ? "text" : "password"}
             label="Confirmar contraseña"
             name="confirm_password"
             {...register("confirmPassword", {
               required: {
                 value: true,
-                message: "Confirmar contraseña es requerido",
+                message: "Introduce nuevamente la contraseña",
               },
               validate: (value) =>
                 value === watch("password") || "Las contraseñas no coinciden",
             })}
           />
           <label htmlFor="confirm_password">Confirmar contraseña</label>
+          <div
+            className={showPasswordIcon}
+            onMouseDown={() => setShowConfirmPassword(true)}
+            onMouseUp={() => setShowConfirmPassword(false)}
+            onMouseLeave={() => setShowConfirmPassword(false)}
+          >
+            {showConfirmPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+          </div>
         </div>
         <div className={errors.confirmPassword ? errors_display : ""}>
           {errors.confirmPassword && (
@@ -283,14 +295,14 @@ export default function Form() {
                 {...register("street", {
                   required: {
                     value: true,
-                    message: "La dirección es requerida",
+                    message: "La dirección es obligatoria",
                   },
                 })}
               />
               <label htmlFor="direccion">Dirección</label>
             </div>
-            <div className={errors.address ? errors_display : ""}>
-              {errors.address && <span>{errors.address.message}</span>}
+            <div className={errors.street ? errors_display : ""}>
+              {errors.street && <span>{errors.street.message}</span>}
             </div>
 
             {/* ciudad */}
@@ -302,7 +314,7 @@ export default function Form() {
                 {...register("city", {
                   required: {
                     value: true,
-                    message: "La ciudad es requerida",
+                    message: "La ciudad es obligatoria",
                   },
                 })}
               />
@@ -323,7 +335,7 @@ export default function Form() {
                     {...register("zipCode", {
                       required: {
                         value: true,
-                        message: "El codigo postal requerido",
+                        message: "El codigo postal es obligatorio",
                       },
                       maxLength: {
                         value: 5,
@@ -350,7 +362,7 @@ export default function Form() {
                     {...register("country", {
                       required: {
                         value: true,
-                        message: "El pais es requerido",
+                        message: "El pais es obligatorio",
                       },
                     })}
                   />
@@ -369,10 +381,11 @@ export default function Form() {
           <input
             type="checkbox"
             id="privacyCheckbox"
+            className={privacyCheckbox}
             {...register("privacyCheckbox", {
               required: {
                 value: true,
-                message: "Debes aceptar la política de privacidad",
+                message: "Debes aceptar la Política de Privacidad",
               },
             })}
           />
@@ -380,13 +393,9 @@ export default function Form() {
             Aceptar
             <span
               onClick={openModal}
-              style={{
-                cursor: "pointer",
-                textDecoration: "underline",
-                marginLeft: "5px",
-              }}
+              className={privacyLink}
             >
-              Política de privacidad
+              Política de Privacidad
             </span>
           </label>
           {/* Componente PrivacyModal */}
@@ -404,7 +413,6 @@ export default function Form() {
           onClick={onSubmit}
           type="submit"
           variant="primary-large"
-          disabled={!isPrivacyChecked}
         />
       </form>
       <div className={register_container}>

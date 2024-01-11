@@ -138,16 +138,16 @@ export default function LoginForm () {
                 {...register("input", {
                   required: {
                     value: true,
-                    message: "Usuario o email es requerido",
+                    message: "El usuario o email es obligatorio",
                   },
                   minLength: {
                     value: 3,
-                    message: "Usuario o email tiene que tener tres caracteres",
+                    message: "El usuario o email debe tener un mínimo de tres caracteres",
                   },
                   maxLength: {
                     value: 50,
                     message:
-                      "Usuario o email no puede tener más de 50 caracteres",
+                      "El usuario o email no debe tener más de 50 caracteres",
                   },
                 })}
               />
@@ -166,15 +166,11 @@ export default function LoginForm () {
                 {...register("password", {
                   required: {
                     value: true,
-                    message: "La contraseña es requerida",
+                    message: "La contraseña es obligatoria",
                   },
                   minLength: {
                     value: 6,
-                    message: "La contraseña debe tener al menos 6 caracteres",
-                  },
-                  maxLength: {
-                    value: 10,
-                    message: "La contraseña no puede tener más de 10 caracteres",
+                    message: "La contraseña debe tener un mínimo de 6 caracteres",
                   }
                 })}
               />
