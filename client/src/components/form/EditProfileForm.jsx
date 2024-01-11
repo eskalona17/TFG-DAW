@@ -49,8 +49,7 @@ export default function Formulario () {
     handleSubmit,
     watch,
     register,
-    formState: { errors },
-    reset,
+    formState: { errors }
   } = useForm({
     defaultValues: {
       name: currentUser?.name,
@@ -124,17 +123,14 @@ export default function Formulario () {
         toast.success('Usuario Actualizado', {
           position: 'top-center',
           autoClose: 3000,
-
         });
         const updatedUserData = response.data.user;
-        await setCurrentUser(updatedUserData);
-        reset();
+        setCurrentUser(updatedUserData);
       } else {
         console.error("Error al actualizrr usuario:", response.statusText);
         toast.error('Error al actualizar los datos', {
           position: 'top-center',
           autoClose: 3000,
-
         });
       }
     } catch (error) {
@@ -164,8 +160,6 @@ export default function Formulario () {
           autoClose: 3000,
         });
       }
-
-      reset();
     }
   });
 
@@ -181,7 +175,6 @@ export default function Formulario () {
         imagePreview: URL.createObjectURL(file), // Crear la URL de la vista previa
       });
     };
-
     input.click();
   };
 
