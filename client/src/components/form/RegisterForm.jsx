@@ -137,12 +137,12 @@ export default function Form () {
                 message: "El nombre es obligatorio",
               },
               minLength: {
-                value: 2,
-                message: "El nombre debe tener un mínimo dos caracteres",
+                value: 3,
+                message: "El nombre debe tener un mínimo de tres caracteres",
               },
               maxLength: {
                 value: 20,
-                message: "El nombre no puede tener más de 20 caracteres",
+                message: "El nombre no debe tener más de 20 caracteres",
               },
             })}
           />
@@ -164,12 +164,12 @@ export default function Form () {
                 message: "El nombre de usuario es obligatorio",
               },
               minLength: {
-                value: 2,
-                message: "El nombre de usuario debe tener un mínimo dos caracteres",
+                value: 3,
+                message: "El nombre de usuario debe tener un mínimo de tres caracteres",
               },
               maxLength: {
                 value: 20,
-                message: "El nombre de usuario no puede tener más de 20 caracteres",
+                message: "El nombre de usuario no debe tener más de 20 caracteres",
               },
             })}
           />
@@ -316,6 +316,14 @@ export default function Form () {
                     value: true,
                     message: "La ciudad es obligatoria",
                   },
+                  minLength: {
+                    value: 3,
+                    message: "La ciudad debe tener un mínimo de 3 caracteres",
+                  },
+                  maxLength: {
+                    value: 50,
+                    message: "La ciudad no debe tener más de 50 caracteres",
+                  },
                 })}
               />
               <label htmlFor="ciudad">Ciudad</label>
@@ -335,12 +343,12 @@ export default function Form () {
                     {...register("zipCode", {
                       required: {
                         value: true,
-                        message: "El codigo postal es obligatorio",
+                        message: "El código postal es obligatorio",
                       },
                       maxLength: {
                         value: 5,
                         message:
-                          "El código postal debe tener como máximo 5 caracteres",
+                          "El código postal debe tener un máximo de 5 caracteres",
                       },
                     })}
                   />
@@ -362,7 +370,7 @@ export default function Form () {
                     {...register("country", {
                       required: {
                         value: true,
-                        message: "El pais es obligatorio",
+                        message: "El país es obligatorio",
                       },
                     })}
                   />
