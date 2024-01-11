@@ -57,6 +57,13 @@ const UserSchema = new mongoose.Schema(
       type: [String],
       default: []
     },
+    /* labels: {
+      type: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Label'
+      }],
+      default: []
+    }, */
     address: {
       street: {
         type: String,
