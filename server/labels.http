@@ -1,0 +1,2 @@
+### Get labels
+GET http://localhost:1234/api/labels

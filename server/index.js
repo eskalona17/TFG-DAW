@@ -6,6 +6,7 @@ import connectDB from './config/connectDB.js'
 import rootRouter from './routes/root.js'
 import userRouter from './routes/user.js'
 import postRouter from './routes/post.js'
+import labelRouter from './routes/label.js'
 import cookieParser from 'cookie-parser'
 import { fileURLToPath } from 'url'
 import express from 'express'
@@ -38,6 +39,7 @@ app.use('/', rootRouter)
 app.use('/api/users', userRouter)
 app.use('/api/posts', postRouter)
 app.use('/api/messages', messageRouter)
+app.use('/api/labels', labelRouter)
 app.use('*', errorHandler)
 
 server.listen(PORT, () => {
