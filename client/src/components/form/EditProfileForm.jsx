@@ -123,6 +123,8 @@ export default function Formulario () {
         toast.success('Usuario Actualizado', {
           position: 'top-center',
           autoClose: 3000,
+          theme:"colored"
+
         });
         const updatedUserData = response.data.user;
         setCurrentUser(updatedUserData);
@@ -131,6 +133,7 @@ export default function Formulario () {
         toast.error('Error al actualizar los datos', {
           position: 'top-center',
           autoClose: 3000,
+          theme:"colored"
         });
       }
     } catch (error) {
@@ -153,11 +156,13 @@ export default function Formulario () {
         toast.error(errorMessage, {
           position: 'top-center',
           autoClose: 3000,
+          theme:"colored"
         });
       } else {
         toast.error('Error al actualizar los datos', {
           position: 'top-center',
           autoClose: 3000,
+          theme:"colored"
         });
       }
     }
