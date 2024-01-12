@@ -66,7 +66,7 @@ export const PostContextProvider = ({ children }) => {
         getPosts();
         toast.success("Post Publicado", {
           position: "top-center",
-          autoClose: 3000,
+          autoClose: 3000, theme:"colored"
         });
       }
     } catch (error) {
@@ -74,7 +74,7 @@ export const PostContextProvider = ({ children }) => {
       console.error("Detalles del error:", error.response.data);
       toast.error("Error al publicar el post", {
         position: "top-center",
-        autoClose: 3000,
+        autoClose: 3000, theme:"colored"
       });
     } finally {
       setInputKey(Math.random().toString());
@@ -107,7 +107,7 @@ export const PostContextProvider = ({ children }) => {
         if (response.status === 200) {
           toast.success("Post eliminado correctamente", {
             position: "top-center",
-            autoClose: 3000,
+            autoClose: 3000, theme:"colored"
           });
 
           const updatedPosts = feedPosts.filter((post) => post._id !== postId);
@@ -117,7 +117,7 @@ export const PostContextProvider = ({ children }) => {
         console.error("Error al eliminar el post: ", error.message);
         toast.error("Error al borrar el post", {
           position: "top-center",
-          autoClose: 3000,
+          autoClose: 3000, theme:"colored"
         });
       }
     },

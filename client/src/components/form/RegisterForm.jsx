@@ -67,7 +67,7 @@ export default function Form () {
       if (response.status === 201) {
         toast.success('Usuario registrado correctamente', {
           position: 'top-center',
-          autoClose: 3000,
+          autoClose: 3000, theme:"colored"
         });
         navigate("/login");
         reset();
@@ -75,7 +75,7 @@ export default function Form () {
         console.error("Error al registrar usuario:", response.statusText);
         toast.error('Ha ocurrido un error', {
           position: 'top-center',
-          autoClose: 3000,
+          autoClose: 3000, theme:"colored"
         });
       }
     } catch (error) {
@@ -97,12 +97,12 @@ export default function Form () {
         console.error("Conflicto:", conflictError);
         toast.error(errorMessage, {
           position: 'top-center',
-          autoClose: 3000,
+          autoClose: 3000, theme:"colored"
         });
       } else {
         toast.error('Ha ocurrido un error', {
           position: 'top-center',
-          autoClose: 3000,
+          autoClose: 3000, theme:"colored"
         });
       }
     }

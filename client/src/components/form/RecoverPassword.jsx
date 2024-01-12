@@ -32,7 +32,7 @@ export default function RecoverPassword() {
       await axios.post(apiUrl + `/api/users/reset-password/${token}`, data);
       toast.success('La contraseña ha sido modificada', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 3000, theme:"colored"
       });
       navigate("/login");
     } catch (error) {
@@ -42,7 +42,7 @@ export default function RecoverPassword() {
       );
       toast.error('Ha ocurrido un error', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 3000, theme:"colored"
       });
     }
     reset();

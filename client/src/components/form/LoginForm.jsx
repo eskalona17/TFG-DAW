@@ -44,14 +44,14 @@ export default function LoginForm () {
       // Now that the login is complete, you can proceed with other actions
       toast.success('Bienvenido', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 3000, theme:"colored"
       });
       navigate("/");
     } catch (error) {
       console.error("Error:", error.message);
       toast.error('Error al iniciar sesión', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 3000, theme:"colored"
       });
     }
     reset();
@@ -66,7 +66,7 @@ export default function LoginForm () {
     } finally {
       toast.success('E-mail enviado correctamente', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 3000, theme:"colored"
       });
     }
     reset();

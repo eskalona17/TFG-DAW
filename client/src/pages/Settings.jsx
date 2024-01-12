@@ -46,7 +46,7 @@ const Settings = () => {
       if (response.status === 200) {
         toast.success('Usuario Eliminado', {
           position: 'top-center',
-          autoClose: 3000,
+          autoClose: 3000, theme:"colored"
           
         });
         navigate("/login");
@@ -54,14 +54,14 @@ const Settings = () => {
         console.error("Error al eliminar el usuario:", response.data.message);
         toast.error('Error al borrar el usuario', {
           position: 'top-center',
-          autoClose: 3000,
+          autoClose: 3000, theme:"colored"
           
         });
       }
     } catch (error) {
       toast.error('Error al borrar el usuario', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 3000, theme:"colored"
         
       });
     }
