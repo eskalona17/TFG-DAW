@@ -64,7 +64,7 @@ export const PostContextProvider = ({ children }) => {
           withCredentials: true,
         });
         getPosts();
-        toast.success("Post Publicado", {
+        toast.success("Has publicado un nuevo post", {
           position: "top-center",
           autoClose: 3000, theme:"colored"
         });

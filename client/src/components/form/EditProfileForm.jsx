@@ -120,7 +120,7 @@ export default function Formulario () {
       }
 
       if (response.status === 200) {
-        toast.success('Usuario Actualizado', {
+        toast.success('Usuario actualizado', {
           position: 'top-center',
           autoClose: 3000,
           theme:"colored"

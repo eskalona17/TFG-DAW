@@ -112,7 +112,7 @@
     border-bottom: 2px solid var(--bg-main-color);
     width: 100%;
   }
-  .title {
+  .logo, .title {
     display: none;
   }
 
