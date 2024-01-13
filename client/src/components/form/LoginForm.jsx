@@ -29,7 +29,7 @@ export default function LoginForm () {
     register,
     formState: { errors },
     reset,
-  } = useForm({ mode: "onChange" });
+  } = useForm();
 
   const navigate = useNavigate();
 
