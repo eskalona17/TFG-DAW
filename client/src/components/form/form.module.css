@@ -50,7 +50,7 @@ h3 {
   border-radius: 0.3rem;
   width: calc(400px - 1rem); /* Ancho del 100% menos 2 veces el margen */
   justify-self: center;
-  margin: 150px 0 !important;
+  margin: 1rem 0 !important;
 }
 
 .errors_display {

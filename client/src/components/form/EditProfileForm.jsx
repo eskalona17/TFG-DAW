@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useForm } from "react-hook-form";
 import Styles from "./formEditProfile.module.css";
@@ -45,11 +45,13 @@ export default function Formulario () {
   const { selectedImage } = imageData;
   const { userImage: profileImage } = useUserImage(currentUser);
 
+
   const {
     handleSubmit,
     watch,
     register,
-    formState: { errors }
+    formState: { errors },
+    setValue
   } = useForm({
     defaultValues: {
       name: currentUser?.name,
@@ -64,6 +66,26 @@ export default function Formulario () {
     },
     mode: "onChange"
   });
+
+  useEffect(() => {
+    if (currentUser) {
+      setValue("name", currentUser.name);
+      setValue("email", currentUser.email);
+      setValue("username", currentUser.username);
+      setValue("profile", currentUser.profile);
+      setValue("street", currentUser.address?.street);
+      setValue("city", currentUser.address?.city);
+      setValue("zipCode", currentUser.address?.zipCode);
+      setValue("country", currentUser.address?.country);
+      setValue("labels", currentUser.labels);
+      setProfile(currentUser.profile);
+      setSelectedLabels(currentUser.labels);
+      setImageData({
+        selectedImage: null,
+        imagePreview: profileImage,
+      });
+    }
+  }, [currentUser, setValue, setProfile, setSelectedLabels, setImageData, profileImage]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -123,7 +145,7 @@ export default function Formulario () {
         toast.success('Usuario actualizado', {
           position: 'top-center',
           autoClose: 3000,
-          theme:"colored"
+          theme: "colored"
 
         });
         const updatedUserData = response.data.user;
@@ -133,7 +155,7 @@ export default function Formulario () {
         toast.error('Error al actualizar los datos', {
           position: 'top-center',
           autoClose: 3000,
-          theme:"colored"
+          theme: "colored"
         });
       }
     } catch (error) {
@@ -156,13 +178,13 @@ export default function Formulario () {
         toast.error(errorMessage, {
           position: 'top-center',
           autoClose: 3000,
-          theme:"colored"
+          theme: "colored"
         });
       } else {
         toast.error('Error al actualizar los datos', {
           position: 'top-center',
           autoClose: 3000,
-          theme:"colored"
+          theme: "colored"
         });
       }
     }
