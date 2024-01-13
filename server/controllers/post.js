@@ -115,8 +115,6 @@ export async function updatePost (req, res) {
   const userId = req.user._id
   const { id } = req.params
 
-  console.log(content)
-
   try {
     const post = await Post.findById(id)
 
