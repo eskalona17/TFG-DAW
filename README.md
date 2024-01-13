@@ -1,4 +1,4 @@
-# Guía de uso de la aplicación (nombre por determinar)
+# Guía de uso de la aplicación InstaPet
 
 Bienvenido/a a nuestra aplicación. A continuación, te proporcionamos una guía paso a paso para que puedas probar la aplicación de manera efectiva.
 
@@ -79,9 +79,7 @@ Después de iniciar sesión, puedes explorar las distintas vistas de la aplicaci
 
 ## 7. Estado de desarrollo
 
-- La parte del servidor está configurada y funcionando en un 95%.
-- Se está trabajando en la conexión entre el cliente y el servidor.
-- El diseño definitivo y la funcionalidad completa del frontend están en desarrollo.
+- Actualmente, la versión 1.0.0 de la aplicación ya se encuentra disponible.
 - Puedes consultar el diseño final en el siguiente enlace [Figma](https://www.figma.com/proto/YBFfJ2qbnVAv2IiIzuYUrx/Mockup?type=design&node-id=1-9&t=BFUwUcrfdWatSBw3-1&scaling=scale-down-width&page-id=0%3A1&starting-point-node-id=1%3A9&mode=design)
 
 ¡Gracias por utilizar nuestra aplicación! Si tienes alguna pregunta o problema, no dudes en contactarnos. ¡Disfruta explorando la aplicación!
