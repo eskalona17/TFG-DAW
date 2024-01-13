@@ -18,24 +18,28 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import UserProfile from "./pages/UserProfile";
 import PostPage from "./pages/PostPage";
 import { PostContextProvider } from "./context/PostContext";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Followers from "./pages/Followers";
 import Followed from "./pages/Following";
+import ScrollToTop from "./components/scrollToTop/ScrollToTop";
 
-export default function App () {
-
+export default function App() {
   return (
     <AuthContextProvider>
       <BrowserRouter>
         <SocketContextProvider>
           <ThemeProvider>
+            <ScrollToTop />
             <PostContextProvider>
-            <ToastContainer />
+              <ToastContainer />
               <Routes>
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/reset-password/:token" element={<GetPassword />} />
+                <Route
+                  path="/reset-password/:token"
+                  element={<GetPassword />}
+                />
                 <Route element={<ProtectedRoute />}>
                   <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />
@@ -44,9 +48,15 @@ export default function App () {
                     <Route path="/editar-perfil" element={<EditProfile />} />
                     <Route path="/ajustes" element={<Settings />} />
                     <Route path="/:username" element={<UserProfile />} />
-                    <Route path="/:username/seguidores" element={<Followers />} />
+                    <Route
+                      path="/:username/seguidores"
+                      element={<Followers />}
+                    />
                     <Route path="/:username/seguidos" element={<Followed />} />
-                    <Route path='/:username/post/:postId' element={<PostPage />} />
+                    <Route
+                      path="/:username/post/:postId"
+                      element={<PostPage />}
+                    />
                   </Route>
                   <Route path="*" element={<Error404 />} />
                 </Route>
