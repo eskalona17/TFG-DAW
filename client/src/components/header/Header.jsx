@@ -9,6 +9,7 @@ import { useTheme } from "../../context/ThemeContext";
 import logoLight from "../../assets/img/logoLight.svg";
 import logoDark from "../../assets/img/logoDark.svg";
 import SearchResult from "../searchResult/SearchResult";
+import Modal from "../modal/Modal";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -31,6 +32,7 @@ const Header = () => {
   const [searchResults, setSearchResults] = useState([]);
   const navigate = useNavigate();
   const searchRef = useRef(null);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const { logout } = useContext(AuthContext);
   const { theme } = useTheme();
@@ -49,6 +51,14 @@ const Header = () => {
       setSearchQuery("");
       setSearchResults([]);
     }
+  };
+
+  const toggleLogoutModal = () => {
+    setShowLogoutModal((prev) => !prev);
+  };
+
+  const handleLogout = async () => {
+    toggleLogoutModal();
   };
 
   useEffect(() => {
@@ -82,7 +92,7 @@ const Header = () => {
     }
   }, [searchQuery]);
 
-  const handleLogout = async () => {
+  const handleLogoutConfirmation = async () => {
     await logout();
     navigate("/login");
   };
@@ -120,15 +130,26 @@ const Header = () => {
         <div className={search_results}>
           {searchResults.map((result) => (
             <ul key={result.user._id}>
-              <SearchResult item={result} handleSearchResultClick={handleSearchResultClick} />
+              <SearchResult
+                item={result}
+                handleSearchResultClick={handleSearchResultClick}
+              />
             </ul>
           ))}
         </div>
       </div>
       <div className={notifications_container}>
-        <span className={notifications} onClick={handleLogout}>
+        <span className={notifications} onClick={toggleLogoutModal}>
           <IoExitOutline />
         </span>
+        {showLogoutModal && (
+          <Modal
+            title="¿Estás seguro que deseas salir?"
+            description="Esta acción cerrará tu sesión actual."
+            onClose={toggleLogoutModal}
+            onConfirm={handleLogoutConfirmation}
+          />
+        )}
       </div>
     </header>
   );
