@@ -67,6 +67,7 @@
   justify-content: flex-start;
   align-items: center;
   gap: 1rem;
+  width: 100%;
 }
 
 .user_img_small {
@@ -78,13 +79,17 @@
 
 .user_info_container_small {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
 }
 
 .user_info_small {
   margin: .5rem 0;
   text-align: start;
-  width: 50%;
 }
 
 .button_container_small {
@@ -93,5 +98,4 @@
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  margin: .5rem 0;
 }

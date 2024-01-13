@@ -67,7 +67,6 @@ const SuggestedUser = ({ user, version }) => {
     );
   } else {
     return (
-      <div className={Styles.user_small}>
         <div className={Styles.user_container_small}>
           <img src={userImage} alt="" className={Styles.user_img_small} onClick={() => navigate(`/${username}`)} />
           <div className={Styles.user_info_container_small}>
@@ -90,7 +89,6 @@ const SuggestedUser = ({ user, version }) => {
               />
             </div>
           </div>
-        </div>
       </div>
     );
   }

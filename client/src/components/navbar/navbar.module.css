@@ -9,12 +9,28 @@
   flex-direction: row;
   gap: 1rem;
   flex-wrap: wrap;
-  justify-content: center;
-
+  justify-content: flex-start;
 }
 
-@media (min-width: 600px) {
+.navbar li {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
   .navbar {
-    flex-direction: column;
+    display: none;
   }
+}
+
+.icon {
+  color: var(--btn-main-color);
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 }

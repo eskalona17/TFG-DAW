@@ -515,6 +515,17 @@ export default function Formulario () {
           <div className={checkboxOption}>
             <input
               type="checkbox"
+              id="pajaros"
+              {...register("labels")}
+              value="pajaros"
+              defaultChecked={currentUser?.labels?.includes("pajaros")}
+              onChange={() => handleCheckboxChange("pajaros")}
+            />
+            <label htmlFor="pajaros">Pájaros</label>
+          </div>
+          <div className={checkboxOption}>
+            <input
+              type="checkbox"
               id="roedores"
               {...register("labels")}
               value="roedores"

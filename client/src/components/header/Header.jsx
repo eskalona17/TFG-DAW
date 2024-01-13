@@ -101,10 +101,11 @@ const Header = () => {
     navigate("/");
     setSearchQuery("");
     setSearchResults([]);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <header className={header}>
+    <header className={header + " header"}>
       <div className={title_container} onClick={handleLogoClick}>
         <img
           src={theme === "light" ? logoLight : logoDark}

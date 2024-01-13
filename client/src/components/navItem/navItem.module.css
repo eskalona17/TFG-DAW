@@ -15,7 +15,7 @@
 }
 
 .navitem a span.active {
-  border-bottom: 1px solid var(--orange-color);
+  color: var(--orange-color);
 }
 
 .navitem svg {

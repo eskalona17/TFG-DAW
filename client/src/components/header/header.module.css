@@ -25,7 +25,7 @@
 
 .search_container {
   position: relative;
-  flex: 2;
+  flex-grow: 2;
 }
 
 .search_form {
@@ -95,4 +95,20 @@
 
 .search_results ul:hover {
   background-color: var(--bg-main-color);
+}
+
+@media screen and (max-width: 599px) {
+  .header {
+    position: fixed;
+    z-index: 10;
+    border-bottom: 2px solid var(--bg-main-color);
+    width: 100%;
+  }
+  .title {
+    display: none;
+  }
+
+  .search_container {
+    flex-grow: 4;
+  }
 }
