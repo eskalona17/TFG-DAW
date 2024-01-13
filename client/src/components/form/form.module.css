@@ -115,7 +115,7 @@ h3 {
 
 .tabs .active {
   background-color: var(--orange-color);
-  color: var(--secondary-font-color);
+  color: var(--primary-font-color);
 }
 
 .tabs > li {

@@ -75,6 +75,7 @@
   object-fit: cover;
   border-radius: 50%;
   aspect-ratio: 1/1;
+  cursor: pointer;
 }
 
 .user_info_container_small {
@@ -90,6 +91,7 @@
 .user_info_small {
   margin: .5rem 0;
   text-align: start;
+  cursor: pointer;
 }
 
 .button_container_small {

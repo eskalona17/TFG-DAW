@@ -54,7 +54,7 @@ export default function Form () {
         commonData.address = {
           street: data.street,
           city: data.city,
-          zipCode: Number(data.zipCode),
+          zipCode: data.zipCode ? Number(data.zipCode) : undefined,
           country: data.country,
         };
       }
