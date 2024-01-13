@@ -13,7 +13,7 @@ const PrivacyModal = ({ isOpen, closeModal }) => {
           backgroundColor: "rgba(0, 0, 0, 0.5)",
         },
         content: {
-          width: "400px", // Ancho del modal
+          maxWidth: "400px", // Ancho del modal
           margin: "auto",
         },
       }}

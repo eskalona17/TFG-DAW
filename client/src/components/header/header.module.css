@@ -13,6 +13,7 @@
   padding: 0 2rem;
   flex: 1;
   display: flex;
+  align-items: center;
   gap: 1rem;
 }
 
@@ -84,7 +85,7 @@
 .search_results {
   position: absolute;
   width: 100%;
-  z-index: 11;
+  z-index: 10;
   background-color: var(--bg-secondary-color);
 }
 
@@ -97,10 +98,17 @@
   background-color: var(--bg-main-color);
 }
 
+.user_img {
+  display: none;
+  width: 34.5px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+}
+
 @media screen and (max-width: 599px) {
   .header {
     position: fixed;
-    z-index: 10;
+    z-index: 5;
     border-bottom: 2px solid var(--bg-main-color);
     width: 100%;
   }
@@ -110,5 +118,9 @@
 
   .search_container {
     flex-grow: 4;
+  }
+
+  .user_img {
+    display: block;
   }
 }

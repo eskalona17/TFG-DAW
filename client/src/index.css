@@ -12,7 +12,6 @@ body {
   grid-auto-rows: min-content;
   grid-template-areas:
     'header'
-    'user'
     'main'
     'aside'
     'footer';
@@ -25,7 +24,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  min-height: calc(100vh - 33.9rem);
+  min-height: calc(100vh - 22.1rem);
+  margin-top: 5rem;
 }
 
 .floatingButton {
@@ -35,7 +35,7 @@ body {
   position: fixed;
   bottom: 20px;
   left: 20px;
-  z-index: 100;
+  z-index: 5;
   width: 3rem;
   height: 3rem;
   border: 1px solid var(--orange-color);
@@ -61,13 +61,13 @@ body {
 
 @media (min-width: 411px) {
   .main {
-    min-height: calc(100vh - 32.7rem);
+    min-height: calc(100vh - 20.9rem);
   }
 }
 
 @media (min-width: 437px) {
   .main {
-    min-height: calc(100vh - 30.5rem);
+    min-height: calc(100vh - 18.7rem);
   }
 }
 
@@ -85,6 +85,7 @@ body {
 
   .main {
     min-height: calc(100vh - 17.7rem);
+    margin-top: 0;
   }
 
   .floatingButton {
@@ -92,11 +93,11 @@ body {
   }
 }
 
-@media (min-width: 601px) {
+/* @media (min-width: 601px) {
   .main {
     min-height: calc(100vh - 17.7rem);
   }
-}
+} */
 
 @media (min-width: 657px) {
   .main {

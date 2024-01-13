@@ -51,7 +51,6 @@ h3 {
   width: calc(400px - 1rem); /* Ancho del 100% menos 2 veces el margen */
   justify-self: center;
   margin: 150px 0 !important;
-  grid-column: 2 / span 2;
 }
 
 .errors_display {
@@ -174,4 +173,10 @@ h3 {
 
 .privacyLink:hover {
   color: var(--orange-color);
+}
+
+@media (min-width: 900px) {
+  .form_container {
+    grid-column: 2 / span 2;
+  }
 }

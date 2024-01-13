@@ -10,6 +10,7 @@ import logoLight from "../../assets/img/logoLight.svg";
 import logoDark from "../../assets/img/logoDark.svg";
 import SearchResult from "../searchResult/SearchResult";
 import Modal from "../modal/Modal";
+import useUserImage from "../../hooks/useUserImage";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
@@ -26,8 +27,11 @@ const Header = () => {
     notifications_container,
     notifications,
     search_results,
+    user_img
   } = Styles;
 
+  const { currentUser } = useContext(AuthContext);
+  const { userImage } = useUserImage(currentUser);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const navigate = useNavigate();
@@ -55,10 +59,6 @@ const Header = () => {
 
   const toggleLogoutModal = () => {
     setShowLogoutModal((prev) => !prev);
-  };
-
-  const handleLogout = async () => {
-    toggleLogoutModal();
   };
 
   useEffect(() => {
@@ -106,13 +106,17 @@ const Header = () => {
 
   return (
     <header className={header + " header"}>
-      <div className={title_container} onClick={handleLogoClick}>
+      <div className={title_container}>
         <img
           src={theme === "light" ? logoLight : logoDark}
           alt="Insta Pet Logo"
           className={logo}
+          onClick={handleLogoClick}
         />
-        <h1 className={title}>InstaPet</h1>
+        <h1 className={title} onClick={handleLogoClick}>InstaPet</h1>
+        <div onClick={() => navigate(`/${currentUser.username}`)}>
+          <img src={userImage} alt="" className={user_img} />
+        </div>
       </div>
       <div className={search_container} ref={searchRef}>
         <form className={search_form}>
