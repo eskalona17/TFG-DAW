@@ -45,6 +45,11 @@ export default function Formulario () {
   const { selectedImage } = imageData;
   const { userImage: profileImage } = useUserImage(currentUser);
 
+  let zipCode = currentUser?.address?.zipCode
+  if (zipCode >= 1000 && zipCode <= 9999) {
+    zipCode = '0' + zipCode
+  }
+
 
   const {
     handleSubmit,
@@ -60,7 +65,7 @@ export default function Formulario () {
       profile: currentUser?.profile,
       street: currentUser?.address?.street,
       city: currentUser?.address?.city,
-      zipCode: currentUser?.address?.zipCode,
+      zipCode,
       country: currentUser?.address?.country,
       labels: currentUser?.labels,
     },
@@ -75,7 +80,7 @@ export default function Formulario () {
       setValue("profile", currentUser.profile);
       setValue("street", currentUser.address?.street);
       setValue("city", currentUser.address?.city);
-      setValue("zipCode", currentUser.address?.zipCode);
+      setValue("zipCode", zipCode);
       setValue("country", currentUser.address?.country);
       setValue("labels", currentUser.labels);
       setProfile(currentUser.profile);
@@ -85,7 +90,7 @@ export default function Formulario () {
         imagePreview: profileImage,
       });
     }
-  }, [currentUser, setValue, setProfile, setSelectedLabels, setImageData, profileImage]);
+  }, [currentUser, setValue, setProfile, setSelectedLabels, setImageData, profileImage, zipCode]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
