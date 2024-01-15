@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
-import Styles from './pages.module.css'
-import axios from 'axios';
+import PostItem from '@/components/postItem/PostItem';
+import Loader from '@/components/loader/Loader';
 import { useParams } from 'react-router-dom';
-import Loader from '../components/loader/Loader';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-import PostItem from '../components/postItem/PostItem';
 
 const PostPage = () => {
   const { postId } = useParams();

@@ -1,7 +1,7 @@
 import Styles from "./searchFilter.module.css";
 import { useContext, useState } from "react";
-import FilterButton from "../FilterButton/FilterButton";
-import { PostContext } from "../../context/PostContext";
+import FilterButton from "@/FilterButton/FilterButton";
+import { PostContext } from "@/context/PostContext";
 
 const SearchFilter = () => {
     const { filterPostByFilter, handleFilterChange } = useContext(PostContext);

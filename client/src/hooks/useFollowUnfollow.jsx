@@ -1,8 +1,8 @@
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '@/context/AuthContext';
 import { useContext, useEffect } from 'react';
 import axios from 'axios';
-import { SocketContext } from '../context/SocketContext';
+import { SocketContext } from '@/context/SocketContext';
 
 const useFollowUnfollow = () => {
   const { currentUser, setCurrentUser } = useContext(AuthContext);

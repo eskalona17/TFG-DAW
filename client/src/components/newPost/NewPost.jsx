@@ -1,15 +1,11 @@
-import { AuthContext } from "../../context/AuthContext";
-import { PostContext } from "../../context/PostContext";
-import useUserImage from "../../hooks/useUserImage";
+import { AuthContext } from "@/context/AuthContext";
+import { PostContext } from "@/context/PostContext";
+import useUserImage from "@/hooks/useUserImage";
 import { VscVmRunning } from "react-icons/vsc";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import Styles from "./newPost.module.css";
-import Input from "../input/Input";
-import axios from "axios";
-import { toast } from "react-toastify";
+import Input from "@/input/Input";
 import "react-toastify/dist/ReactToastify.css";
-
-const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const NewPost = () => {
   const { currentUser } = useContext(AuthContext);

@@ -1,11 +1,11 @@
 import { useState, useContext, useEffect } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import Styles from "./formEditProfile.module.css";
-import Button from "../button/Button";
+import Button from "@/components/button/Button";
 import { VscDeviceCamera } from "react-icons/vsc";
 import axios from "axios";
-import useUserImage from "./../../hooks/useUserImage";
+import useUserImage from "@/hooks/useUserImage";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

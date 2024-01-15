@@ -1,8 +1,8 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import Styles from "./post.module.css";
-import Loader from "../loader/Loader";
-import PostItem from "../postItem/PostItem";
-import { PostContext } from "../../context/PostContext";
+import Loader from "@/loader/Loader";
+import PostItem from "@/postItem/PostItem";
+import { PostContext } from "@/context/PostContext";
 
 const Post = () => {
   const { loading, currentFilter, feedPosts, filteredPostsByFilter } =

@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useForm } from "react-hook-form";
 import Styles from "./form.module.css";
 import { toast } from 'react-toastify';
-import Button from "../button/Button";
+import Button from "@/components/button/Button";
 import { useState } from "react";
 import axios from "axios";
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Styles from './button.module.css'
+import Styles from '@/button.module.css'
 
 /* 
 

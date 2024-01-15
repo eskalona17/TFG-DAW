@@ -1,9 +1,9 @@
-import useUserImage from "../../hooks/useUserImage";
+import useUserImage from "@/hooks/useUserImage";
 import { formatDistanceToNow } from 'date-fns';
 import Styles from './conversation.module.css'
 import { es } from 'date-fns/locale';
-import LabelProfesional from "../labelProfesional/LabelProfesional";
-import { SocketContext } from "../../context/SocketContext";
+import LabelProfesional from "@/components/labelProfesional/LabelProfesional";
+import { SocketContext } from "@/context/SocketContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 

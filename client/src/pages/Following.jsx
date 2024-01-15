@@ -1,5 +1,5 @@
-import SuggestedUser from "../components/suggestedUser/SuggestedUser";
-import Loader from '../components/loader/Loader';
+import SuggestedUser from "@/components/suggestedUser/SuggestedUser";
+import Loader from '@/components/loader/Loader';
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Styles from "./pages.module.css";

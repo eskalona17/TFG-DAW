@@ -1,4 +1,4 @@
-import { AuthContext } from '../../context/AuthContext'
+import { AuthContext } from '@/context/AuthContext'
 import Styles from './message.module.css'
 import { useContext } from 'react'
 

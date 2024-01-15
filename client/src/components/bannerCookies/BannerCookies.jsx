@@ -1,5 +1,5 @@
-import Styles from './bannerCookies.module.css'
-import Button from './../button/Button';
+import Styles from '@/bannerCookies.module.css'
+import Button from '@/button/Button';
 import { useEffect, useState } from 'react';
 
 const BannerCookies = () => {

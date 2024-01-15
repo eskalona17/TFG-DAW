@@ -1,4 +1,4 @@
-import NavItem from "../navitem/Navitem";
+import NavItem from "@/navitem/Navitem";
 import Styles from "./navbar.module.css";
 import { HiMiniSquares2X2 } from "react-icons/hi2";
 import { TfiMenu } from "react-icons/tfi";

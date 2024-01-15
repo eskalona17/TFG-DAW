@@ -1,10 +1,10 @@
-import SuggestedUser from "../components/suggestedUser/SuggestedUser";
+import SuggestedUser from "@/components/suggestedUser/SuggestedUser";
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-import Button from '../components/button/Button';
-import Loader from '../components/loader/Loader';
+import Button from '@/components/button/Button';
+import Loader from '@/components/loader/Loader';
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "@/context/AuthContext";
 
 const Explore = () => {
   const [users, setUsers] = useState([]);

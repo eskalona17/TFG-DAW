@@ -1,4 +1,4 @@
-import useUserImage from "../../hooks/useUserImage";
+import useUserImage from "@/hooks/useUserImage";
 import Styles from "./replyItem.module.css";
 
 const ReplyItem = ({ reply }) => {

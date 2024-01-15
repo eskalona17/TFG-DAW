@@ -1,9 +1,9 @@
-import Conversation from "../components/conversation/Conversation"
+import Conversation from "@/components/conversation/Conversation"
 import { useContext, useEffect, useRef } from "react";
-import { SocketContext } from "../context/SocketContext";
-import Message from "../components/message/Message";
-import Loader from "../components/loader/Loader";
-import Input from "../components/input/Input";
+import { SocketContext } from "@/context/SocketContext";
+import Message from "@/components/message/Message";
+import Loader from "@/components/loader/Loader";
+import Input from "@/components/input/Input";
 import Styles from './pages.module.css'
 
 const Messages = () => {

@@ -1,5 +1,5 @@
 import Styles from "./modal.module.css";
-import Button from "../button/Button"
+import Button from "@/button/Button"
 
 const { backdrop, modal, modal_buttons } = Styles;
 
