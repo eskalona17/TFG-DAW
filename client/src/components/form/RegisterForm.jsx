@@ -1,11 +1,11 @@
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import PrivacyModal from "@/components/privacymodal/PrivacyModal";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import Button from "@/components/button/Button";
 import 'react-toastify/dist/ReactToastify.css';
 import { useForm } from "react-hook-form";
 import Styles from "./form.module.css";
 import { toast } from 'react-toastify';
-import Button from "@/components/button/Button";
 import { useState } from "react";
 import axios from "axios";
 

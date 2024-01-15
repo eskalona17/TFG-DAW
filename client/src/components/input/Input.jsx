@@ -1,4 +1,4 @@
-import Styles from './input.module.css'
+import Styles from '@/components/input/input.module.css';
 import { VscSend } from "react-icons/vsc";
 
 const Input = ({ type, value, placeholder, onClick, onChange, className }) => {

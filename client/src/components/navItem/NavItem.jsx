@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Styles from "./navitem.module.css";
-import { useContext } from "react";
+import Styles from "@/components/navItem/navitem.module.css";
 import { SocketContext } from "@/context/SocketContext";
+import { useContext } from "react";
 
 const NavItem = ({ label, path, icon, notify }) => {
   const { unread } = useContext(SocketContext);

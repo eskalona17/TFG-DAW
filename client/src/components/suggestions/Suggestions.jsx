@@ -2,11 +2,11 @@ const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 import { useNavigate } from "react-router-dom";
 import Styles from "./Suggestions.module.css";
 import { useContext, useEffect, useState } from "react";
-import Button from "@/button/Button";
+import Button from "@/components/button/Button";
 import axios from "axios";
-import SuggestedUser from "@/suggestedUser/SuggestedUser";
+import SuggestedUser from "@/components/suggestedUser/SuggestedUser";
 import { AuthContext } from "@/context/AuthContext";
-import Loader from "@/loader/Loader";
+import Loader from "@/components/loader/Loader";
 
 const Suggestions = () => {
   const navigate = useNavigate();

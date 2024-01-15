@@ -1,13 +1,13 @@
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "@/context/AuthContext";
-import { useForm } from "react-hook-form";
 import Styles from "./formEditProfile.module.css";
-import Button from "@/components/button/Button";
 import { VscDeviceCamera } from "react-icons/vsc";
-import axios from "axios";
 import useUserImage from "@/hooks/useUserImage";
-import { toast } from 'react-toastify';
+import Button from "@/components/button/Button";
 import 'react-toastify/dist/ReactToastify.css';
+import { useForm } from "react-hook-form";
+import { toast } from 'react-toastify';
+import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 

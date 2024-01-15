@@ -1,5 +1,5 @@
 import useUserImage from "@/hooks/useUserImage";
-import Styles from "./replyItem.module.css";
+import Styles from "@/components/replyItem/replyItem.module.css";
 
 const ReplyItem = ({ reply }) => {
   const { userImage } = useUserImage(reply.user, "50");

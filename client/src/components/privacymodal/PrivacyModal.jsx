@@ -1,6 +1,5 @@
-// PrivacyModal.js
-import Modal from "react-modal";
-import Button from "@/button/Button";
+import Modal from "@/components/modal/Modal";
+import Button from "@/components/button/Button";
 
 const PrivacyModal = ({ isOpen, closeModal }) => {
   return (

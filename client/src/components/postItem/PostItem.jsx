@@ -1,21 +1,16 @@
-import {
-  VscStarEmpty,
-  VscStarFull,
-  VscComment,
-  VscKebabVertical,
-} from "react-icons/vsc";
+import { VscStarEmpty, VscStarFull, VscComment, VscKebabVertical } from "react-icons/vsc";
 import { AuthContext } from "@/context/AuthContext";
 import useUserImage from "@/hooks/useUserImage";
 import { useContext, useEffect, useRef, useState } from "react";
 import Styles from "./postItem.module.css";
-import Input from "@/input/Input";
+import Input from "@/components/input/Input";
 import axios from "axios";
-import ReplyItem from "@/replyItem/ReplyItem";
-import LabelProfesional from "@/labelProfesional/LabelProfesional";
+import ReplyItem from "@/components/replyItem/ReplyItem";
+import LabelProfesional from "@/components/labelProfesional/LabelProfesional";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { PostContext } from "@/context/PostContext";
-import Modal from "@/modal/Modal";
+import Modal from "@/components/modal/Modal";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 

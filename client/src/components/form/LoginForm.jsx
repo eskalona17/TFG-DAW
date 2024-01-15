@@ -1,14 +1,14 @@
-import { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import Styles from "./form.module.css";
+import { AuthContext } from "@/context/AuthContext";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import Button from "@/components/button/Button";
-import { AuthContext } from "@/context/AuthContext";
-import axios from "axios";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
+import Styles from "./form.module.css";
+import { toast } from 'react-toastify';
+import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 

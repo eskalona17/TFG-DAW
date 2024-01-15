@@ -1,6 +1,6 @@
-import { AuthContext } from '@/context/AuthContext'
-import Styles from './message.module.css'
-import { useContext } from 'react'
+import { AuthContext } from '@/context/AuthContext';
+import Styles from '@/components/message/message.module.css';
+import { useContext } from 'react';
 
 const Message = ({ message }) => {
   const { currentUser } = useContext(AuthContext)

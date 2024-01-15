@@ -1,15 +1,15 @@
+import SearchResult from "@/components/searchResult/SearchResult";
 import { useState, useEffect, useContext, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import Styles from "./header.module.css";
 import { IoSearch, IoExitOutline } from "react-icons/io5";
 import { AuthContext } from "@/context/AuthContext";
-import axios from "axios";
-import { useTheme } from "@/context/ThemeContext";
 import logoLight from "@/assets/img/logoLight.svg";
+import { useTheme } from "@/context/ThemeContext";
 import logoDark from "@/assets/img/logoDark.svg";
-import SearchResult from "@/components/searchResult/SearchResult";
-import Modal from "@/components/modal/Modal";
 import useUserImage from "@/hooks/useUserImage";
+import { useNavigate } from "react-router-dom";
+import Modal from "@/components/modal/Modal";
+import Styles from "./header.module.css";
+import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 

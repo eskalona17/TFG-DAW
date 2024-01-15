@@ -1,11 +1,10 @@
+import { useContext } from "react";
+import Styles from "@/components/newPost/newPost.module.css";
+import Input from "@/components/input/Input";
 import { AuthContext } from "@/context/AuthContext";
 import { PostContext } from "@/context/PostContext";
 import useUserImage from "@/hooks/useUserImage";
 import { VscVmRunning } from "react-icons/vsc";
-import { useContext } from "react";
-import Styles from "./newPost.module.css";
-import Input from "@/input/Input";
-import "react-toastify/dist/ReactToastify.css";
 
 const NewPost = () => {
   const { currentUser } = useContext(AuthContext);

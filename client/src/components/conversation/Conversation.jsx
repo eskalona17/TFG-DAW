@@ -1,11 +1,11 @@
+import LabelProfesional from "../labelProfesional/LabelProfesional";
+import { SocketContext } from "@/context/SocketContext";
 import useUserImage from "@/hooks/useUserImage";
 import { formatDistanceToNow } from 'date-fns';
+import { useNavigate } from "react-router-dom";
 import Styles from './conversation.module.css'
 import { es } from 'date-fns/locale';
-import LabelProfesional from "@/components/labelProfesional/LabelProfesional";
-import { SocketContext } from "@/context/SocketContext";
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 
 const Conversation = ({ conversation, onClick }) => {
   const { onlineUsers } = useContext(SocketContext)
