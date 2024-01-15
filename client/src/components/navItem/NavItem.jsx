@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Styles from "@/components/navItem/navitem.module.css";
+import Styles from "@/components/navItem/navItem.module.css";
 import { SocketContext } from "@/context/SocketContext";
 import { useContext } from "react";
 
