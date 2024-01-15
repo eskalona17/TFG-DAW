@@ -1,28 +1,28 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthContextProvider } from "@/context/AuthContext";
 import { SocketContextProvider } from "@/context/SocketContext";
-import { ThemeProvider } from "@/context/ThemeContext";
-import "@/variables.css";
-import "@/index.css";
-import Register from "@/pages/Register";
-import Login from "@/pages/Login";
-import GetPassword from "@/pages/GetPassword";
-import Layout from "@/components/layout/Layout";
-import Home from "@/pages/Home";
-import Explore from "@/pages/Explore";
-import Messages from "@/pages/Messages";
-import EditProfile from "@/pages/EditProfile";
-import Settings from "@/pages/Settings";
-import Error404 from "@/pages/Error404";
-import ProtectedRoute from "@/utils/ProtectedRoute";
-import UserProfile from "@/pages/UserProfile";
-import PostPage from "@/pages/PostPage";
+import ScrollToTop from "@/components/scrollToTop/ScrollToTop";
+import { AuthContextProvider } from "@/context/AuthContext";
 import { PostContextProvider } from "@/context/PostContext";
+import { ThemeProvider } from "@/context/ThemeContext";
+import ProtectedRoute from "@/utils/ProtectedRoute";
+import Layout from "@/components/layout/Layout";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import GetPassword from "@/pages/GetPassword";
+import EditProfile from "@/pages/EditProfile";
+import UserProfile from "@/pages/UserProfile";
 import Followers from "@/pages/Followers";
 import Followed from "@/pages/Following";
-import ScrollToTop from "@/components/scrollToTop/ScrollToTop";
+import PostPage from "@/pages/PostPage";
+import Messages from "@/pages/Messages";
+import Settings from "@/pages/Settings";
+import Error404 from "@/pages/Error404";
+import Register from "@/pages/Register";
+import Explore from "@/pages/Explore";
+import Login from "@/pages/Login";
+import Home from "@/pages/Home";
+import "@/variables.css";
+import "@/index.css";
 
 export default function App() {
   return (

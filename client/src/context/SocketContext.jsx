@@ -1,8 +1,9 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react"
-import io from "socket.io-client"
-import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
+import io from "socket.io-client"
+import axios from "axios";
+
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 export const SocketContext = createContext()

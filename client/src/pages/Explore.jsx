@@ -1,10 +1,11 @@
 import SuggestedUser from "@/components/suggestedUser/SuggestedUser";
-const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+import { useState, useEffect, useContext } from 'react';
+import { AuthContext } from "@/context/AuthContext";
 import Button from '@/components/button/Button';
 import Loader from '@/components/loader/Loader';
-import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { AuthContext } from "@/context/AuthContext";
+
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const Explore = () => {
   const [users, setUsers] = useState([]);
