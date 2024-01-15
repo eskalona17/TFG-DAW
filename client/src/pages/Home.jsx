@@ -1,4 +1,4 @@
-import SearchFilter from '@/components/searchFilter/searchFilter';
+import SearchFilter from '@/components/searchFilter/SearchFilter';
 import NewPost from '@/components/newPost/NewPost';
 import Post from '@/components/post/Post';
 function Home() {
