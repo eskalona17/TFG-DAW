@@ -1,6 +1,6 @@
 import Styles from "@/components/navbar/navbar.module.css";
 import { HiOutlineEnvelope } from "react-icons/hi2";
-import NavItem from "@/components/navItem/Navitem";
+import NavItem from "@/components/navItem/NavItem";
 import { HiMiniSquares2X2 } from "react-icons/hi2";
 import { CgProfile } from "react-icons/cg";
 import { TfiMenu } from "react-icons/tfi";

@@ -1,10 +1,11 @@
 import useFollowUnfollow from "@/hooks/useFollowUnfollow";
-const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+import Button from '@/components/button/Button';
 import useUserImage from "@/hooks/useUserImage";
 import Styles from "./suggestedUser.module.css";
 import { useNavigate } from 'react-router-dom';
-import Button from '@/components/button/Button';
 import axios from "axios";
+
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const SuggestedUser = ({ user, version }) => {
   const { currentUser, followUnfollow } = useFollowUnfollow();

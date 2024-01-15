@@ -1,5 +1,5 @@
-import Modal from "@/components/modal/Modal";
 import Button from "@/components/button/Button";
+import Modal from "@/components/modal/Modal";
 
 const PrivacyModal = ({ isOpen, closeModal }) => {
   return (
