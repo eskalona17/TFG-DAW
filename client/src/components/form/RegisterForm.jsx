@@ -1,11 +1,11 @@
+import PrivacyModal from "@/components/privacymodal/PrivacyModal";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import PrivacyModal from "../privacymodal/PrivacyModal";
 import { Link, useNavigate } from "react-router-dom";
+import Button from "@/components/button/Button";
 import 'react-toastify/dist/ReactToastify.css';
 import { useForm } from "react-hook-form";
 import Styles from "./form.module.css";
 import { toast } from 'react-toastify';
-import Button from "../button/Button";
 import { useState } from "react";
 import axios from "axios";
 
@@ -29,6 +29,10 @@ const {
 export default function Form () {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  //personal profile as a default
+  const [profile, setProfile] = useState("personal");
+
   const {
     handleSubmit,
     watch,
@@ -50,7 +54,7 @@ export default function Form () {
         profile: data.profile
       };
 
-      if (data.street || data.city || data.zipCode || data.country) {
+      if (data.profile === "profesional" && (data.street || data.city || data.zipCode || data.country)) {
         commonData.address = {
           street: data.street,
           city: data.city,
@@ -61,13 +65,13 @@ export default function Form () {
       // Enviar datos al backend
       const response = await axios.post(apiUrl + "/api/users/register", {
         ...commonData,
-        profile: profile,
+        profile,
       });
 
       if (response.status === 201) {
         toast.success('Usuario registrado correctamente', {
           position: 'top-center',
-          autoClose: 3000, theme:"colored"
+          autoClose: 3000, theme: "colored"
         });
         navigate("/login");
         reset();
@@ -75,7 +79,7 @@ export default function Form () {
         console.error("Error al registrar usuario:", response.statusText);
         toast.error('Ha ocurrido un error', {
           position: 'top-center',
-          autoClose: 3000, theme:"colored"
+          autoClose: 3000, theme: "colored"
         });
       }
     } catch (error) {
@@ -97,20 +101,17 @@ export default function Form () {
         console.error("Conflicto:", conflictError);
         toast.error(errorMessage, {
           position: 'top-center',
-          autoClose: 3000, theme:"colored"
+          autoClose: 3000, theme: "colored"
         });
       } else {
         toast.error('Ha ocurrido un error', {
           position: 'top-center',
-          autoClose: 3000, theme:"colored"
+          autoClose: 3000, theme: "colored"
         });
       }
     }
   });
 
-
-  //personal profile as a default
-  const [profile, setProfile] = useState("personal");
 
   // Estado para controlar la apertura y cierre del modal
   const [isModalOpen, setIsModalOpen] = useState(false);

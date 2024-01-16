@@ -1,4 +1,4 @@
-import EditProfileForm from "./../components/form/EditProfileForm"
+import EditProfileForm from "@/components/form/EditProfileForm"
 const EditProfile = () => {
   return (
     <main className="main">

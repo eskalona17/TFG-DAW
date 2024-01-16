@@ -1,10 +1,10 @@
+import BannerCookies from "@/components/bannerCookies/BannerCookies";
+import CurrentUser from '@/components/currentUser/CurrentUser';
+import Suggestions from "@/components/suggestions/Suggestions";
+import Header from "@/components/header/Header";
+import Footer from "@/components/footer/Footer";
+import Navbar from "@/components/navbar/Navbar";
 import { Outlet } from "react-router-dom";
-import Header from "../header/Header"
-import Footer from "../footer/Footer";
-import Navbar from "../navbar/Navbar";
-import Suggestions from "../suggestions/Suggestions";
-import CurrentUser from '../currentUser/CurrentUser';
-import BannerCookies from "../bannerCookies/BannerCookies";
 
 const Layout = () => {
   return (

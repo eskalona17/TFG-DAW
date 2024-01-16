@@ -1,16 +1,16 @@
-import { useState, useContext } from "react";
-import Button from "../components/button/Button";
-import Styles from "./pages.module.css";
-import { AuthContext } from "../context/AuthContext";
-import { createPortal } from "react-dom";
+import { AuthContext } from "@/context/AuthContext";
+import { useTheme } from "@/context/ThemeContext";
+import Button from "@/components/button/Button";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useTheme } from "../context/ThemeContext";
-import { IoSunny } from "react-icons/io5";
-import { FaMoon } from "react-icons/fa6";
-import Modal from "../components/modal/Modal"
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useState, useContext } from "react";
+import Modal from "@/components/modal/Modal"
+import { IoSunny } from "react-icons/io5";
+import { createPortal } from "react-dom";
+import { FaMoon } from "react-icons/fa6";
+import Styles from "./pages.module.css";
+import { toast } from 'react-toastify';
+import axios from "axios";
 // colors for icons
 const orange_color = "#ffa07a";
 const gray_color = "#6f81a5";

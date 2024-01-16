@@ -1,5 +1,5 @@
-import useUserImage from '../../hooks/useUserImage';
-import Styles from './searchResult.module.css';
+import Styles from '@/components/searchResult/searchResult.module.css';
+import useUserImage from '@/hooks/useUserImage';
 
 const SearchResult = ({ item, handleSearchResultClick }) => {
   const { userImage } = useUserImage(item.user, '75');

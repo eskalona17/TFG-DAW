@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
 import { IoIosArrowUp } from "react-icons/io";
 import Styles from "./scrolltotop.module.css";
+import { useState, useEffect } from "react";
 
 const ScrollToTop = () => {
   const [showScrollToTop, setShowScrollToTop] = useState(false);

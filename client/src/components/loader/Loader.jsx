@@ -1,5 +1,5 @@
-import 'ldrs/bouncy'
-import Styles from './loader.module.css';
+import Styles from '@/components/loader/loader.module.css';
+import 'ldrs/bouncy';
 
 const Loader = () => {
   return (

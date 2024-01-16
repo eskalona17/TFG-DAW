@@ -1,13 +1,13 @@
-import useGetUserProfile from '../hooks/useGetUserProfile';
-import { useEffect, useState } from 'react';
-import PostItem from '../components/postItem/PostItem';
-import Loader from '../components/loader/Loader';
-import useUserImage from '../hooks/useUserImage';
-import Button from '../components/button/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
+import useFollowUnfollow from '@/hooks/useFollowUnfollow';
+import useGetUserProfile from '@/hooks/useGetUserProfile';
+import PostItem from '@/components/postItem/PostItem';
+import Loader from '@/components/loader/Loader';
+import useUserImage from '@/hooks/useUserImage';
+import Button from '@/components/button/Button';
+import { useEffect, useState } from 'react';
 import Styles from './pages.module.css';
 import axios from 'axios';
-import useFollowUnfollow from '../hooks/useFollowUnfollow';
 
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 

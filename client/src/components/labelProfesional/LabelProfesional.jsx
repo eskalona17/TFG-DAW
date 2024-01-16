@@ -1,4 +1,4 @@
-import Styles from './labelProfesional.module.css'
+import Styles from '@/components/labelProfesional/labelProfesional.module.css';
 
 const LabelProfesional = () => {
   return (

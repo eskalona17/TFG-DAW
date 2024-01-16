@@ -1,10 +1,10 @@
+import LabelProfesional from "@/components/labelProfesional/LabelProfesional";
+import { AuthContext } from "@/context/AuthContext";
+import Button from "@/components/button/Button";
+import useUserImage from '@/hooks/useUserImage';
+import { useNavigate } from "react-router-dom";
 import Styles from "./currentUser.module.css";
 import { useContext } from "react";
-import Button from "../button/Button";
-import { AuthContext } from "../../context/AuthContext";
-import useUserImage from './../../hooks/useUserImage';
-import { useNavigate } from "react-router-dom";
-import LabelProfesional from "../labelProfesional/LabelProfesional";
 
 const CurrentUser = () => {
   const { currentUser } = useContext(AuthContext);

@@ -1,5 +1,5 @@
+import Styles from '@/components/button/button.module.css'
 import { useState } from 'react';
-import Styles from './button.module.css'
 
 /* 
 

@@ -1,6 +1,7 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const useGetUserProfile = () => {

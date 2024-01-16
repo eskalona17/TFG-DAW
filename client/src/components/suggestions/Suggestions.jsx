@@ -1,12 +1,13 @@
-const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-import { useNavigate } from "react-router-dom";
-import Styles from "./Suggestions.module.css";
+import SuggestedUser from "@/components/suggestedUser/SuggestedUser";
 import { useContext, useEffect, useState } from "react";
-import Button from "../button/Button";
+import { AuthContext } from "@/context/AuthContext";
+import Loader from "@/components/loader/Loader";
+import Button from "@/components/button/Button";
+import { useNavigate } from "react-router-dom";
+import Styles from "./suggestions.module.css";
 import axios from "axios";
-import SuggestedUser from "../suggestedUser/SuggestedUser";
-import { AuthContext } from "../../context/AuthContext";
-import Loader from "../loader/Loader";
+
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const Suggestions = () => {
   const navigate = useNavigate();
