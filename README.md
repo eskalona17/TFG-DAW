@@ -80,6 +80,7 @@ Después de iniciar sesión, puedes explorar las distintas vistas de la aplicaci
 ## 7. Estado de desarrollo
 
 - Actualmente, la versión 1.0.0 de la aplicación ya se encuentra disponible.
+- El código fuente completo lo puedes encontrar en el siguiente repositorio público [GutHub](https://github.com/eskalona17/TFG-DAW). Debes situarte sobre la rama `Final`
 - Puedes consultar el diseño final en el siguiente enlace [Figma](https://www.figma.com/proto/YBFfJ2qbnVAv2IiIzuYUrx/Mockup?type=design&node-id=1-9&t=BFUwUcrfdWatSBw3-1&scaling=scale-down-width&page-id=0%3A1&starting-point-node-id=1%3A9&mode=design)
 
 ¡Gracias por utilizar nuestra aplicación! Si tienes alguna pregunta o problema, no dudes en contactarnos. ¡Disfruta explorando la aplicación!
