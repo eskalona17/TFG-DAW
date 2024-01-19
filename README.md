@@ -73,9 +73,9 @@ Después de iniciar sesión, puedes explorar las distintas vistas de la aplicaci
 
 - ***Principal:*** Página principal después del inicio de sesión.
 - ***Explora:*** Vista de exploración.
-- ***Mensajes:*** (En desarrollo).
+- ***Mensajes:*** Intercambia mensajes en tiempo real con otros usuarios.
 - ***Editar Perfil:*** Edita la información de tu perfil.
-- ***Configuración:*** (En desarrollo).
+- ***Configuración:*** Alterna entre modo claro u oscuro, cierra sesión o elimina tu perfil.
 
 ## 7. Estado de desarrollo
 
