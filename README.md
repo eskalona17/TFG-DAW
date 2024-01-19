@@ -58,7 +58,7 @@ Ahora, tendrás ambos servidores desplegados en tu entorno local.
 1. Abre tu navegador y ve a [http://localhost:5173/](http://localhost:5173/)
 2. Como no hay ningun usuario con la sesión iniciada, se te muestra la página para hacer login.
 3. Ingresa con el usuario de prueba:
-    - Usuario: test
+    - Usuario: odin
     - Contraseña: 123456
 
 ### Registro de usuario
